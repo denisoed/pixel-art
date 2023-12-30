@@ -38,10 +38,7 @@ export default defineComponent({
     const isMouseDown = ref(false);
 
     function onPointerMove(e: Event) {
-      if (
-        (config.drawing === true && isMouseDown.value === true) ||
-        (getEraser.value === true && isMouseDown.value === true)
-      ) {
+      if (getEraser.value === true && isMouseDown.value === true) {
         const el = e.target as HTMLElement | null;
         if (el && el.matches('.pixel')) {
           if (getEraser.value === true) {

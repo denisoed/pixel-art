@@ -20,8 +20,8 @@ const usePixelArt = () => {
     const bitmap = await createImageBitmap(file);
     const canvas = document.querySelector('canvas');
     if (!canvas) return [];
-    canvas.width = bitmap.width;
-    canvas.height = bitmap.height;
+    canvas.width = config.width;
+    canvas.height = config.height;
     const ctx = canvas.getContext('2d');
     if (!ctx) return [];
     ctx.clearRect(0, 0, 9999, 9999);
@@ -31,10 +31,10 @@ const usePixelArt = () => {
       for (let j = 0; j < config.height; ++j) {
         const pixelData = canvas
           ?.getContext('2d')
-          ?.getImageData(i, j, 1, 1).data;
+          ?.getImageData(j, i, 1, 1).data;
         constructPixelData.push({
-          x: i,
-          y: j,
+          x: j,
+          y: i,
           color:
             pixelData?.length && pixelData[3] !== 0
               ? `rgb(${pixelData[0]} ${pixelData[1]} ${pixelData[2]})`
