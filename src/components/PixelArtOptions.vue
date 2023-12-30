@@ -9,9 +9,13 @@
       <span class="generate-css-span">Generate CSS</span>
     </button>
     <button class="reset">Reset</button>
-    <div class="eraser-container">
-      <div class="eraser"><i class="fal fa-eraser"></i>Eraser</div>
-    </div>
+    <button
+      class="eraser"
+      :class="{ current: getEraser }"
+      @click="toggleEraser"
+    >
+      Eraser
+    </button>
     <div class="prebuilt">
       <div class="prebuilt current" data-prebuilt="blank">Demoes</div>
       <div class="options">
@@ -30,11 +34,16 @@
 import { defineComponent } from 'vue';
 import { useToast } from 'vue-toastification';
 import { config } from '@/config/index';
+import { useMainStore } from '@/stores/main';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
   name: 'PixelArtOptions',
   setup() {
+    const store = useMainStore();
     const toast = useToast();
+
+    const { getEraser } = storeToRefs(store);
 
     async function onChangeFile(e: Event) {
       debugger;
@@ -74,7 +83,7 @@ export default defineComponent({
               }
             }
           }
-          constructPixelData.forEach(function (i) {
+          constructPixelData.forEach((i) => {
             const getPixel = document.querySelector(
               `.pixel[data-x-coordinate="${i.x}"][data-y-coordinate="${i.y}"]`,
             ) as HTMLElement | null;
@@ -94,6 +103,8 @@ export default defineComponent({
     return {
       onChangeFile,
       config,
+      toggleEraser: store.toggleEraser,
+      getEraser,
     };
   },
 });

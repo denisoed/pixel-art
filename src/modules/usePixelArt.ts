@@ -976,51 +976,6 @@ const usePixelArt = () => {
       eraser: false,
     };
 
-    const events = {
-      mousedown: false,
-    };
-
-    document.body.addEventListener('pointerup', function () {
-      events.mousedown = false;
-    });
-
-    ['click', 'input'].forEach(function (item) {
-      document
-        .querySelector('.color-picker')
-        .addEventListener(item, function () {
-          document.querySelector('.error').classList.remove('active');
-          config.color = this.value;
-          document.querySelectorAll('.colors > div').forEach(function (i) {
-            i.classList.remove('current');
-          });
-          this.classList.add('current');
-          config.eraser = false;
-          document
-            .querySelector('.eraser-container')
-            .classList.remove('current');
-        });
-    });
-
-    document.querySelectorAll('.colors > div').forEach(function (item) {
-      document.querySelector('.error').classList.remove('active');
-      if (item.classList.contains('select-color')) {
-        return false;
-      } else {
-        item.addEventListener('click', function () {
-          document.querySelector('.color-picker').classList.remove('current');
-          document.querySelectorAll('.colors > div').forEach(function (i) {
-            i.classList.remove('current');
-          });
-          item.classList.add('current');
-          config.eraser = false;
-          config.color = `${item.getAttribute('data-color')}`;
-          document
-            .querySelector('.eraser-container')
-            .classList.remove('current');
-        });
-      }
-    });
-
     document.querySelector('.reset').addEventListener('click', function () {
       document.querySelector('.error').classList.remove('active');
       document.querySelectorAll('.pixel').forEach(function (item) {
@@ -1046,13 +1001,6 @@ const usePixelArt = () => {
         }
       });
 
-    document.body.addEventListener('click', function (e) {
-      document.querySelector('.error').classList.remove('active');
-      if (!e.target.matches('.prebuilt.current')) {
-        document.querySelector('.prebuilt .options').classList.remove('active');
-      }
-    });
-
     document.querySelectorAll('.options > .prebuilt').forEach(function (item) {
       document.querySelector('.error').classList.remove('active');
       item.addEventListener('pointerdown', function () {
@@ -1073,23 +1021,6 @@ const usePixelArt = () => {
           });
         }
       });
-    });
-
-    document.querySelector('.eraser').addEventListener('click', function () {
-      document.querySelector('.error').classList.remove('active');
-      document.querySelectorAll('.colors > div').forEach(function (i) {
-        i.classList.remove('current');
-      });
-      document.querySelector('.color-picker').classList.remove('current');
-      if (this.classList.contains('current')) {
-        this.parentElement.classList.remove('current');
-        document.querySelector('.color > div').classList.add('current');
-        config.color = 'white';
-        config.eraser = false;
-      } else {
-        this.parentElement.classList.add('current');
-        config.eraser = true;
-      }
     });
 
     document

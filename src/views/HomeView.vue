@@ -120,7 +120,7 @@ input[type='color'] {
 .generate-css,
 .reset,
 .prebuilt > .current,
-.eraser-container,
+.eraser,
 .import-container:before {
   background: #191f2b;
   box-shadow: none;
@@ -168,7 +168,7 @@ input[type='file']::-webkit-file-upload-button {
   visibility: hidden;
 }
 
-.eraser-container {
+.eraser {
   padding: 0 1rem;
 }
 .prebuilt .current:after {
@@ -185,7 +185,7 @@ input[type='file']::-webkit-file-upload-button {
 .reset:hover,
 .prebuilt > .current:hover,
 input[type='file']:before:hover,
-.eraser-container:hover {
+.eraser:hover {
   background: #6366914a;
   transform: scale(1.02);
   cursor: pointer;
@@ -306,7 +306,7 @@ input {
   border-style: solid;
 }
 
-.eraser-container {
+.eraser {
   display: flex;
   align-items: center;
   transition: all 0.1s ease-out;
@@ -318,7 +318,7 @@ input {
   cursor: pointer;
 }
 
-.eraser-container.current {
+.eraser.current {
   background: #323c4e;
 }
 

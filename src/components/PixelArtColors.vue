@@ -2,16 +2,14 @@
   <div id="pixel-art-colors">
     <div class="colors">
       <div
-        class="color current"
-        style="background: white"
-        data-color="white"
-      ></div>
-      <div class="color" style="background: #ffc231" data-color="#ffc231"></div>
-      <div class="color" style="background: #ff6c31" data-color="#ff6c31"></div>
-      <div class="color" style="background: #ff1c1c" data-color="#ff1c1c"></div>
-      <div class="color" style="background: #35c161" data-color="#35c161"></div>
-      <div class="color" style="background: #3552c1" data-color="#3552c1"></div>
-      <div class="color" style="background: #7935c1" data-color="#7935c1"></div>
+        v-for="color in COLORS"
+        :key="color"
+        class="color"
+        :style="{ background: color }"
+        :data-color="color"
+        @click="onColor(color)"
+        :class="{ current: color === activeColor }"
+      />
       <div class="select-color">
         <h3>Select Color:</h3>
         <input type="color" value="" class="color-picker" />
@@ -21,9 +19,34 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
+
+const COLORS = [
+  'white',
+  '#ffc231',
+  '#ff6c31',
+  '#ff1c1c',
+  '#35c161',
+  '#3552c1',
+  '#7935c1',
+];
 
 export default defineComponent({
   name: 'PixelArtColors',
+  emits: ['on-change'],
+  setup(_, { emit }) {
+    const activeColor = ref('white');
+
+    function onColor(c: string) {
+      activeColor.value = c;
+      emit('on-change', c);
+    }
+
+    return {
+      onColor,
+      COLORS,
+      activeColor,
+    };
+  },
 });
 </script>

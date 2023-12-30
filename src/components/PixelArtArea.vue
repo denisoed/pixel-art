@@ -21,16 +21,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted, computed } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
 import { config } from '@/config/index';
+import { useMainStore } from '@/stores/main';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
   name: 'PixelArtArea',
   setup() {
+    const store = useMainStore();
+    const { getEraser } = storeToRefs(store);
+
     const isMouseDown = ref(false);
     const pixelArtArea = ref<HTMLElement | null>();
+    const pixels = ref<{ x: number; y: number }[]>([]);
 
-    const pixels = computed(() => {
+    function generateStartPixels() {
       const result = [];
       for (let i = 0; i < config.width; ++i) {
         for (let j = 0; j < config.height; ++j) {
@@ -40,17 +46,17 @@ export default defineComponent({
           });
         }
       }
-      return result;
-    });
+      pixels.value = result;
+    }
 
     function onPointerMove(e: Event) {
       if (
         (config.drawing === true && isMouseDown.value === true) ||
-        (config.eraser === true && isMouseDown.value === true)
+        (getEraser.value === true && isMouseDown.value === true)
       ) {
         const el = e.target as HTMLElement | null;
         if (el && el.matches('.pixel')) {
-          if (config.eraser === true) {
+          if (getEraser.value === true) {
             el.setAttribute('data-color', '');
             el.style.background = `#191f2b`;
           } else {
@@ -64,7 +70,7 @@ export default defineComponent({
     function onPointerDown(e: Event) {
       const el = e.target as HTMLElement | null;
       if (!el || !el.matches('.pixel')) return;
-      if (config.eraser === true) {
+      if (getEraser.value === true) {
         el.setAttribute('data-color', '');
         el.style.background = `#191f2b`;
       } else {
@@ -79,6 +85,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      generateStartPixels();
       document.addEventListener('pointerup', onPointerUp);
     });
 
