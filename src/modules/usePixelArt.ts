@@ -1,8 +1,8 @@
-import { onMounted } from 'vue';
 import { config } from '@/config/index';
+import { IPixel } from '@/interfaces';
 
 const usePixelArt = () => {
-  function generateInitPixels() {
+  function generateInitPixels(): IPixel[] {
     const result = [];
     for (let i = 0; i < config.width; ++i) {
       for (let j = 0; j < config.height; ++j) {
@@ -15,114 +15,55 @@ const usePixelArt = () => {
     return result;
   }
 
-  // onMounted(() => {
-  //   document
-  //     .querySelector('.generate-css')
-  //     .addEventListener('click', function () {
-  //       document.querySelector('.error').classList.remove('active');
-  //       document.getElementById('popup-pixel-art').innerHTML = `
-  //       <h2>Pixel Art Code</h2>
-  //       <p>Copy the code below to use this on your webpage</p>
-  //       <div class="close"><i class="fal fa-times"></i></div>`;
+  async function generatePixelsFromFile(file: File): Promise<IPixel[] | []> {
+    if (!file) return [];
+    const bitmap = await createImageBitmap(file);
+    const canvas = document.querySelector('canvas');
+    if (!canvas) return [];
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return [];
+    ctx.clearRect(0, 0, 9999, 9999);
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const constructPixelData = [];
+    for (let i = 0; i < config.width; ++i) {
+      for (let j = 0; j < config.height; ++j) {
+        const pixelData = canvas
+          ?.getContext('2d')
+          ?.getImageData(i, j, 1, 1).data;
+        constructPixelData.push({
+          x: i,
+          y: j,
+          color:
+            pixelData?.length && pixelData[3] !== 0
+              ? `rgb(${pixelData[0]} ${pixelData[1]} ${pixelData[2]})`
+              : '',
+        });
+      }
+    }
+    return constructPixelData;
+  }
 
-  //       let boxShadow = `.pixelart {
-  //           width: 1px;
-  //           height: 1px;
-  //           transform: scale(5);
-  //           background: transparent;
-  //           box-shadow: `;
-
-  //       document.querySelectorAll('.pixel').forEach(function (item) {
-  //         if (
-  //           item.getAttribute('data-color') !== 'null' &&
-  //           item.getAttribute('data-color') !== null
-  //         ) {
-  //           const x = item.getAttribute('data-x-coordinate');
-  //           const y = item.getAttribute('data-y-coordinate');
-  //           const color = item.getAttribute('data-color');
-
-  //           boxShadow += `${x}px ${y}px ${color}, `;
-  //         }
-  //       });
-  //       boxShadow = boxShadow.slice(0, -2);
-  //       boxShadow = `${boxShadow};
-  //   }`;
-
-  //       let boxShadowCode = `
-  //   &lt;<span class="token tag">div</span> <span class="token attr-name">class</span>="<span class="token attr-value">pixelart</span>">&lt;/<span class="token attr-name">div</span>>
-  //   &lt;<span class="token tag">style</span> <span class="token attr-name">type</span>="<span class="token attr-value">text/css</span>">
-  //   <span class="token selector">.pixelart</span> {
-  //       <span class="token property">width</span>: <span class="token number">1</span>px;
-  //       <span class="token property">height</span>: <span class="token number">1</span>px;
-  //       <span class="token property">transform</span>: scale(<span class="token number">20</span>);
-  //       <span class="token property">background</span>: transparent;
-  //       <span class="token property">box-shadow</span>: `;
-
-  //       document.querySelectorAll('.pixel').forEach(function (item) {
-  //         if (
-  //           item.getAttribute('data-color') !== 'null' &&
-  //           item.getAttribute('data-color') !== null
-  //         ) {
-  //           const x = item.getAttribute('data-x-coordinate');
-  //           const y = item.getAttribute('data-y-coordinate');
-  //           const color = item.getAttribute('data-color');
-
-  //           boxShadowCode += `<span class="token number">${x}</span><span class="token unit">px</span> <span class="token number">${y}</span><span class="token unit">px</span> ${color}, `;
-  //         }
-  //       });
-
-  //       boxShadowCode = boxShadowCode.slice(0, -2);
-  //       boxShadowCode = `${boxShadowCode};
-  //   }
-  //   &lt;/<span class="token tag">style</span>>`;
-
-  //       const newStyle = document.createElement('style');
-  //       newStyle.innerHTML = boxShadow;
-  //       document.body.append(newStyle);
-
-  //       const newPixelArt = document.createElement('div');
-  //       newPixelArt.classList.add('pixelart');
-  //       document.getElementById('popup-pixel-art').append(newPixelArt);
-
-  //       const newCodeBlock = document.createElement('pre');
-  //       newCodeBlock.innerHTML = `<code>${boxShadowCode}</code>`;
-  //       document.getElementById('popup-pixel-art').append(newCodeBlock);
-
-  //       document.getElementById('popup-pixel-art').classList.add('active');
-  //     });
-
-  //   document.body.addEventListener('click', function (e) {
-  //     if (
-  //       (!parent(e.target, '#popup-pixel-art', 1).matches('#popup-pixel-art') &&
-  //         !e.target.matches('#popup-pixel-art') &&
-  //         !e.target.matches('.generate-css') &&
-  //         !e.target.matches('.generate-css-span')) ||
-  //       parent(e.target, '.close', 1).matches(
-  //         '.close' || e.target.matches('.close'),
-  //       )
-  //     ) {
-  //       document.getElementById('popup-pixel-art').classList.remove('active');
-  //     }
-  //   });
-
-  //   const parent = function (el, match, last) {
-  //     const result = [];
-  //     for (let p = el && el.parentElement; p; p = p.parentElement) {
-  //       result.push(p);
-  //       if (p.matches(match)) {
-  //         break;
-  //       }
-  //     }
-  //     if (last == 1) {
-  //       return result[result.length - 1];
-  //     } else {
-  //       return result;
-  //     }
-  //   };
-  // });
+  function generateCss(pixels: IPixel[]): string {
+    const pixelsCss = pixels.map(
+      (pixel) => `${pixel.x}px ${pixel.y}px ${pixel.color || 'transparent'}`,
+    );
+    const css = `.pixelart {
+      width: 1px;
+      height: 1px;
+      transform: scale(5);
+      background: transparent;
+      box-shadow: ${pixelsCss.join(', ')};
+    `;
+    debugger;
+    return css;
+  }
 
   return {
     generateInitPixels,
+    generatePixelsFromFile,
+    generateCss,
   };
 };
 

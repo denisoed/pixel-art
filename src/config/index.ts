@@ -16,3 +16,10 @@ export const COLORS = [
   '#3552c1',
   '#7935c1',
 ];
+
+export const VALID_FILE_TYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/gif',
+  'image/jpg',
+];

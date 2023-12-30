@@ -6,6 +6,7 @@ interface IState {
   eraser: boolean;
   pixels: IPixel[];
   color: string;
+  cssCode: string;
 }
 
 export const useMainStore = defineStore('main', {
@@ -14,12 +15,14 @@ export const useMainStore = defineStore('main', {
       eraser: false,
       pixels: [],
       color: DEFAULT_COLOR,
+      cssCode: '',
     };
   },
   getters: {
     getEraser: (state) => state.eraser,
     getPixels: (state) => state.pixels,
     getColor: (state) => state.color,
+    getCssCode: (state) => state.cssCode,
   },
   actions: {
     toggleEraser() {
@@ -30,6 +33,9 @@ export const useMainStore = defineStore('main', {
     },
     setColor(color: string) {
       this.color = color;
+    },
+    setCssCode(css: string) {
+      this.cssCode = css;
     },
   },
 });

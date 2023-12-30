@@ -16,6 +16,8 @@
       <p>Copy the code below to use this on your webpage</p>
       <div class="close"><i class="fal fa-times"></i></div>
     </div>
+
+    <div class="pixelart"></div>
   </div>
 </template>
 

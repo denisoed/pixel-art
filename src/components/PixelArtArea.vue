@@ -12,8 +12,12 @@
     <div
       v-for="(pixel, i) in getPixels"
       :key="`pixel_${i}`"
+      :style="{
+        background: pixel?.color || '',
+      }"
       :data-y-coordinate="pixel.y"
       :data-x-coordinate="pixel.x"
+      :data-color="pixel.color || ''"
       class="pixel"
     />
   </div>
@@ -64,8 +68,22 @@ export default defineComponent({
       isMouseDown.value = true;
     }
 
+    function syncPixelsWithStore() {
+      const pixels = document.querySelectorAll('.pixel');
+      const result = [];
+      for (const pixel of pixels) {
+        result.push({
+          x: Number(pixel.getAttribute('data-x-coordinate') || 0),
+          y: Number(pixel.getAttribute('data-y-coordinate') || 0),
+          color: pixel.getAttribute('data-color') || '',
+        });
+      }
+      store.setPixels(result);
+    }
+
     function onPointerUp() {
       isMouseDown.value = false;
+      syncPixelsWithStore();
     }
 
     onMounted(() => {
