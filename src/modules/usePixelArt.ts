@@ -980,52 +980,6 @@ const usePixelArt = () => {
       mousedown: false,
     };
 
-    document.getElementById('pixel-art-options').style.width = `calc(${
-      0.825 * config.width
-    }rem + ${config.height * 3}px)`;
-
-    for (let i = 0; i < config.width; ++i) {
-      for (let j = 0; j < config.height; ++j) {
-        const createEl = document.createElement('div');
-        createEl.classList.add('pixel');
-        createEl.setAttribute('data-x-coordinate', j);
-        createEl.setAttribute('data-y-coordinate', i);
-        document.getElementById('pixel-art-area').appendChild(createEl);
-      }
-    }
-
-    document.querySelectorAll('.pixel').forEach(function (item) {
-      item.addEventListener('pointerdown', function () {
-        if (config.eraser === true) {
-          item.setAttribute('data-color', null);
-          item.style.background = `#191f2b`;
-        } else {
-          item.setAttribute('data-color', config.color);
-          item.style.background = `${config.color}`;
-        }
-        events.mousedown = true;
-      });
-    });
-
-    document
-      .getElementById('pixel-art-area')
-      .addEventListener('pointermove', function (e) {
-        if (
-          (config.drawing === true && events.mousedown === true) ||
-          (config.eraser === true && events.mousedown === true)
-        ) {
-          if (e.target.matches('.pixel')) {
-            if (config.eraser === true) {
-              e.target.setAttribute('data-color', null);
-              e.target.style.background = `#191f2b`;
-            } else {
-              e.target.setAttribute('data-color', config.color);
-              e.target.style.background = `${config.color}`;
-            }
-          }
-        }
-      });
-
     document.body.addEventListener('pointerup', function () {
       events.mousedown = false;
     });

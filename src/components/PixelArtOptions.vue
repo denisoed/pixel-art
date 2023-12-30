@@ -1,5 +1,10 @@
 <template>
-  <div id="pixel-art-options">
+  <div
+    id="pixel-art-options"
+    :style="{
+      width: `calc(${0.825 * config.width}rem + ${config.height * 3}px)`,
+    }"
+  >
     <button class="generate-css">
       <span class="generate-css-span">Generate CSS</span>
     </button>
@@ -16,7 +21,7 @@
       </div>
     </div>
     <div class="import-container">
-      <input type="file" class="select-file" @change="onChange" />
+      <input type="file" @change="onChangeFile" />
     </div>
   </div>
 </template>
@@ -31,7 +36,8 @@ export default defineComponent({
   setup() {
     const toast = useToast();
 
-    async function onChange(e: Event) {
+    async function onChangeFile(e: Event) {
+      debugger;
       const files = (<HTMLInputElement>e?.target)?.files;
       if (files) {
         const file = files[0];
@@ -86,7 +92,8 @@ export default defineComponent({
     }
 
     return {
-      onChange,
+      onChangeFile,
+      config,
     };
   },
 });
