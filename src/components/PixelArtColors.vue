@@ -8,44 +8,54 @@
         :style="{ background: color }"
         :data-color="color"
         @click="onColor(color)"
-        :class="{ current: color === activeColor }"
+        :class="{ current: color === getColor && !customColor }"
       />
       <div class="select-color">
         <h3>Select Color:</h3>
-        <input type="color" value="" class="color-picker" />
+        <input
+          type="color"
+          class="color-picker"
+          :class="{ current: customColor }"
+          v-model="customColor"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-
-const COLORS = [
-  'white',
-  '#ffc231',
-  '#ff6c31',
-  '#ff1c1c',
-  '#35c161',
-  '#3552c1',
-  '#7935c1',
-];
+import { defineComponent, ref, watch } from 'vue';
+import { useMainStore } from '@/stores/main';
+import { storeToRefs } from 'pinia';
+import { COLORS } from '@/config/index';
+import debounce from 'lodash.debounce';
 
 export default defineComponent({
   name: 'PixelArtColors',
   emits: ['on-change'],
   setup(_, { emit }) {
-    const activeColor = ref('white');
+    const store = useMainStore();
+    const { getColor } = storeToRefs(store);
+
+    const customColor = ref('');
 
     function onColor(c: string) {
-      activeColor.value = c;
-      emit('on-change', c);
+      customColor.value = '';
+      store.setColor(c);
     }
+
+    watch(
+      customColor,
+      debounce(() => {
+        store.setColor(customColor.value);
+      }, 500),
+    );
 
     return {
       onColor,
       COLORS,
-      activeColor,
+      getColor,
+      customColor,
     };
   },
 });

@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
 import { IPixel } from 'src/interfaces';
+import { DEFAULT_COLOR } from '@/config/index';
 
 interface IState {
   eraser: boolean;
   pixels: IPixel[];
+  color: string;
 }
 
 export const useMainStore = defineStore('main', {
@@ -11,11 +13,13 @@ export const useMainStore = defineStore('main', {
     return {
       eraser: false,
       pixels: [],
+      color: DEFAULT_COLOR,
     };
   },
   getters: {
     getEraser: (state) => state.eraser,
     getPixels: (state) => state.pixels,
+    getColor: (state) => state.color,
   },
   actions: {
     toggleEraser() {
@@ -23,6 +27,9 @@ export const useMainStore = defineStore('main', {
     },
     setPixels(pixels: IPixel[]) {
       this.pixels = pixels;
+    },
+    setColor(color: string) {
+      this.color = color;
     },
   },
 });

@@ -29,7 +29,7 @@ export default defineComponent({
   name: 'PixelArtArea',
   setup() {
     const store = useMainStore();
-    const { getEraser, getPixels } = storeToRefs(store);
+    const { getEraser, getPixels, getColor } = storeToRefs(store);
 
     const isMouseDown = ref(false);
 
@@ -44,8 +44,8 @@ export default defineComponent({
             el.setAttribute('data-color', '');
             el.style.background = `#191f2b`;
           } else {
-            el.setAttribute('data-color', config.color);
-            el.style.background = `${config.color}`;
+            el.setAttribute('data-color', getColor.value);
+            el.style.background = `${getColor.value}`;
           }
         }
       }
@@ -58,8 +58,8 @@ export default defineComponent({
         el.setAttribute('data-color', '');
         el.style.background = `#191f2b`;
       } else {
-        el.setAttribute('data-color', config.color);
-        el.style.background = `${config.color}`;
+        el.setAttribute('data-color', getColor.value);
+        el.style.background = `${getColor.value}`;
       }
       isMouseDown.value = true;
     }
