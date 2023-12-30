@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { onMounted } from 'vue';
 
 const usePixelArt = () => {
@@ -981,75 +979,7 @@ const usePixelArt = () => {
     const events = {
       mousedown: false,
     };
-    document
-      .querySelector('.select-file')
-      .addEventListener('click', function () {
-        this.value = null;
-      });
-    document
-      .querySelector('.select-file')
-      .addEventListener('change', function (e) {
-        const files = e.target.files;
-        const f = files[0];
-        const reader = new FileReader();
 
-        document.querySelector('.error').classList.remove('active');
-
-        reader.onload = (async function (file) {
-          if (
-            file.type == 'image/png' ||
-            file.type == 'image/jpg' ||
-            file.type == 'image/gif' ||
-            file.type == 'image/jpeg'
-          ) {
-            // Continue
-            const bitmap = await createImageBitmap(file);
-            const canvas = document.querySelector('canvas');
-            canvas.width = bitmap.width;
-            canvas.height = bitmap.height;
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, 9999, 9999);
-            ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-            const constructPixelData = [];
-
-            for (let i = 0; i < config.width; ++i) {
-              for (let j = 0; j < config.height; ++j) {
-                const pixelData = canvas
-                  .getContext('2d')
-                  .getImageData(i, j, 1, 1).data;
-
-                if (pixelData[3] !== 0) {
-                  constructPixelData.push({
-                    x: i,
-                    y: j,
-                    color: `rgb(${pixelData[0]} ${pixelData[1]} ${pixelData[2]})`,
-                  });
-                }
-              }
-            }
-            constructPixelData.forEach(function (i) {
-              const getPixel = document.querySelector(
-                `.pixel[data-x-coordinate="${i.x}"][data-y-coordinate="${i.y}"]`,
-              );
-              if (getPixel !== null) {
-                getPixel.setAttribute('data-color', i.color);
-                getPixel.style.background = i.color;
-              }
-            });
-          } else {
-            document.querySelector('.error').textContent =
-              'Please select a png, jpg or gif file to upload.';
-            document.querySelector('.error').classList.add('active');
-          }
-        })(f);
-      });
-
-    document.getElementById('pixel-art-area').style.width = `calc(${
-      0.825 * config.width
-    }rem + ${config.height * 3}px)`;
-    document.getElementById('pixel-art-area').style.height = `calc(${
-      0.825 * config.height
-    }rem + ${config.width * 3}px)`;
     document.getElementById('pixel-art-options').style.width = `calc(${
       0.825 * config.width
     }rem + ${config.height * 3}px)`;
@@ -1096,7 +1026,7 @@ const usePixelArt = () => {
         }
       });
 
-    document.body.addEventListener('pointerup', function (e) {
+    document.body.addEventListener('pointerup', function () {
       events.mousedown = false;
     });
 
@@ -1122,7 +1052,7 @@ const usePixelArt = () => {
       if (item.classList.contains('select-color')) {
         return false;
       } else {
-        item.addEventListener('click', function (e) {
+        item.addEventListener('click', function () {
           document.querySelector('.color-picker').classList.remove('current');
           document.querySelectorAll('.colors > div').forEach(function (i) {
             i.classList.remove('current');
@@ -1137,7 +1067,7 @@ const usePixelArt = () => {
       }
     });
 
-    document.querySelector('.reset').addEventListener('click', function (e) {
+    document.querySelector('.reset').addEventListener('click', function () {
       document.querySelector('.error').classList.remove('active');
       document.querySelectorAll('.pixel').forEach(function (item) {
         item.setAttribute('data-color', null);
@@ -1147,7 +1077,7 @@ const usePixelArt = () => {
 
     document
       .querySelector('.prebuilt .prebuilt')
-      .addEventListener('click', function (e) {
+      .addEventListener('click', function () {
         document.querySelector('.error').classList.remove('active');
         if (
           document
@@ -1171,7 +1101,7 @@ const usePixelArt = () => {
 
     document.querySelectorAll('.options > .prebuilt').forEach(function (item) {
       document.querySelector('.error').classList.remove('active');
-      item.addEventListener('pointerdown', function (e) {
+      item.addEventListener('pointerdown', function () {
         const getPrebuilt = item.getAttribute('data-prebuilt');
         document.querySelectorAll('.pixel').forEach(function (item) {
           item.setAttribute('data-color', null);
@@ -1191,7 +1121,7 @@ const usePixelArt = () => {
       });
     });
 
-    document.querySelector('.eraser').addEventListener('click', function (e) {
+    document.querySelector('.eraser').addEventListener('click', function () {
       document.querySelector('.error').classList.remove('active');
       document.querySelectorAll('.colors > div').forEach(function (i) {
         i.classList.remove('current');
@@ -1210,7 +1140,7 @@ const usePixelArt = () => {
 
     document
       .querySelector('.generate-css')
-      .addEventListener('click', function (e) {
+      .addEventListener('click', function () {
         document.querySelector('.error').classList.remove('active');
         document.getElementById('popup-pixel-art').innerHTML = `
         <h2>Pixel Art Code</h2>

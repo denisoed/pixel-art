@@ -4,76 +4,18 @@
     <div id="error" class="fl">
       <div class="error">I am an error</div>
     </div>
-    <div id="pixel-art-options">
-      <button class="generate-css">
-        <span class="generate-css-span">Generate CSS</span>
-      </button>
-      <button class="reset">
-        <span><i class="fal fa-sync"></i></span>
-      </button>
-      <div class="eraser-container">
-        <div class="eraser"><i class="fal fa-eraser"></i> Eraser</div>
-      </div>
-      <div class="prebuilt">
-        <div class="prebuilt current" data-prebuilt="blank">Demoes</div>
-        <div class="options">
-          <div class="prebuilt" data-prebuilt="mario">Mario</div>
-          <div class="prebuilt" data-prebuilt="yoshi">Yoshi</div>
-          <div class="prebuilt" data-prebuilt="babomb">Babomb</div>
-        </div>
-      </div>
-      <div class="import-container">
-        <input type="file" class="select-file" />
-      </div>
+
+    <PixelArtOptions />
+
+    <PixelArtColors />
+
+    <PixelArtArea />
+
+    <div id="popup-pixel-art">
+      <h2>Pixel Art Code</h2>
+      <p>Copy the code below to use this on your webpage</p>
+      <div class="close"><i class="fal fa-times"></i></div>
     </div>
-    <div id="pixel-art-colors">
-      <div class="colors">
-        <div
-          class="color current"
-          style="background: white"
-          data-color="white"
-        ></div>
-        <div
-          class="color"
-          style="background: #ffc231"
-          data-color="#ffc231"
-        ></div>
-        <div
-          class="color"
-          style="background: #ff6c31"
-          data-color="#ff6c31"
-        ></div>
-        <div
-          class="color"
-          style="background: #ff1c1c"
-          data-color="#ff1c1c"
-        ></div>
-        <div
-          class="color"
-          style="background: #35c161"
-          data-color="#35c161"
-        ></div>
-        <div
-          class="color"
-          style="background: #3552c1"
-          data-color="#3552c1"
-        ></div>
-        <div
-          class="color"
-          style="background: #7935c1"
-          data-color="#7935c1"
-        ></div>
-        <div class="select-color">
-          <h3>Select Color:</h3>
-          <input type="color" value="" class="color-picker" />
-        </div>
-      </div>
-    </div>
-    <div id="pixel-art-area"></div>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;800&display=swap"
-      rel="stylesheet"
-    />
   </div>
 </template>
 
@@ -81,8 +23,17 @@
 import { defineComponent } from 'vue';
 import usePixelArt from '@/modules/usePixelArt';
 
+import PixelArtArea from '@/components/PixelArtArea.vue';
+import PixelArtOptions from '@/components/PixelArtOptions.vue';
+import PixelArtColors from '@/components/PixelArtColors.vue';
+
 export default defineComponent({
   name: 'HomeView',
+  components: {
+    PixelArtArea,
+    PixelArtOptions,
+    PixelArtColors,
+  },
   setup() {
     usePixelArt();
   },
@@ -125,29 +76,6 @@ code {
 }
 input {
   background: transparent;
-}
-button {
-  height: 2.25rem;
-  /* margin: 1rem 0 0 0; */
-  /* width: 50%; */
-  list-style: circle;
-  cursor: pointer;
-  float: left;
-  background: linear-gradient(45deg, #027cfd, #027cfd);
-  /* border-radius: 5px; */
-  font-family: Inter, sans-serif;
-  padding: 0.25rem 1rem;
-  border-radius: 7px;
-  width: auto;
-  color: white;
-  text-decoration: none;
-  font-variation-settings: 'wght' 800;
-  /* font-size: 1rem; */
-  border: none;
-  margin: 1rem 0 0 0;
-  box-shadow: 0 2px 20px #000000c4;
-  font-size: 1rem;
-  letter-spacing: 0.5px;
 }
 
 #pixel-art-area {
