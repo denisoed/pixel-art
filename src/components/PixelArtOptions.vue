@@ -8,7 +8,7 @@
     <button class="generate-css">
       <span class="generate-css-span">Generate CSS</span>
     </button>
-    <button class="reset">Reset</button>
+    <button class="reset" @click="onReset">Reset</button>
     <button
       class="eraser"
       :class="{ current: getEraser }"
@@ -16,14 +16,6 @@
     >
       Eraser
     </button>
-    <div class="prebuilt">
-      <div class="prebuilt current" data-prebuilt="blank">Demoes</div>
-      <div class="options">
-        <div class="prebuilt" data-prebuilt="mario">Mario</div>
-        <div class="prebuilt" data-prebuilt="yoshi">Yoshi</div>
-        <div class="prebuilt" data-prebuilt="babomb">Babomb</div>
-      </div>
-    </div>
     <div class="import-container">
       <input type="file" @change="onChangeFile" />
     </div>
@@ -31,24 +23,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, nextTick } from 'vue';
 import { useToast } from 'vue-toastification';
 import { config } from '@/config/index';
 import { useMainStore } from '@/stores/main';
 import { storeToRefs } from 'pinia';
+import usePixelArt from '@/modules/usePixelArt';
 
 export default defineComponent({
   name: 'PixelArtOptions',
   setup() {
     const store = useMainStore();
     const toast = useToast();
+    const { generateInitPixels } = usePixelArt();
 
     const { getEraser } = storeToRefs(store);
 
     async function onChangeFile(e: Event) {
-      debugger;
-      const files = (<HTMLInputElement>e?.target)?.files;
-      if (files) {
+      const files = (e?.target as HTMLInputElement)?.files;
+      if (files?.length) {
         const file = files[0];
         if (
           file.type == 'image/png' ||
@@ -56,7 +49,6 @@ export default defineComponent({
           file.type == 'image/gif' ||
           file.type == 'image/jpeg'
         ) {
-          // Continue
           const bitmap = await createImageBitmap(file);
           const canvas = document.querySelector('canvas');
           if (!canvas) return;
@@ -67,13 +59,11 @@ export default defineComponent({
           ctx.clearRect(0, 0, 9999, 9999);
           ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
           const constructPixelData = [];
-
           for (let i = 0; i < config.width; ++i) {
             for (let j = 0; j < config.height; ++j) {
               const pixelData = canvas
                 ?.getContext('2d')
                 ?.getImageData(i, j, 1, 1).data;
-
               if (pixelData?.length && pixelData[3] !== 0) {
                 constructPixelData.push({
                   x: i,
@@ -100,11 +90,20 @@ export default defineComponent({
       }
     }
 
+    function onReset() {
+      store.setPixels([]);
+      nextTick(() => {
+        const pixels = generateInitPixels();
+        store.setPixels(pixels);
+      });
+    }
+
     return {
       onChangeFile,
       config,
       toggleEraser: store.toggleEraser,
       getEraser,
+      onReset,
     };
   },
 });

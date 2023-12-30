@@ -1,7 +1,6 @@
 <template>
   <div
     id="pixel-art-area"
-    ref=""
     class="pixel-art-area"
     :style="{
       width: `calc(${0.825 * config.width}rem + ${config.height * 3}px)`,
@@ -11,11 +10,11 @@
     @pointerdown="onPointerDown"
   >
     <div
-      class="pixel"
-      v-for="(pixel, i) in pixels"
-      :key="i"
+      v-for="(pixel, i) in getPixels"
+      :key="`pixel_${i}`"
       :data-y-coordinate="pixel.y"
       :data-x-coordinate="pixel.x"
+      class="pixel"
     />
   </div>
 </template>
@@ -30,24 +29,9 @@ export default defineComponent({
   name: 'PixelArtArea',
   setup() {
     const store = useMainStore();
-    const { getEraser } = storeToRefs(store);
+    const { getEraser, getPixels } = storeToRefs(store);
 
     const isMouseDown = ref(false);
-    const pixelArtArea = ref<HTMLElement | null>();
-    const pixels = ref<{ x: number; y: number }[]>([]);
-
-    function generateStartPixels() {
-      const result = [];
-      for (let i = 0; i < config.width; ++i) {
-        for (let j = 0; j < config.height; ++j) {
-          result.push({
-            x: j,
-            y: i,
-          });
-        }
-      }
-      pixels.value = result;
-    }
 
     function onPointerMove(e: Event) {
       if (
@@ -85,7 +69,6 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      generateStartPixels();
       document.addEventListener('pointerup', onPointerUp);
     });
 
@@ -95,8 +78,7 @@ export default defineComponent({
 
     return {
       config,
-      pixels,
-      pixelArtArea,
+      getPixels,
       onPointerMove,
       onPointerDown,
     };

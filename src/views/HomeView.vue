@@ -20,8 +20,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import usePixelArt from '@/modules/usePixelArt';
+import { useMainStore } from '@/stores/main';
 
 import PixelArtArea from '@/components/PixelArtArea.vue';
 import PixelArtOptions from '@/components/PixelArtOptions.vue';
@@ -35,7 +36,17 @@ export default defineComponent({
     PixelArtColors,
   },
   setup() {
-    usePixelArt();
+    const store = useMainStore();
+    const { generateInitPixels } = usePixelArt();
+
+    function init() {
+      const pixels = generateInitPixels();
+      store.setPixels(pixels);
+    }
+
+    onMounted(() => {
+      init();
+    });
   },
 });
 </script>
@@ -170,15 +181,6 @@ input[type='file']::-webkit-file-upload-button {
 
 .eraser {
   padding: 0 1rem;
-}
-.prebuilt .current:after {
-  content: '\f078';
-  margin: 0 0 0 0.5rem;
-  font-family: 'Font Awesome 5 Pro', sans-serif;
-}
-.reset svg {
-  margin: 0;
-  padding: 0;
 }
 
 .generate-css:hover,
