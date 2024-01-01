@@ -1,25 +1,30 @@
 <template>
   <div
-    id="pixel-art-area"
-    class="pixel-art-area"
+    class="pixel-art-area_wrap"
     :style="{
       width: `calc(${0.825 * config.width}rem + ${config.height * 3}px)`,
       height: `calc(${0.825 * config.height}rem + ${config.width * 3}px)`,
     }"
-    @pointermove="onPointerMove"
-    @pointerdown="onPointerDown"
   >
+    <canvas id="canvas" />
     <div
-      v-for="(pixel, i) in getPixels"
-      :key="`pixel_${i}`"
-      :style="{
-        background: pixel?.color || '',
-      }"
-      :data-y-coordinate="pixel.y"
-      :data-x-coordinate="pixel.x"
-      :data-color="pixel.color || ''"
-      class="pixel"
-    />
+      id="pixel-art-area"
+      class="pixel-art-area"
+      @pointermove="onPointerMove"
+      @pointerdown="onPointerDown"
+    >
+      <div
+        v-for="(pixel, i) in getPixels"
+        :key="`pixel_${i}`"
+        :style="{
+          background: pixel?.color || '',
+        }"
+        :data-y-coordinate="pixel.y"
+        :data-x-coordinate="pixel.x"
+        :data-color="pixel.color || ''"
+        class="pixel"
+      />
+    </div>
   </div>
 </template>
 
@@ -45,7 +50,7 @@ export default defineComponent({
         if (el && el.matches('.pixel')) {
           if (getEraser.value === true) {
             el.setAttribute('data-color', '');
-            el.style.background = `#191f2b`;
+            el.style.background = '#191f2b';
           } else {
             el.setAttribute('data-color', getColor.value);
             el.style.background = `${getColor.value}`;
@@ -59,7 +64,7 @@ export default defineComponent({
       if (!el || !el.matches('.pixel')) return;
       if (getEraser.value === true) {
         el.setAttribute('data-color', '');
-        el.style.background = `#191f2b`;
+        el.style.background = '#191f2b';
       } else {
         el.setAttribute('data-color', getColor.value);
         el.style.background = `${getColor.value}`;
@@ -79,7 +84,7 @@ export default defineComponent({
       }
       if (JSON.stringify(result) !== JSON.stringify(getPixels.value)) {
         store.setPixels(result);
-        historiesStore.setHistory(result);
+        // historiesStore.setHistory(result);
       }
     }
 
@@ -105,3 +110,27 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.pixel-art-area_wrap {
+  position: relative;
+
+  #canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+  }
+}
+
+.pixel-art-area {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+</style>

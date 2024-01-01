@@ -1,23 +1,10 @@
 <template>
   <div class="home">
-    <canvas id="canvas"></canvas>
-    <div id="error" class="fl">
-      <div class="error">I am an error</div>
-    </div>
-
     <PixelArtOptions />
 
     <PixelArtColors />
 
     <PixelArtArea />
-
-    <div id="popup-pixel-art">
-      <h2>Pixel Art Code</h2>
-      <p>Copy the code below to use this on your webpage</p>
-      <div class="close"><i class="fal fa-times"></i></div>
-    </div>
-
-    <div class="pixelart"></div>
   </div>
 </template>
 
@@ -98,10 +85,6 @@ input {
   overflow: hidden;
   border-radius: 4px;
   padding: 2px 0 2px 2px;
-}
-
-#pixel-art-area input {
-  background: #101316;
 }
 
 #pixel-art-area .pixel {
@@ -473,13 +456,5 @@ input {
   font-size: 1rem;
   opacity: 1;
   padding: 0.25rem 1rem;
-}
-
-canvas {
-  width: auto !important;
-  height: auto !important;
-  opacity: 0;
-  position: absolute;
-  pointer-events: none;
 }
 </style>

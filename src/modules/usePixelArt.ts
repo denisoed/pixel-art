@@ -1,5 +1,6 @@
 import { config } from '@/config/index';
 import { IPixel } from '@/interfaces';
+import { toPng } from 'html-to-image';
 
 const usePixelArt = () => {
   function generateInitPixels(): IPixel[] {
@@ -61,10 +62,23 @@ const usePixelArt = () => {
     return css;
   }
 
+  async function exportPng() {
+    const pixelArea: HTMLElement | null =
+      document.querySelector('#pixel-art-area');
+    if (!pixelArea) return;
+    const dataUrl = await toPng(pixelArea);
+    const link = document.createElement('a');
+    link.download = 'pixel-art.png';
+    link.href = dataUrl;
+    link.click();
+    link.remove();
+  }
+
   return {
     generateInitPixels,
     generatePixelsFromFile,
     generateCss,
+    exportPng,
   };
 };
 

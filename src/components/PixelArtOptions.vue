@@ -1,6 +1,7 @@
 <template>
   <div id="pixel-art-options">
-    <button class="generate-css" @click="onGenerateCss">Generate CSS</button>
+    <button class="generate-css" @click="onExportPng">Export PNG</button>
+    <!-- <button class="generate-css" @click="onGenerateCss">Generate CSS</button> -->
     <button class="reset" @click="onReset">Reset</button>
     <button
       class="eraser"
@@ -45,8 +46,12 @@ export default defineComponent({
         },
       },
     });
-    const { generateInitPixels, generatePixelsFromFile, generateCss } =
-      usePixelArt();
+    const {
+      generateInitPixels,
+      generatePixelsFromFile,
+      generateCss,
+      exportPng,
+    } = usePixelArt();
 
     const { getEraser, getPixels } = storeToRefs(store);
 
@@ -74,6 +79,10 @@ export default defineComponent({
       openCssModal();
     }
 
+    function onExportPng() {
+      exportPng();
+    }
+
     function onReset() {
       store.setPixels([]);
       const pixels = generateInitPixels();
@@ -89,6 +98,7 @@ export default defineComponent({
       getEraser,
       onReset,
       onGenerateCss,
+      onExportPng,
     };
   },
 });
