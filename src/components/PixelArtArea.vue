@@ -77,8 +77,10 @@ export default defineComponent({
           color: pixel.getAttribute('data-color') || '',
         });
       }
-      store.setPixels(result);
-      historiesStore.setHistory(result);
+      if (JSON.stringify(result) !== JSON.stringify(getPixels.value)) {
+        store.setPixels(result);
+        historiesStore.setHistory(result);
+      }
     }
 
     function onPointerUp() {

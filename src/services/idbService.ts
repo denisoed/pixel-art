@@ -3,7 +3,7 @@ import { openDB } from 'idb';
 const useIDBService = (db: string, table: string, version: number) => {
   const dbPromise = openDB(db, version, {
     upgrade(db) {
-      db.createObjectStore(table, { keyPath: 'id' });
+      db.createObjectStore(table);
     },
   });
 

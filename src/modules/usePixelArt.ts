@@ -9,6 +9,7 @@ const usePixelArt = () => {
         result.push({
           x: j,
           y: i,
+          color: '',
         });
       }
     }
