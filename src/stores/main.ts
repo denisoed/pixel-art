@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { IPixel } from 'src/interfaces';
+import { IPixel } from '@/interfaces';
 import { DEFAULT_COLOR } from '@/config/index';
 
 interface IState {

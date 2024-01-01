@@ -27,18 +27,20 @@
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
 import { config } from '@/config/index';
 import { useMainStore } from '@/stores/main';
+import { useHistoriesStore } from '@/stores/histories';
 import { storeToRefs } from 'pinia';
 
 export default defineComponent({
   name: 'PixelArtArea',
   setup() {
     const store = useMainStore();
+    const historiesStore = useHistoriesStore();
     const { getEraser, getPixels, getColor } = storeToRefs(store);
 
     const isMouseDown = ref(false);
 
     function onPointerMove(e: Event) {
-      if (getEraser.value === true && isMouseDown.value === true) {
+      if (isMouseDown.value === true) {
         const el = e.target as HTMLElement | null;
         if (el && el.matches('.pixel')) {
           if (getEraser.value === true) {
@@ -65,7 +67,7 @@ export default defineComponent({
       isMouseDown.value = true;
     }
 
-    function syncPixelsWithStore() {
+    function syncPixelsWithStores() {
       const pixels = document.querySelectorAll('.pixel');
       const result = [];
       for (const pixel of pixels) {
@@ -76,11 +78,12 @@ export default defineComponent({
         });
       }
       store.setPixels(result);
+      historiesStore.setHistory(result);
     }
 
     function onPointerUp() {
       isMouseDown.value = false;
-      syncPixelsWithStore();
+      syncPixelsWithStores();
     }
 
     onMounted(() => {

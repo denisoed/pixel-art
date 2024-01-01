@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, ref } from 'vue';
+import { defineComponent, nextTick } from 'vue';
 import { useToast } from 'vue-toastification';
 import { config, VALID_FILE_TYPES } from '@/config/index';
 import { useMainStore } from '@/stores/main';

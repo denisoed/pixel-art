@@ -32,8 +32,7 @@ import debounce from 'lodash.debounce';
 
 export default defineComponent({
   name: 'PixelArtColors',
-  emits: ['on-change'],
-  setup(_, { emit }) {
+  setup() {
     const store = useMainStore();
     const { getColor } = storeToRefs(store);
 

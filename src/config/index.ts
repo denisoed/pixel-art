@@ -3,6 +3,10 @@ export const config = {
   height: 40,
 };
 
+export const HISTORIES_DB_NAME = 'histories-db';
+export const HISTORIES_DB_VERSION = 1;
+export const HISTORIES_DB_TABLE = 'histories-table';
+
 export const DEFAULT_COLOR = 'white';
 export const COLORS = [
   DEFAULT_COLOR,
