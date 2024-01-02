@@ -12,6 +12,8 @@
       </div>
       <PixelArtArea />
     </div>
+
+    <HelpBtn />
   </div>
 </template>
 
@@ -24,6 +26,7 @@ import { config } from 'src/config/index';
 import PixelArtArea from 'src/components/PixelArtArea.vue';
 import PixelArtColors from 'src/components/PixelArtColors.vue';
 import PixelArtTools from 'src/components/PixelArtTools.vue';
+import HelpBtn from 'src/components/HelpBtn.vue';
 
 export default defineComponent({
   name: 'HomeView',
@@ -31,6 +34,7 @@ export default defineComponent({
     PixelArtArea,
     PixelArtColors,
     PixelArtTools,
+    HelpBtn,
   },
   setup() {
     const store = useMainStore();

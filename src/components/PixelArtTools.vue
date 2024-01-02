@@ -1,13 +1,15 @@
 <template>
   <div id="pixel-art-tools" class="flex column q-gap-sm items-center">
     <q-btn
-      color="primary"
+      :color="getEraser ? 'primary' : 'grey'"
       round
       :outline="!getEraser"
       icon="mdi-eraser"
       @click="toggleEraser"
       :active="getEraser"
-    />
+    >
+      <q-tooltip class="text-caption">Eraser</q-tooltip>
+    </q-btn>
   </div>
 </template>
 
