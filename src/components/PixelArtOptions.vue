@@ -3,13 +3,6 @@
     <!-- <q-btn @click="onGenerateCss">Generate CSS</q-btn> -->
     <q-btn color="primary" round @click="onExportPng" icon="mdi-download" />
     <q-btn color="primary" round @click="onReset" icon="mdi-restart" />
-    <q-btn
-      color="primary"
-      round
-      icon="mdi-eraser"
-      @click="toggleEraser"
-      :active="getEraser"
-    />
     <!-- <label>
       <q-icon name="upload" size="xs" />
       Import File
@@ -37,7 +30,7 @@ export default defineComponent({
       exportPng,
     } = usePixelArt();
 
-    const { getEraser, getPixels } = storeToRefs(store);
+    const { getPixels } = storeToRefs(store);
 
     async function onChangeFile(e: Event) {
       const files = (e?.target as HTMLInputElement)?.files;
@@ -77,8 +70,6 @@ export default defineComponent({
     return {
       onChangeFile,
       config,
-      toggleEraser: store.toggleEraser,
-      getEraser,
       onReset,
       onGenerateCss,
       onExportPng,

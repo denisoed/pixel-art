@@ -1,8 +1,15 @@
 <template>
-  <div class="home flex flex-center q-gap-sm">
-    <PixelArtOptions />
-    <div class="flex column q-gap-sm">
-      <PixelArtColors />
+  <div class="home flex flex-center column">
+    <div
+      class="flex flex-center column q-gap-xs"
+      :style="{
+        width: `calc(${0.825 * config.width}rem + ${config.height * 3}px)`,
+      }"
+    >
+      <div class="flex items-center justify-between q-gap-sm full-width">
+        <PixelArtColors />
+        <PixelArtTools />
+      </div>
       <PixelArtArea />
     </div>
   </div>
@@ -12,17 +19,18 @@
 import { defineComponent, onMounted } from 'vue';
 import usePixelArt from 'src/modules/usePixelArt';
 import { useMainStore } from 'src/stores/main';
+import { config } from 'src/config/index';
 
 import PixelArtArea from 'src/components/PixelArtArea.vue';
-import PixelArtOptions from 'src/components/PixelArtOptions.vue';
 import PixelArtColors from 'src/components/PixelArtColors.vue';
+import PixelArtTools from 'src/components/PixelArtTools.vue';
 
 export default defineComponent({
   name: 'HomeView',
   components: {
     PixelArtArea,
-    PixelArtOptions,
     PixelArtColors,
+    PixelArtTools,
   },
   setup() {
     const store = useMainStore();
@@ -36,6 +44,10 @@ export default defineComponent({
     onMounted(() => {
       init();
     });
+
+    return {
+      config,
+    };
   },
 });
 </script>
