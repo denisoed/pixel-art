@@ -1,18 +1,13 @@
 <template>
   <div id="pixel-art-options">
-    <button class="generate-css" @click="onExportPng">Export PNG</button>
-    <!-- <button class="generate-css" @click="onGenerateCss">Generate CSS</button> -->
-    <button class="reset" @click="onReset">Reset</button>
-    <button
-      class="eraser"
-      :class="{ current: getEraser }"
-      @click="toggleEraser"
-    >
-      Eraser
-    </button>
-    <div class="import-container">
-      <input type="file" @change="onChangeFile" />
-    </div>
+    <!-- <UIButton @click="onGenerateCss">Generate CSS</UIButton> -->
+    <UIButton @click="onExportPng">Export</UIButton>
+    <UIButton @click="onReset">Reset</UIButton>
+    <UIButton @click="toggleEraser" :active="getEraser"> Eraser </UIButton>
+    <UIButton tag="label">
+      Import
+      <input type="file" class="hidden" @change="onChangeFile" />
+    </UIButton>
     <ModalsContainer />
   </div>
 </template>
@@ -26,12 +21,14 @@ import { storeToRefs } from 'pinia';
 import usePixelArt from '@/modules/usePixelArt';
 import { ModalsContainer, useModal } from 'vue-final-modal';
 
+import UIButton from '@/components/UIButton.vue';
 import CssModal from '@/components/CssModal.vue';
 
 export default defineComponent({
   name: 'PixelArtOptions',
   components: {
     ModalsContainer,
+    UIButton,
   },
   setup() {
     const store = useMainStore();

@@ -10,7 +10,7 @@
         @click="onColor(color)"
         :class="{ current: color === getColor && !customColor }"
       />
-      <div class="select-color">
+      <div class="select-color flex items-center">
         <h3>Select Color:</h3>
         <input
           type="color"

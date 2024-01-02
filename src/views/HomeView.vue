@@ -440,21 +440,23 @@ input {
   }
 }
 
-.error {
-  float: left;
-  margin: 0 0 1rem 0;
-  padding: 0;
-  font-size: 0rem;
-  background: #b52020;
-  opacity: 0;
-  font-variation-settings: 'wght' 600;
-  border-radius: 100px;
-  transition: all 0.1s ease-out;
+.hidden {
+  display: none !important;
 }
 
-.error.active {
-  font-size: 1rem;
-  opacity: 1;
-  padding: 0.25rem 1rem;
+.flex {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
 }
 </style>
