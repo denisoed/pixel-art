@@ -1,1 +1,53 @@
 // app global css in SCSS form
+::-webkit-scrollbar {
+  width: 10px;
+  padding: 2px;
+  cursor: pointer !important;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #808080;
+  padding: 2px;
+  cursor: pointer !important;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #424242;
+  cursor: pointer !important;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  cursor: pointer !important;
+}
+
+// flex/grid gaps
+.q-gap-xs {
+  gap: 4px;
+}
+
+.q-gap-sm {
+  gap: 8px;
+}
+
+.q-gap-sl {
+  gap: 12px;
+}
+
+.q-gap-md {
+  gap: 16px;
+}
+
+.q-gap-lg {
+  gap: 24px;
+}
+
+.q-gap-xl {
+  gap: 32px;
+}
+
+.q-gap-xxl {
+  gap: 42px;
+}

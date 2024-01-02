@@ -1,16 +1,20 @@
 <template>
-  <div id="pixel-art-options" class="flex q-gutter-sm items-center">
+  <div id="pixel-art-options" class="flex column q-gap-sm items-center">
     <!-- <q-btn @click="onGenerateCss">Generate CSS</q-btn> -->
-    <q-btn color="primary" rounded @click="onExportPng">Export</q-btn>
-    <q-btn color="primary" rounded @click="onReset">Reset</q-btn>
-    <q-btn color="primary" rounded @click="toggleEraser" :active="getEraser">
-      Eraser
-    </q-btn>
-    <label>
+    <q-btn color="primary" round @click="onExportPng" icon="mdi-download" />
+    <q-btn color="primary" round @click="onReset" icon="mdi-restart" />
+    <q-btn
+      color="primary"
+      round
+      icon="mdi-eraser"
+      @click="toggleEraser"
+      :active="getEraser"
+    />
+    <!-- <label>
       <q-icon name="upload" size="xs" />
       Import File
       <input type="file" class="hidden" @change="onChangeFile" />
-    </label>
+    </label> -->
   </div>
 </template>
 

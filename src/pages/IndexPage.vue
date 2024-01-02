@@ -1,10 +1,10 @@
 <template>
-  <div class="home flex column q-gutter-md">
+  <div class="home flex flex-center q-gap-sm">
     <PixelArtOptions />
-
-    <PixelArtColors />
-
-    <PixelArtArea />
+    <div class="flex column q-gap-sm">
+      <PixelArtColors />
+      <PixelArtArea />
+    </div>
   </div>
 </template>
 
@@ -41,13 +41,6 @@ export default defineComponent({
 </script>
 
 <style>
-body {
-  background: rgb(15 19 22);
-  color: white;
-  padding: 2rem;
-  font-family: Inter, sans-serif;
-}
-
 .article-link a {
   position: absolute;
   color: rgba(255, 255, 255, 0.5);
