@@ -1,5 +1,5 @@
-import { config } from '@/config/index';
-import { IPixel } from '@/interfaces';
+import { config } from 'src/config/index';
+import { IPixel } from 'src/interfaces';
 import { toPng } from 'html-to-image';
 
 const usePixelArt = () => {
@@ -49,7 +49,7 @@ const usePixelArt = () => {
 
   function generateCss(pixels: IPixel[]): string {
     const pixelsCss = pixels.map(
-      (pixel) => `${pixel.x}px ${pixel.y}px ${pixel.color || 'transparent'}`,
+      (pixel) => `${pixel.x}px ${pixel.y}px ${pixel.color || 'transparent'}`
     );
     const css = `.pixelart {
       width: 1px;

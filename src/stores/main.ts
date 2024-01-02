@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { IPixel } from '@/interfaces';
-import { DEFAULT_COLOR } from '@/config/index';
+import { IPixel } from 'src/interfaces';
+import { DEFAULT_COLOR } from 'src/config/index';
 
 interface IState {
   eraser: boolean;

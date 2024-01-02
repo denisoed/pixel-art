@@ -1,48 +1,31 @@
 <template>
-  <div id="pixel-art-options">
-    <!-- <UIButton @click="onGenerateCss">Generate CSS</UIButton> -->
-    <UIButton @click="onExportPng">Export</UIButton>
-    <UIButton @click="onReset">Reset</UIButton>
-    <UIButton @click="toggleEraser" :active="getEraser"> Eraser </UIButton>
-    <UIButton tag="label">
-      Import
+  <div id="pixel-art-options" class="flex q-gutter-sm items-center">
+    <!-- <q-btn @click="onGenerateCss">Generate CSS</q-btn> -->
+    <q-btn color="primary" rounded @click="onExportPng">Export</q-btn>
+    <q-btn color="primary" rounded @click="onReset">Reset</q-btn>
+    <q-btn color="primary" rounded @click="toggleEraser" :active="getEraser">
+      Eraser
+    </q-btn>
+    <label>
+      <q-icon name="upload" size="xs" />
+      Import File
       <input type="file" class="hidden" @change="onChangeFile" />
-    </UIButton>
-    <ModalsContainer />
+    </label>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, nextTick } from 'vue';
-import { useToast } from 'vue-toastification';
-import { config, VALID_FILE_TYPES } from '@/config/index';
-import { useMainStore } from '@/stores/main';
+import { config, VALID_FILE_TYPES } from 'src/config/index';
+import { useMainStore } from 'src/stores/main';
 import { storeToRefs } from 'pinia';
-import usePixelArt from '@/modules/usePixelArt';
-import { ModalsContainer, useModal } from 'vue-final-modal';
-
-import UIButton from '@/components/UIButton.vue';
-import CssModal from '@/components/CssModal.vue';
+import usePixelArt from 'src/modules/usePixelArt';
 
 export default defineComponent({
   name: 'PixelArtOptions',
-  components: {
-    ModalsContainer,
-    UIButton,
-  },
   setup() {
     const store = useMainStore();
-    const toast = useToast();
 
-    const { open: openCssModal, close } = useModal({
-      component: CssModal,
-      attrs: {
-        title: 'Css',
-        onConfirm() {
-          close();
-        },
-      },
-    });
     const {
       generateInitPixels,
       generatePixelsFromFile,
@@ -63,9 +46,9 @@ export default defineComponent({
             store.setPixels(pixels);
           });
         } else {
-          toast.error('Please select a png, jpg or gif file to upload.', {
-            timeout: 5000,
-          });
+          // toast.error('Please select a png, jpg or gif file to upload.', {
+          //   timeout: 5000,
+          // });
         }
       }
     }
@@ -73,7 +56,6 @@ export default defineComponent({
     function onGenerateCss() {
       const cssCode = generateCss(getPixels.value);
       store.setCssCode(cssCode);
-      openCssModal();
     }
 
     function onExportPng() {

@@ -30,9 +30,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
-import { config } from '@/config/index';
-import { useMainStore } from '@/stores/main';
-import { useHistoriesStore } from '@/stores/histories';
+import { config } from 'src/config/index';
+import { useMainStore } from 'src/stores/main';
+import { useHistoriesStore } from 'src/stores/histories';
 import { storeToRefs } from 'pinia';
 
 export default defineComponent({
@@ -114,6 +114,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .pixel-art-area_wrap {
   position: relative;
+  box-sizing: initial;
 
   #canvas {
     width: 100%;

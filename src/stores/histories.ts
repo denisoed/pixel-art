@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
-import { IPixel } from '@/interfaces';
-import useIDBService from '@/services/idbService';
+import { IPixel } from 'src/interfaces';
+import useIDBService from 'src/services/idbService';
 import {
   HISTORIES_DB_NAME,
   HISTORIES_DB_TABLE,
   HISTORIES_DB_VERSION,
-} from '@/config/index';
+} from 'src/config/index';
 
 interface IState {
   histories: IPixel[][];
@@ -14,7 +14,7 @@ interface IState {
 const { set, count } = useIDBService(
   HISTORIES_DB_NAME,
   HISTORIES_DB_TABLE,
-  HISTORIES_DB_VERSION,
+  HISTORIES_DB_VERSION
 );
 
 export const useHistoriesStore = defineStore('histories', {

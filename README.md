@@ -1,41 +1,43 @@
-# pixel-art
+# Pixel Art (pixelart)
 
-## Project setup
+Pixel Art
 
-```
-yarn install
-```
+## Install the dependencies
 
-### Compiles and hot-reloads for development
-
-```
-yarn serve
+```bash
+yarn
+# or
+npm install
 ```
 
-### Compiles and minifies for production
+### Start the app in development mode (hot-code reloading, error reporting, etc.)
 
-```
-yarn build
-```
-
-### Run your unit tests
-
-```
-yarn test:unit
+```bash
+quasar dev
 ```
 
-### Run your end-to-end tests
+### Lint the files
 
-```
-yarn test:e2e
-```
-
-### Lints and fixes files
-
-```
+```bash
 yarn lint
+# or
+npm run lint
 ```
 
-### Customize configuration
+### Format the files
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```bash
+yarn format
+# or
+npm run format
+```
+
+### Build the app for production
+
+```bash
+quasar build
+```
+
+### Customize the configuration
+
+See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
