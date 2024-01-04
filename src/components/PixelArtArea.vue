@@ -39,8 +39,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
-import { useMainStore } from 'src/stores/main';
 import { useHistoriesStore } from 'src/stores/histories';
+import { useMainStore } from 'src/stores/main';
 import { storeToRefs } from 'pinia';
 import usePixelArt from 'src/modules/usePixelArt';
 
@@ -48,8 +48,8 @@ export default defineComponent({
   name: 'PixelArtArea',
   setup() {
     const store = useMainStore();
-    const historiesStore = useHistoriesStore();
     const { getEraser, getPixels, getColor } = storeToRefs(store);
+    const historiesStore = useHistoriesStore();
     const { styles } = usePixelArt();
 
     const isMouseDown = ref(false);
@@ -150,7 +150,6 @@ export default defineComponent({
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
-    border-radius: 3px;
     background: #191f2b;
   }
 }

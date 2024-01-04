@@ -7,6 +7,8 @@ interface IState {
   pixels: IPixel[];
   color: string;
   cssCode: string;
+  pixelsResolution: number;
+  pixelsCount: number;
 }
 
 export const useMainStore = defineStore('main', {
@@ -16,6 +18,8 @@ export const useMainStore = defineStore('main', {
       pixels: [],
       color: DEFAULT_COLOR,
       cssCode: '',
+      pixelsResolution: 1,
+      pixelsCount: 40,
     };
   },
   getters: {
@@ -23,6 +27,8 @@ export const useMainStore = defineStore('main', {
     getPixels: (state) => state.pixels,
     getColor: (state) => state.color,
     getCssCode: (state) => state.cssCode,
+    getPixelsResolution: (state) => state.pixelsResolution,
+    getPixelsCount: (state) => state.pixelsCount,
   },
   actions: {
     toggleEraser() {
@@ -36,6 +42,12 @@ export const useMainStore = defineStore('main', {
     },
     setCssCode(css: string) {
       this.cssCode = css;
+    },
+    setPixelsResolution(resolution: number) {
+      this.pixelsResolution = resolution;
+    },
+    setPixelsCount(count: number) {
+      this.pixelsCount = count;
     },
   },
 });

@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-center q-gap-sm">
+    <PixelArtOptions />
     <div
       class="flex flex-center column q-gap-xs"
       :style="{
@@ -12,7 +13,19 @@
       </div>
       <PixelArtArea />
     </div>
-    <PixelArtOptions />
+    <q-slider
+      :model-value="getPixelsResolution"
+      :min="1"
+      :max="3"
+      color="primary"
+      thumb-size="25px"
+      markers
+      vertical
+      reverse
+      label
+      label-value="Resolution"
+      @change="onChangeResolution"
+    />
 
     <HelpBtn />
   </div>
@@ -22,6 +35,7 @@
 import { defineComponent, onMounted } from 'vue';
 import usePixelArt from 'src/modules/usePixelArt';
 import { useMainStore } from 'src/stores/main';
+import { storeToRefs } from 'pinia';
 
 import PixelArtArea from 'src/components/PixelArtArea.vue';
 import PixelArtColors from 'src/components/PixelArtColors.vue';
@@ -40,9 +54,22 @@ export default defineComponent({
   },
   setup() {
     const store = useMainStore();
+    const { getPixelsResolution } = storeToRefs(store);
     const { generateInitPixels, styles } = usePixelArt();
 
     function init() {
+      const pixels = generateInitPixels();
+      store.setPixels(pixels);
+    }
+
+    function onChangeResolution(value: number) {
+      const pc = {
+        [1]: 0,
+        [2]: 20,
+        [3]: 40,
+      };
+      store.setPixelsResolution(value);
+      store.setPixelsCount(40 + pc[value as keyof typeof pc]);
       const pixels = generateInitPixels();
       store.setPixels(pixels);
     }
@@ -53,6 +80,8 @@ export default defineComponent({
 
     return {
       styles,
+      getPixelsResolution,
+      onChangeResolution,
     };
   },
 });

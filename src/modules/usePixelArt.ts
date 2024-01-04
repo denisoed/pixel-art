@@ -1,16 +1,17 @@
 import { computed } from 'vue';
 import { IPixel } from 'src/interfaces';
 import { toPng } from 'html-to-image';
-
-const SIZE = 0.825;
-const GAP = 3;
-const PIXELS_COUNT = 40;
+import { useMainStore } from 'src/stores/main';
+import { storeToRefs } from 'pinia';
 
 const usePixelArt = () => {
+  const store = useMainStore();
+  const { getPixelsResolution, getPixelsCount } = storeToRefs(store);
+
   function generateInitPixels(): IPixel[] {
     const result = [];
-    for (let i = 0; i < PIXELS_COUNT; ++i) {
-      for (let j = 0; j < PIXELS_COUNT; ++j) {
+    for (let i = 0; i < getPixelsCount.value; ++i) {
+      for (let j = 0; j < getPixelsCount.value; ++j) {
         result.push({
           x: j,
           y: i,
@@ -29,8 +30,8 @@ const usePixelArt = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return [];
     ctx.clearRect(0, 0, 9999, 9999);
-    canvas.width = PIXELS_COUNT;
-    canvas.height = PIXELS_COUNT;
+    canvas.width = getPixelsCount.value;
+    canvas.height = getPixelsCount.value;
     const scale = Math.min(
       canvas.width / bitmap.width,
       canvas.height / bitmap.height
@@ -41,8 +42,8 @@ const usePixelArt = () => {
     const y = canvas.height / 2 - height / 2;
     ctx.drawImage(bitmap, x, y, width, height);
     const constructPixelData = [];
-    for (let i = 0; i < PIXELS_COUNT; ++i) {
-      for (let j = 0; j < PIXELS_COUNT; ++j) {
+    for (let i = 0; i < getPixelsCount.value; ++i) {
+      for (let j = 0; j < getPixelsCount.value; ++j) {
         const pixelData = ctx.getImageData(j, i, 1, 1).data;
         if (!pixelData) continue;
         constructPixelData.push({
@@ -85,17 +86,35 @@ const usePixelArt = () => {
     link.remove();
   }
 
-  const styles = computed(() => ({
-    area: {
-      gap: `${GAP}px`,
-      width: `calc(${SIZE * PIXELS_COUNT}rem + ${PIXELS_COUNT * GAP}px)`,
-      height: `calc(${SIZE * PIXELS_COUNT}rem + ${PIXELS_COUNT * GAP}px)`,
-    },
-    pixel: {
-      width: `${SIZE}rem`,
-      height: `${SIZE}rem`,
-    },
-  }));
+  const styles = computed(() => {
+    const REM = 0.825;
+    const GAP = 3;
+    const pc = {
+      [1]: 1,
+      [2]: 1.5,
+      [3]: 2,
+    };
+    const br = {
+      [1]: 3,
+      [2]: 2,
+      [3]: 1.5,
+    };
+    const res = pc[getPixelsResolution.value as keyof typeof pc];
+    const borderRadius = br[getPixelsResolution.value as keyof typeof pc];
+    const count = getPixelsCount.value;
+    return {
+      area: {
+        gap: `${GAP / res}px`,
+        width: `calc(${(REM * count) / res}rem + ${(count * GAP) / res}px)`,
+        height: `calc(${(REM * count) / res}rem + ${(count * GAP) / res}px)`,
+      },
+      pixel: {
+        width: `${REM / res}rem`,
+        height: `${REM / res}rem`,
+        borderRadius: `${borderRadius}px`,
+      },
+    };
+  });
 
   return {
     generateInitPixels,
