@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { defineComponent, nextTick } from 'vue';
-import { config, VALID_FILE_TYPES } from 'src/config/index';
+import { VALID_FILE_TYPES } from 'src/config/index';
 import { useMainStore } from 'src/stores/main';
 import { storeToRefs } from 'pinia';
 import usePixelArt from 'src/modules/usePixelArt';
@@ -88,7 +88,6 @@ export default defineComponent({
 
     return {
       onChangeFile,
-      config,
       onReset,
       onGenerateCss,
       onExportPng,

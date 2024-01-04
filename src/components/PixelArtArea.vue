@@ -2,14 +2,14 @@
   <div
     class="pixel-art-area_wrap"
     :style="{
-      width: `calc(${0.825 * config.width}rem + ${config.height * 3}px)`,
-      height: `calc(${0.825 * config.height}rem + ${config.width * 3}px)`,
+      width: styles.area.width,
+      height: styles.area.height,
     }"
   >
     <canvas
       id="canvas"
       :style="{
-        width: `calc(${0.825 * config.width}rem + ${config.height * 3}px)`,
+        width: styles.area.width,
       }"
     />
     <div
@@ -17,12 +17,16 @@
       class="pixel-art-area"
       @pointermove="onPointerMove"
       @pointerdown="onPointerDown"
+      :style="{
+        gap: styles.area.gap,
+      }"
     >
       <div
         v-for="(pixel, i) in getPixels"
         :key="`pixel_${i}`"
         :style="{
           background: pixel?.color || '',
+          ...styles.pixel,
         }"
         :data-y-coordinate="pixel.y"
         :data-x-coordinate="pixel.x"
@@ -35,10 +39,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
-import { config } from 'src/config/index';
 import { useMainStore } from 'src/stores/main';
 import { useHistoriesStore } from 'src/stores/histories';
 import { storeToRefs } from 'pinia';
+import usePixelArt from 'src/modules/usePixelArt';
 
 export default defineComponent({
   name: 'PixelArtArea',
@@ -46,6 +50,7 @@ export default defineComponent({
     const store = useMainStore();
     const historiesStore = useHistoriesStore();
     const { getEraser, getPixels, getColor } = storeToRefs(store);
+    const { styles } = usePixelArt();
 
     const isMouseDown = ref(false);
 
@@ -107,10 +112,10 @@ export default defineComponent({
     });
 
     return {
-      config,
       getPixels,
       onPointerMove,
       onPointerDown,
+      styles,
     };
   },
 });
@@ -134,8 +139,19 @@ export default defineComponent({
 .pixel-art-area {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap;
+  overflow: hidden;
   position: relative;
   z-index: 1;
-  // display: none !important;
+
+  .pixel {
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    border-radius: 3px;
+    background: #191f2b;
+  }
 }
 </style>

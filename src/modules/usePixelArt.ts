@@ -1,12 +1,16 @@
-import { config } from 'src/config/index';
+import { computed } from 'vue';
 import { IPixel } from 'src/interfaces';
 import { toPng } from 'html-to-image';
+
+const SIZE = 0.825;
+const GAP = 3;
+const PIXELS_COUNT = 40;
 
 const usePixelArt = () => {
   function generateInitPixels(): IPixel[] {
     const result = [];
-    for (let i = 0; i < config.width; ++i) {
-      for (let j = 0; j < config.height; ++j) {
+    for (let i = 0; i < PIXELS_COUNT; ++i) {
+      for (let j = 0; j < PIXELS_COUNT; ++j) {
         result.push({
           x: j,
           y: i,
@@ -25,8 +29,8 @@ const usePixelArt = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return [];
     ctx.clearRect(0, 0, 9999, 9999);
-    canvas.width = config.width;
-    canvas.height = config.height;
+    canvas.width = PIXELS_COUNT;
+    canvas.height = PIXELS_COUNT;
     const scale = Math.min(
       canvas.width / bitmap.width,
       canvas.height / bitmap.height
@@ -37,8 +41,8 @@ const usePixelArt = () => {
     const y = canvas.height / 2 - height / 2;
     ctx.drawImage(bitmap, x, y, width, height);
     const constructPixelData = [];
-    for (let i = 0; i < config.width; ++i) {
-      for (let j = 0; j < config.height; ++j) {
+    for (let i = 0; i < PIXELS_COUNT; ++i) {
+      for (let j = 0; j < PIXELS_COUNT; ++j) {
         const pixelData = ctx.getImageData(j, i, 1, 1).data;
         if (!pixelData) continue;
         constructPixelData.push({
@@ -81,11 +85,24 @@ const usePixelArt = () => {
     link.remove();
   }
 
+  const styles = computed(() => ({
+    area: {
+      gap: `${GAP}px`,
+      width: `calc(${SIZE * PIXELS_COUNT}rem + ${PIXELS_COUNT * GAP}px)`,
+      height: `calc(${SIZE * PIXELS_COUNT}rem + ${PIXELS_COUNT * GAP}px)`,
+    },
+    pixel: {
+      width: `${SIZE}rem`,
+      height: `${SIZE}rem`,
+    },
+  }));
+
   return {
     generateInitPixels,
     generatePixelsFromFile,
     generateCss,
     exportPng,
+    styles,
   };
 };
 
