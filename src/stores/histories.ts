@@ -30,10 +30,9 @@ export const useHistoriesStore = defineStore('histories', {
     async setHistories(histories: IPixel[][]) {
       this.histories = histories;
     },
-    async setHistory(history: IPixel[]) {
-      const date = new Date();
+    async setHistory(uuid: string, history: IPixel[]) {
       this.histories.push(history);
-      set(date.toLocaleString(), history);
+      set(uuid, history);
     },
     async getPreviousHistory() {
       const lastItem = await count();

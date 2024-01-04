@@ -10,3 +10,4 @@ declare module '*.vue' {
 }
 
 declare module 'lodash.debounce';
+declare module 'uuid';

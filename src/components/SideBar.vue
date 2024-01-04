@@ -20,7 +20,7 @@
       </q-tooltip>
     </div>
     <q-list class="flex column full-height">
-      <q-item clickable v-ripple>
+      <q-item clickable v-ripple to="/" class="text-white">
         <q-item-section> Create New Art </q-item-section>
         <q-item-section avatar>
           <q-icon name="mdi-plus" />
@@ -95,7 +95,6 @@ export default defineComponent({
     height: 12px;
     background-color: $dark;
     transition: all 0.2s ease-out;
-    border-radius: 4px;
   }
 
   &--active {

@@ -22,18 +22,25 @@ const usePixelArt = () => {
     const bitmap = await createImageBitmap(file);
     const canvas = document.querySelector('canvas');
     if (!canvas) return [];
-    canvas.width = config.width;
-    canvas.height = config.height;
     const ctx = canvas.getContext('2d');
     if (!ctx) return [];
     ctx.clearRect(0, 0, 9999, 9999);
-    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    canvas.width = config.width;
+    canvas.height = config.height;
+    const scale = Math.min(
+      canvas.width / bitmap.width,
+      canvas.height / bitmap.height
+    );
+    const width = bitmap.width * scale;
+    const height = bitmap.height * scale;
+    const x = canvas.width / 2 - width / 2;
+    const y = canvas.height / 2 - height / 2;
+    ctx.drawImage(bitmap, x, y, width, height);
     const constructPixelData = [];
     for (let i = 0; i < config.width; ++i) {
       for (let j = 0; j < config.height; ++j) {
-        const pixelData = canvas
-          ?.getContext('2d')
-          ?.getImageData(j, i, 1, 1).data;
+        const pixelData = ctx.getImageData(j, i, 1, 1).data;
+        if (!pixelData) continue;
         constructPixelData.push({
           x: j,
           y: i,

@@ -6,7 +6,12 @@
       height: `calc(${0.825 * config.height}rem + ${config.width * 3}px)`,
     }"
   >
-    <canvas id="canvas" />
+    <canvas
+      id="canvas"
+      :style="{
+        width: `calc(${0.825 * config.width}rem + ${config.height * 3}px)`,
+      }"
+    />
     <div
       id="pixel-art-area"
       class="pixel-art-area"
@@ -117,8 +122,6 @@ export default defineComponent({
   box-sizing: initial;
 
   #canvas {
-    width: 100%;
-    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
@@ -133,5 +136,6 @@ export default defineComponent({
   height: 100%;
   position: relative;
   z-index: 1;
+  // display: none !important;
 }
 </style>

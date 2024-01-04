@@ -7,6 +7,7 @@
       icon="mdi-eraser"
       @click="toggleEraser"
       :active="getEraser"
+      size="sm"
     >
       <q-tooltip class="text-caption">Eraser</q-tooltip>
     </q-btn>
