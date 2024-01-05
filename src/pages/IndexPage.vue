@@ -1,5 +1,6 @@
 <template>
-  <div class="home flex flex-center q-gap-sm">
+  <div class="home flex q-gap-sm relative-position">
+    <div class="text-caption absolute-top-left q-mt-sm">v0.0.1</div>
     <HelpBtn />
   </div>
 </template>
@@ -15,3 +16,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.home {
+  min-height: calc(100vh - 32px);
+}
+</style>

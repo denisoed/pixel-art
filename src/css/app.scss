@@ -23,6 +23,10 @@
   cursor: pointer !important;
 }
 
+.q-page-container {
+  min-height: 100vh;
+}
+
 // flex/grid gaps
 .q-gap-xs {
   gap: 4px;

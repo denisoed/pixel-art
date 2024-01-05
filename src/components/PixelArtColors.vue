@@ -66,7 +66,6 @@ h3 {
 }
 
 .colors {
-  margin-left: 0.5rem;
   position: relative;
   display: flex;
   align-items: center;

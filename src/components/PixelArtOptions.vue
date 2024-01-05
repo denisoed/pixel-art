@@ -17,10 +17,10 @@
     >
       <q-tooltip class="text-caption">Clear Board</q-tooltip>
     </q-btn>
-    <q-btn size="sm" color="primary" round icon="mdi-undo-variant">
+    <q-btn size="sm" disabled color="primary" round icon="mdi-undo-variant">
       <q-tooltip class="text-caption">Undo</q-tooltip>
     </q-btn>
-    <q-btn size="sm" color="primary" round icon="mdi-redo-variant">
+    <q-btn size="sm" disabled color="primary" round icon="mdi-redo-variant">
       <q-tooltip class="text-caption">Redo</q-tooltip>
     </q-btn>
     <label>

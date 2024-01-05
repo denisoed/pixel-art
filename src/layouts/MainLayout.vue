@@ -3,7 +3,7 @@
     <SideBar />
 
     <q-page-container>
-      <div class="q-pa-md">
+      <div class="q-pa-md full-height">
         <router-view />
       </div>
     </q-page-container>
