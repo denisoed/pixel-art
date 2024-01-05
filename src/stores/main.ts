@@ -18,7 +18,7 @@ export const useMainStore = defineStore('main', {
       pixels: [],
       color: DEFAULT_COLOR,
       cssCode: '',
-      pixelsResolution: 1,
+      pixelsResolution: 2,
       pixelsCount: 40,
     };
   },

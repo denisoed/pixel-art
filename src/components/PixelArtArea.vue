@@ -17,9 +17,6 @@
       class="pixel-art-area"
       @pointermove="onPointerMove"
       @pointerdown="onPointerDown"
-      :style="{
-        gap: styles.area.gap,
-      }"
     >
       <div
         v-for="(pixel, i) in getPixels"

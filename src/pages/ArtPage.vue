@@ -16,7 +16,7 @@
     <q-slider
       :model-value="getPixelsResolution"
       :min="1"
-      :max="3"
+      :max="4"
       color="primary"
       thumb-size="25px"
       markers
@@ -67,9 +67,10 @@ export default defineComponent({
         [1]: 0,
         [2]: 20,
         [3]: 40,
+        [4]: 60,
       };
       store.setPixelsResolution(value);
-      store.setPixelsCount(40 + pc[value as keyof typeof pc]);
+      store.setPixelsCount(20 + pc[value as keyof typeof pc]);
       const pixels = generateInitPixels();
       store.setPixels(pixels);
     }

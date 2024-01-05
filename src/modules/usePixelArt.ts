@@ -70,7 +70,6 @@ const usePixelArt = () => {
       background: transparent;
       box-shadow: ${pixelsCss.join(', ')};
     `;
-    debugger;
     return css;
   }
 
@@ -87,30 +86,38 @@ const usePixelArt = () => {
   }
 
   const styles = computed(() => {
-    const REM = 0.825;
-    const GAP = 3;
-    const pc = {
-      [1]: 1,
-      [2]: 1.5,
-      [3]: 2,
+    const rem = {
+      [1]: 1.835,
+      [2]: 0.885,
+      [3]: 0.55,
+      [4]: 0.445,
     };
     const br = {
       [1]: 3,
       [2]: 2,
-      [3]: 1.5,
+      [3]: 2,
+      [4]: 1,
     };
-    const res = pc[getPixelsResolution.value as keyof typeof pc];
-    const borderRadius = br[getPixelsResolution.value as keyof typeof pc];
+    const g = {
+      [1]: 3,
+      [2]: 2,
+      [3]: 2,
+      [4]: 1,
+    };
+    const borderRadius = br[getPixelsResolution.value as keyof typeof br];
+    const size = rem[getPixelsResolution.value as keyof typeof rem];
+    const gap = g[getPixelsResolution.value as keyof typeof g];
     const count = getPixelsCount.value;
     return {
       area: {
-        gap: `${GAP / res}px`,
-        width: `calc(${(REM * count) / res}rem + ${(count * GAP) / res}px)`,
-        height: `calc(${(REM * count) / res}rem + ${(count * GAP) / res}px)`,
+        width: `calc(${size * count}rem + ${count * gap}px)`,
+        height: `calc(${size * count}rem + ${count * gap}px)`,
       },
       pixel: {
-        width: `${REM / res}rem`,
-        height: `${REM / res}rem`,
+        marginRight: `${gap}px`,
+        marginBottom: `${gap}px`,
+        width: `${size}rem`,
+        height: `${size}rem`,
         borderRadius: `${borderRadius}px`,
       },
     };
