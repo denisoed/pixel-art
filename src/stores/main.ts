@@ -1,3 +1,4 @@
+import { LocalStorage } from 'quasar';
 import { defineStore } from 'pinia';
 import { IPixel } from 'src/interfaces';
 import { DEFAULT_COLOR, DEFAULT_PIXELS_RESOLUTION } from 'src/config/index';
@@ -11,6 +12,8 @@ interface IState {
   file: File | null;
 }
 
+const PIXELS_RESOLUTION_KEY = 'pixels-resolution';
+
 export const useMainStore = defineStore('main', {
   state: (): IState => {
     return {
@@ -18,7 +21,7 @@ export const useMainStore = defineStore('main', {
       pixels: [],
       color: DEFAULT_COLOR,
       cssCode: '',
-      pixelsResolution: DEFAULT_PIXELS_RESOLUTION,
+      pixelsResolution: 0,
       file: null,
     };
   },
@@ -27,7 +30,10 @@ export const useMainStore = defineStore('main', {
     getPixels: (state) => state.pixels,
     getColor: (state) => state.color,
     getCssCode: (state) => state.cssCode,
-    getPixelsResolution: (state) => state.pixelsResolution,
+    getPixelsResolution: (state) =>
+      state.pixelsResolution ||
+      Number(LocalStorage.getItem(PIXELS_RESOLUTION_KEY) || 0) ||
+      DEFAULT_PIXELS_RESOLUTION,
     getFile: (state) => state.file,
   },
   actions: {
@@ -45,6 +51,7 @@ export const useMainStore = defineStore('main', {
     },
     setPixelsResolution(resolution: number) {
       this.pixelsResolution = resolution;
+      LocalStorage.set(PIXELS_RESOLUTION_KEY, resolution);
     },
     setFile(file: File | null) {
       this.file = file;
