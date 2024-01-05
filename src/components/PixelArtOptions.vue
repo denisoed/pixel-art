@@ -57,6 +57,7 @@ export default defineComponent({
         const file = files[0];
         if (VALID_FILE_TYPES.includes(file.type)) {
           store.setPixels([]);
+          store.setFile(file);
           const pixels = await generatePixelsFromFile(file);
           nextTick(() => {
             store.setPixels(pixels);

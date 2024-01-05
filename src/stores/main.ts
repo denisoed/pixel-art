@@ -8,6 +8,7 @@ interface IState {
   color: string;
   cssCode: string;
   pixelsResolution: number;
+  file: File | null;
 }
 
 export const useMainStore = defineStore('main', {
@@ -18,6 +19,7 @@ export const useMainStore = defineStore('main', {
       color: DEFAULT_COLOR,
       cssCode: '',
       pixelsResolution: DEFAULT_PIXELS_RESOLUTION,
+      file: null,
     };
   },
   getters: {
@@ -26,6 +28,7 @@ export const useMainStore = defineStore('main', {
     getColor: (state) => state.color,
     getCssCode: (state) => state.cssCode,
     getPixelsResolution: (state) => state.pixelsResolution,
+    getFile: (state) => state.file,
   },
   actions: {
     toggleEraser() {
@@ -42,6 +45,9 @@ export const useMainStore = defineStore('main', {
     },
     setPixelsResolution(resolution: number) {
       this.pixelsResolution = resolution;
+    },
+    setFile(file: File | null) {
+      this.file = file;
     },
   },
 });

@@ -1,5 +1,16 @@
 <template>
-  <div id="pixel-art-tools" class="flex column q-gap-sm items-center">
+  <div id="pixel-art-tools" class="flex q-gap-sm items-center">
+    <q-btn
+      :color="!getEraser ? 'primary' : 'grey'"
+      round
+      :outline="getEraser"
+      icon="mdi-pencil"
+      @click="toggleEraser"
+      :active="!getEraser"
+      size="sm"
+    >
+      <q-tooltip class="text-caption">Eraser</q-tooltip>
+    </q-btn>
     <q-btn
       :color="getEraser ? 'primary' : 'grey'"
       round

@@ -16,7 +16,7 @@
     <q-slider
       :model-value="getPixelsResolution"
       :min="1"
-      :max="4"
+      :max="3"
       color="primary"
       thumb-size="25px"
       markers
@@ -54,18 +54,25 @@ export default defineComponent({
   },
   setup() {
     const store = useMainStore();
-    const { getPixelsResolution } = storeToRefs(store);
-    const { generateInitPixels, styles } = usePixelArt();
+    const { getPixelsResolution, getFile } = storeToRefs(store);
+    const { generateInitPixels, generatePixelsFromFile, styles } =
+      usePixelArt();
 
     function init() {
       const pixels = generateInitPixels();
       store.setPixels(pixels);
     }
 
-    function onChangeResolution(value: number) {
+    async function onChangeResolution(value: number) {
+      if (getPixelsResolution.value === value) return;
       store.setPixelsResolution(value);
-      const pixels = generateInitPixels();
-      store.setPixels(pixels);
+      if (getFile.value) {
+        const pixels = await generatePixelsFromFile(getFile.value);
+        store.setPixels(pixels);
+      } else {
+        const pixels = generateInitPixels();
+        store.setPixels(pixels);
+      }
     }
 
     onMounted(() => {
