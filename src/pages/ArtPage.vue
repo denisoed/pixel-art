@@ -63,14 +63,7 @@ export default defineComponent({
     }
 
     function onChangeResolution(value: number) {
-      const pc = {
-        [1]: 0,
-        [2]: 20,
-        [3]: 40,
-        [4]: 60,
-      };
       store.setPixelsResolution(value);
-      store.setPixelsCount(20 + pc[value as keyof typeof pc]);
       const pixels = generateInitPixels();
       store.setPixels(pixels);
     }

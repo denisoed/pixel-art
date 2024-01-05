@@ -3,15 +3,17 @@ import { IPixel } from 'src/interfaces';
 import { toPng } from 'html-to-image';
 import { useMainStore } from 'src/stores/main';
 import { storeToRefs } from 'pinia';
+import { PIXELS_STEP } from 'src/config';
 
 const usePixelArt = () => {
   const store = useMainStore();
-  const { getPixelsResolution, getPixelsCount } = storeToRefs(store);
+  const { getPixelsResolution } = storeToRefs(store);
 
   function generateInitPixels(): IPixel[] {
     const result = [];
-    for (let i = 0; i < getPixelsCount.value; ++i) {
-      for (let j = 0; j < getPixelsCount.value; ++j) {
+    const rows = PIXELS_STEP * getPixelsResolution.value;
+    for (let i = 0; i < rows; ++i) {
+      for (let j = 0; j < rows; ++j) {
         result.push({
           x: j,
           y: i,
@@ -29,9 +31,10 @@ const usePixelArt = () => {
     if (!canvas) return [];
     const ctx = canvas.getContext('2d');
     if (!ctx) return [];
+    const rows = PIXELS_STEP * getPixelsResolution.value;
     ctx.clearRect(0, 0, 9999, 9999);
-    canvas.width = getPixelsCount.value;
-    canvas.height = getPixelsCount.value;
+    canvas.width = rows;
+    canvas.height = rows;
     const scale = Math.min(
       canvas.width / bitmap.width,
       canvas.height / bitmap.height
@@ -42,8 +45,8 @@ const usePixelArt = () => {
     const y = canvas.height / 2 - height / 2;
     ctx.drawImage(bitmap, x, y, width, height);
     const constructPixelData = [];
-    for (let i = 0; i < getPixelsCount.value; ++i) {
-      for (let j = 0; j < getPixelsCount.value; ++j) {
+    for (let i = 0; i < rows; ++i) {
+      for (let j = 0; j < rows; ++j) {
         const pixelData = ctx.getImageData(j, i, 1, 1).data;
         if (!pixelData) continue;
         constructPixelData.push({
@@ -92,30 +95,31 @@ const usePixelArt = () => {
       [3]: 0.55,
       [4]: 0.445,
     };
-    const br = {
+    const bRadius = {
       [1]: 3,
       [2]: 2,
       [3]: 2,
       [4]: 1,
     };
-    const g = {
+    const gap = {
       [1]: 3,
       [2]: 2,
       [3]: 2,
       [4]: 1,
     };
-    const borderRadius = br[getPixelsResolution.value as keyof typeof br];
+    const borderRadius =
+      bRadius[getPixelsResolution.value as keyof typeof bRadius];
     const size = rem[getPixelsResolution.value as keyof typeof rem];
-    const gap = g[getPixelsResolution.value as keyof typeof g];
-    const count = getPixelsCount.value;
+    const indent = gap[getPixelsResolution.value as keyof typeof gap];
+    const rows = PIXELS_STEP * getPixelsResolution.value;
     return {
       area: {
-        width: `calc(${size * count}rem + ${count * gap}px)`,
-        height: `calc(${size * count}rem + ${count * gap}px)`,
+        width: `calc(${size * rows}rem + ${rows * indent}px)`,
+        height: `calc(${size * rows}rem + ${rows * indent}px)`,
       },
       pixel: {
-        marginRight: `${gap}px`,
-        marginBottom: `${gap}px`,
+        marginRight: `${indent}px`,
+        marginBottom: `${indent}px`,
         width: `${size}rem`,
         height: `${size}rem`,
         borderRadius: `${borderRadius}px`,

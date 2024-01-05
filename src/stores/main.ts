@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { IPixel } from 'src/interfaces';
-import { DEFAULT_COLOR } from 'src/config/index';
+import { DEFAULT_COLOR, DEFAULT_PIXELS_RESOLUTION } from 'src/config/index';
 
 interface IState {
   eraser: boolean;
@@ -8,7 +8,6 @@ interface IState {
   color: string;
   cssCode: string;
   pixelsResolution: number;
-  pixelsCount: number;
 }
 
 export const useMainStore = defineStore('main', {
@@ -18,8 +17,7 @@ export const useMainStore = defineStore('main', {
       pixels: [],
       color: DEFAULT_COLOR,
       cssCode: '',
-      pixelsResolution: 2,
-      pixelsCount: 40,
+      pixelsResolution: DEFAULT_PIXELS_RESOLUTION,
     };
   },
   getters: {
@@ -28,7 +26,6 @@ export const useMainStore = defineStore('main', {
     getColor: (state) => state.color,
     getCssCode: (state) => state.cssCode,
     getPixelsResolution: (state) => state.pixelsResolution,
-    getPixelsCount: (state) => state.pixelsCount,
   },
   actions: {
     toggleEraser() {
@@ -45,9 +42,6 @@ export const useMainStore = defineStore('main', {
     },
     setPixelsResolution(resolution: number) {
       this.pixelsResolution = resolution;
-    },
-    setPixelsCount(count: number) {
-      this.pixelsCount = count;
     },
   },
 });
