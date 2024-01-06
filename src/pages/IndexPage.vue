@@ -6,13 +6,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onBeforeMount } from 'vue';
 import HelpBtn from 'src/components/HelpBtn.vue';
+import useDB from 'src/modules/useDB';
 
 export default defineComponent({
-  name: 'HomePage',
+  name: 'IndexPage',
   components: {
     HelpBtn,
+  },
+  setup() {
+    const { getArts } = useDB();
+
+    onBeforeMount(async () => {
+      const arts = await getArts();
+      console.log(arts);
+    });
   },
 });
 </script>
