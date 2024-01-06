@@ -13,6 +13,7 @@ import { defineComponent, ref } from 'vue';
 import { version } from '../../package.json';
 import useDB from 'src/modules/useDB';
 import useNotify from 'src/modules/useNotify';
+import { useArtsStore } from 'src/stores/arts';
 import { useRouter } from 'vue-router';
 
 import HelpBtn from 'src/components/HelpBtn.vue';
@@ -25,9 +26,10 @@ export default defineComponent({
     FileUploader,
   },
   setup() {
-    const { createArt } = useDB();
+    const { createArt, getArts } = useDB();
     const { notifySuccess, notifyError } = useNotify();
     const { push } = useRouter();
+    const artsStore = useArtsStore();
 
     const loading = ref(false);
 
@@ -38,6 +40,8 @@ export default defineComponent({
           const response = await createArt({
             name: file.name,
           });
+          const arts = await getArts();
+          artsStore.setArts(arts);
           push(`/art/${response.id}`);
           notifySuccess('Art created successfully');
         } catch {

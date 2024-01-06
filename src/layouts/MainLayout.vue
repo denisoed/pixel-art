@@ -11,13 +11,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onBeforeMount } from 'vue';
 import SideBar from 'src/components/SideBar.vue';
+import useDB from 'src/modules/useDB';
+import { useArtsStore } from 'src/stores/arts';
 
 export default defineComponent({
   name: 'MainLayout',
   components: {
     SideBar,
+  },
+  setup() {
+    const { getArts } = useDB();
+    const artsStore = useArtsStore();
+
+    async function getData() {
+      const response = await getArts();
+      artsStore.setArts(response);
+    }
+
+    onBeforeMount(() => {
+      getData();
+    });
   },
 });
 </script>

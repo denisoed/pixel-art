@@ -13,11 +13,12 @@
           <span class="text-subtitle1">Upload Image</span>
         </div>
         <div class="flex column items-center">
-          <p class="text-caption q-ma-none">
-            - File size should not exceed {{ FILE_MAX_SIZE_KB }} KB
-          </p>
-          <p class="text-caption q-ma-none">
-            - Accepted formats: {{ acceptedExts }}
+          <p
+            v-for="(info, i) in INFO"
+            :key="`info_${i}`"
+            class="text-caption q-ma-none"
+          >
+            {{ info }}
           </p>
         </div>
       </div>
@@ -31,6 +32,11 @@
 import useNotify from 'src/modules/useNotify';
 import { defineComponent, ref } from 'vue';
 import { VALID_FILE_EXTS, FILE_MAX_SIZE_KB } from 'src/config/index';
+
+const INFO = [
+  `File size should not exceed ${FILE_MAX_SIZE_KB} KB`,
+  `Accepted formats: ${VALID_FILE_EXTS.join(', ')}`,
+];
 
 export default defineComponent({
   name: 'FileUploader',
@@ -52,8 +58,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const { notifyError } = useNotify();
 
-    const acceptedExts = VALID_FILE_EXTS.join(', ');
-
     async function onChangeImage(image) {
       try {
         const fileSize = image.size / 1000;
@@ -69,8 +73,7 @@ export default defineComponent({
 
     return {
       onChangeImage,
-      FILE_MAX_SIZE_KB,
-      acceptedExts,
+      INFO,
     };
   },
 });

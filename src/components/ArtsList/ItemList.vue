@@ -10,7 +10,9 @@
       <div class="item-list-name">{{ id }}</div>
     </router-link>
     <div class="item-list-controls">
+      <q-spinner v-if="deleting" />
       <q-btn
+        v-else
         icon="mdi-dots-horizontal"
         size="sm"
         dense
@@ -20,7 +22,7 @@
       >
         <q-menu @hide="toggleMenu" anchor="bottom left" self="top right">
           <q-list>
-            <q-item clickable v-close-popup disable>
+            <q-item clickable v-close-popup @click="onDelete">
               <q-item-section>
                 <q-item-label>
                   <span class="text-caption">Delete</span>
@@ -52,16 +54,26 @@ export default defineComponent({
       default: '',
     },
   },
-  setup() {
+  emits: ['on-delete'],
+  setup(props, { emit }) {
     const openedMenu = ref(false);
+    const deleting = ref(false);
 
     function toggleMenu() {
       openedMenu.value = !openedMenu.value;
     }
 
+    function onDelete() {
+      deleting.value = true;
+      openedMenu.value = false;
+      emit('on-delete', props.id);
+    }
+
     return {
       openedMenu,
       toggleMenu,
+      onDelete,
+      deleting,
     };
   },
 });

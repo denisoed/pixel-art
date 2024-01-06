@@ -1,5 +1,11 @@
 import { firebaseStore } from 'boot/firebase';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc,
+} from 'firebase/firestore';
 import { IArt, IArtPayload } from 'src/interfaces';
 
 const useDB = () => {
@@ -19,9 +25,16 @@ const useDB = () => {
     return artDoc;
   }
 
+  async function deleteArt(id: string) {
+    const artsCollection = collection(firebaseStore, 'arts');
+    const artDoc = await deleteDoc(doc(artsCollection, id));
+    return artDoc;
+  }
+
   return {
     getArts,
     createArt,
+    deleteArt,
   };
 };
 

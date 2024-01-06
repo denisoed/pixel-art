@@ -32,7 +32,7 @@
             Your Arts
             <span class="text-weight-bold">({{ arts?.length || 0 }})</span>
           </span>
-          <ArtsList :arts="arts || []" />
+          <ArtsList :arts="arts" />
         </q-item-section>
       </q-item>
       <q-item clickable v-ripple class="q-mt-auto">
@@ -61,12 +61,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onBeforeMount } from 'vue';
+import { defineComponent, ref, onMounted, computed } from 'vue';
 import { LocalStorage } from 'quasar';
 import useAuth from 'src/modules/useAuth';
 import { useUserStore } from 'src/stores/user';
-import useDB from 'src/modules/useDB';
-import { IArt } from 'src/interfaces';
+import { useArtsStore } from 'src/stores/arts';
 
 import ArtsList from 'src/components/ArtsList/index.vue';
 
@@ -80,11 +79,12 @@ export default defineComponent({
 
   setup() {
     const userStore = useUserStore();
+    const artsStore = useArtsStore();
     const { signOut } = useAuth();
-    const { getArts } = useDB();
 
     const isMini = ref(false);
-    const arts = ref<IArt[] | null>(null);
+
+    const arts = computed(() => artsStore.getArts);
 
     function toggleSidebar() {
       isMini.value = !isMini.value;
@@ -93,10 +93,6 @@ export default defineComponent({
 
     onMounted(() => {
       isMini.value = LocalStorage.getItem(MINI_STORAGE_KEY) || false;
-    });
-
-    onBeforeMount(async () => {
-      arts.value = await getArts();
     });
 
     return {

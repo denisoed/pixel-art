@@ -1,12 +1,13 @@
 <template>
   <div class="arts-list flex column q-gap-md">
-    <template v-if="arts">
-      <template v-if="arts.length">
+    <template v-if="list">
+      <template v-if="list.length">
         <ItemList
-          v-for="(art, i) in arts"
+          v-for="(art, i) in list"
           :key="`art_${i}`"
           :id="art.id"
           :name="art.name"
+          @on-delete="onArtDelete"
         />
       </template>
       <div v-else class="flex q-gap-sm items-center text-caption text-grey">
@@ -22,8 +23,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, watch, toRefs, ref } from 'vue';
 import { IArt } from 'src/interfaces';
+import useDB from 'src/modules/useDB';
+import { useRouter } from 'vue-router';
+import useNotify from 'src/modules/useNotify';
+import { useArtsStore } from 'src/stores/arts';
+
 import ItemList from 'src/components/ArtsList/ItemList.vue';
 
 export default defineComponent({
@@ -36,6 +42,35 @@ export default defineComponent({
       type: Array as PropType<IArt[] | null>,
       required: true,
     },
+  },
+  setup(props) {
+    const { arts } = toRefs(props);
+    const { deleteArt } = useDB();
+    const { notifyError, notifySuccess } = useNotify();
+    const { push } = useRouter();
+    const artsStore = useArtsStore();
+
+    const list = ref<IArt[] | null>(null);
+
+    async function onArtDelete(id: string) {
+      try {
+        await deleteArt(id);
+        artsStore.deleteArt(id);
+        notifySuccess('Art deleted successfully');
+        push('/');
+      } catch {
+        notifyError('Something went wrong. Please try again.');
+      }
+    }
+
+    watch(arts, (arts) => {
+      list.value = arts;
+    });
+
+    return {
+      onArtDelete,
+      list,
+    };
   },
 });
 </script>
