@@ -5,6 +5,7 @@ import {
   createWebHashHistory,
   createWebHistory,
 } from 'vue-router';
+import { firebaseAuth } from 'boot/firebase';
 
 import routes from './routes';
 
@@ -32,6 +33,24 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
+  });
+
+  Router.beforeEach((to, from, next) => {
+    firebaseAuth.onAuthStateChanged((user) => {
+      if (!user) {
+        if (to.path !== '/auth') {
+          next({ path: '/auth' });
+        } else {
+          next();
+        }
+      } else {
+        if (to.path === '/auth') {
+          next({ path: '/' });
+        } else {
+          next();
+        }
+      }
+    });
   });
 
   return Router;

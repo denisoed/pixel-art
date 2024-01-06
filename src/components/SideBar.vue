@@ -31,11 +31,14 @@
           <span class="text-caption">Your Arts</span>
         </q-item-section>
       </q-item>
-      <q-item clickable v-ripple class="q-mt-auto hidden">
-        <q-item-section> Settings </q-item-section>
-        <q-item-section avatar>
-          <q-avatar size="36px" color="primary">
-            <div v-html="avatar" class="avatar q-pa-xs" />
+      <q-item clickable v-ripple class="q-mt-auto">
+        <q-item-section>
+          {{ name }}
+          <span class="text-caption">{{ email }}</span>
+        </q-item-section>
+        <q-item-section avatar v-if="photoURL">
+          <q-avatar size="36px">
+            <img :src="photoURL" :alt="name || 'User Photo'" />
           </q-avatar>
         </q-item-section>
       </q-item>
@@ -44,9 +47,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import { LocalStorage } from 'quasar';
-import { minidenticon } from 'minidenticons';
+import { useUserStore } from 'src/stores/user';
 
 const MINI_STORAGE_KEY = 'pixel-art-sidebar-mini';
 
@@ -54,9 +57,9 @@ export default defineComponent({
   name: 'SideBar',
 
   setup() {
-    const isMini = ref(false);
+    const userStore = useUserStore();
 
-    const avatar = computed(() => minidenticon('Denisoed' || ''));
+    const isMini = ref(false);
 
     function toggleSidebar() {
       isMini.value = !isMini.value;
@@ -70,7 +73,9 @@ export default defineComponent({
     return {
       isMini,
       toggleSidebar,
-      avatar,
+      name: userStore.user.displayName,
+      email: userStore.user.email,
+      photoURL: userStore.user.photoURL,
     };
   },
 });
@@ -126,13 +131,6 @@ export default defineComponent({
     .sidebar-hider_line2 {
       transform: translateY(-0.15rem) rotate(-15deg) translateZ(0px);
     }
-  }
-}
-
-.avatar {
-  :deep(svg) {
-    width: 36px;
-    height: 36px;
   }
 }
 </style>
