@@ -6,9 +6,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount } from 'vue';
+import { defineComponent } from 'vue';
 import HelpBtn from 'src/components/HelpBtn.vue';
-import useDB from 'src/modules/useDB';
 import { version } from '../../package.json';
 
 export default defineComponent({
@@ -17,13 +16,6 @@ export default defineComponent({
     HelpBtn,
   },
   setup() {
-    const { getArts } = useDB();
-
-    onBeforeMount(async () => {
-      const arts = await getArts();
-      console.log(arts);
-    });
-
     return {
       version,
     };

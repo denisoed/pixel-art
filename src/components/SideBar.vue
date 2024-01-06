@@ -26,10 +26,9 @@
           <q-icon name="mdi-plus" />
         </q-item-section>
       </q-item>
-      <q-item>
-        <q-item-section>
-          <span class="text-caption">Your Arts</span>
-        </q-item-section>
+      <q-item class="flex column q-gap-sm">
+        <span class="text-caption">Your Arts</span>
+        <ArtsList :arts="arts" />
       </q-item>
       <q-item clickable v-ripple class="q-mt-auto">
         <q-item-section>
@@ -57,21 +56,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, onBeforeMount } from 'vue';
 import { LocalStorage } from 'quasar';
 import useAuth from 'src/modules/useAuth';
 import { useUserStore } from 'src/stores/user';
+import useDB from 'src/modules/useDB';
+import { IArt } from 'src/interfaces';
+
+import ArtsList from 'src/components/ArtsList.vue';
 
 const MINI_STORAGE_KEY = 'pixel-art-sidebar-mini';
 
 export default defineComponent({
   name: 'SideBar',
+  components: {
+    ArtsList,
+  },
 
   setup() {
     const userStore = useUserStore();
     const { signOut } = useAuth();
+    const { getArts } = useDB();
 
     const isMini = ref(false);
+    const arts = ref<IArt[]>([]);
 
     function toggleSidebar() {
       isMini.value = !isMini.value;
@@ -82,6 +90,10 @@ export default defineComponent({
       isMini.value = LocalStorage.getItem(MINI_STORAGE_KEY) || false;
     });
 
+    onBeforeMount(async () => {
+      arts.value = await getArts();
+    });
+
     return {
       isMini,
       toggleSidebar,
@@ -89,6 +101,7 @@ export default defineComponent({
       email: userStore.user.email,
       photoURL: userStore.user.photoURL,
       signOut,
+      arts,
     };
   },
 });
