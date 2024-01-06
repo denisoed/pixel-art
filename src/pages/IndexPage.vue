@@ -2,8 +2,24 @@
   <div class="home flex flex-center q-gap-sm relative-position">
     <div class="text-caption absolute-top-left q-mt-sm">v{{ version }}</div>
     <HelpBtn />
-    <div class="flex column">
+    <div class="flex column q-gap-md">
       <FileUploader :loading="loading" @on-change="onFileChanged" />
+      <div class="home_buttons flex items-start no-wrap q-gap-md q-px-md">
+        <div
+          v-ripple
+          class="home_buttons-item full-width flex column"
+          @click="createSimple"
+        >
+          Simple Board
+          <span class="text-caption text-grey">Board without any art</span>
+        </div>
+        <div v-ripple class="home_buttons-item full-width flex column">
+          Random Art
+          <span class="text-caption text-grey"
+            >Create random art from the our gallery</span
+          >
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -52,10 +68,28 @@ export default defineComponent({
       }
     }
 
+    async function createSimple() {
+      try {
+        loading.value = true;
+        const response = await createArt({
+          name: 'Simple Art',
+        });
+        const arts = await getArts();
+        artsStore.setArts(arts);
+        push(`/art/${response.id}`);
+        notifySuccess('Art created successfully');
+      } catch {
+        notifyError('Something went wrong. Please try again.');
+      } finally {
+        loading.value = false;
+      }
+    }
+
     return {
       version,
       onFileChanged,
       loading,
+      createSimple,
     };
   },
 });
@@ -64,5 +98,15 @@ export default defineComponent({
 <style lang="scss" scoped>
 .home {
   min-height: calc(100vh - 32px);
+
+  &_buttons {
+    &-item {
+      position: relative;
+      border-radius: 16px;
+      padding: 15px;
+      border: 1px solid $dark;
+      cursor: pointer;
+    }
+  }
 }
 </style>

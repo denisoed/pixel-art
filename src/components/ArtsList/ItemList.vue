@@ -67,6 +67,9 @@ export default defineComponent({
       deleting.value = true;
       openedMenu.value = false;
       emit('on-delete', props.id);
+      setTimeout(() => {
+        deleting.value = false;
+      }, 2000);
     }
 
     return {
