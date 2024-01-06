@@ -14,3 +14,7 @@ export interface IArt {
   id: string;
   name: string;
 }
+
+export interface IArtPayload {
+  name: string;
+}

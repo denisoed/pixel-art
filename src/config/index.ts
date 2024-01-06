@@ -23,5 +23,9 @@ export const VALID_FILE_TYPES = [
   'image/jpg',
 ];
 
+export const VALID_FILE_EXTS = ['.png', '.jpeg', '.gif', '.jpg'];
+
+export const FILE_MAX_SIZE_KB = 4096;
+
 export const ACCESS_TOKEN_KEY = 'access-token';
 export const REFRESH_TOKEN_KEY = 'refresh-token';

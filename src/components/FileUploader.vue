@@ -1,13 +1,129 @@
-<template>File Uploader</template>
+<template>
+  <div class="file-uploader" v-ripple>
+    <q-file
+      outlined
+      :hint="hint || undefined"
+      :rules="rules"
+      @update:model-value="onChangeImage"
+      :accept="acceptedExts"
+    >
+      <div class="absolute-center text-grey flex column flex-center q-gap-sm">
+        <div class="flex">
+          <q-icon name="mdi-image-plus" class="q-mr-sm" size="sm" />
+          <span class="text-subtitle1">Upload Image</span>
+        </div>
+        <div class="flex column items-center">
+          <p class="text-caption q-ma-none">
+            - File size should not exceed {{ FILE_MAX_SIZE_KB }} KB
+          </p>
+          <p class="text-caption q-ma-none">
+            - Accepted formats: {{ acceptedExts }}
+          </p>
+        </div>
+      </div>
+    </q-file>
+    <!-- Loader -->
+    <q-inner-loading :showing="loading" size="sm" style="z-index: 10" />
+  </div>
+</template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import HelpBtn from 'src/components/HelpBtn.vue';
+<script>
+import useNotify from 'src/modules/useNotify';
+import { defineComponent, ref } from 'vue';
+import { VALID_FILE_EXTS, FILE_MAX_SIZE_KB } from 'src/config/index';
 
 export default defineComponent({
   name: 'FileUploader',
-  components: {
-    HelpBtn,
+  props: {
+    hint: {
+      type: String,
+      default: null,
+    },
+    rules: {
+      type: Array,
+      default: () => [],
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ['on-change'],
+  setup(props, { emit }) {
+    const { notifyError } = useNotify();
+
+    const acceptedExts = VALID_FILE_EXTS.join(', ');
+
+    async function onChangeImage(image) {
+      try {
+        const fileSize = image.size / 1000;
+        if (fileSize >= FILE_MAX_SIZE_KB) {
+          notifyError(`File size must be less than ${FILE_MAX_SIZE_KB} KB.`);
+          return;
+        }
+        emit('on-change', image);
+      } catch {
+        notifyError('Something went wrong. Please try again.');
+      }
+    }
+
+    return {
+      onChangeImage,
+      FILE_MAX_SIZE_KB,
+      acceptedExts,
+    };
   },
 });
 </script>
+
+<style lang="scss">
+.file-uploader {
+  width: 60vw;
+  height: 210px;
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  .q-file {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .q-field__control {
+      height: 100%;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      justify-content: center;
+      position: relative;
+
+      &::before,
+      &::after {
+        border-width: 2px;
+        border-style: dashed;
+        border-radius: 16px;
+      }
+
+      .q-field__append {
+        position: absolute;
+        top: 0;
+        right: 16px;
+      }
+    }
+  }
+
+  &_dialog-card {
+    min-width: 300px;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+  }
+
+  &--circle {
+    border-radius: 100%;
+  }
+}
+</style>

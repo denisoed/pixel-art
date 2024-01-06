@@ -7,7 +7,7 @@
         'router-link-exact-active active': openedMenu,
       }"
     >
-      <div class="item-list-name">{{ name }}</div>
+      <div class="item-list-name">{{ id }}</div>
     </router-link>
     <div class="item-list-controls">
       <q-btn
