@@ -41,6 +41,16 @@
             <img :src="photoURL" :alt="name || 'User Photo'" />
           </q-avatar>
         </q-item-section>
+        <q-menu fit dark :offset="[0, 10]">
+          <q-list>
+            <q-item clickable v-close-popup @click="signOut">
+              <q-item-section> Sign Out </q-item-section>
+              <q-item-section avatar>
+                <q-icon name="mdi-logout" color="red" size="xs" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
       </q-item>
     </q-list>
   </q-drawer>
@@ -49,6 +59,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import { LocalStorage } from 'quasar';
+import useAuth from 'src/modules/useAuth';
 import { useUserStore } from 'src/stores/user';
 
 const MINI_STORAGE_KEY = 'pixel-art-sidebar-mini';
@@ -58,6 +69,7 @@ export default defineComponent({
 
   setup() {
     const userStore = useUserStore();
+    const { signOut } = useAuth();
 
     const isMini = ref(false);
 
@@ -76,6 +88,7 @@ export default defineComponent({
       name: userStore.user.displayName,
       email: userStore.user.email,
       photoURL: userStore.user.photoURL,
+      signOut,
     };
   },
 });

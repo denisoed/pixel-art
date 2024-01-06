@@ -24,7 +24,12 @@ const useAuth = () => {
     }
   }
 
-  return { signWithGoogle };
+  function signOut() {
+    firebaseAuth.signOut();
+    push('/auth');
+  }
+
+  return { signWithGoogle, signOut, loadingSignIn };
 };
 
 export default useAuth;

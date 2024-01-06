@@ -33,17 +33,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { date } from 'quasar';
 import useAuth from 'src/modules/useAuth';
 
 export default defineComponent({
   name: 'AuthPage',
   setup() {
-    const { signWithGoogle } = useAuth();
+    const { signWithGoogle, loadingSignIn } = useAuth();
 
     const year = date.formatDate(Date.now(), 'YYYY');
-    const loadingSignIn = ref(false);
 
     return {
       year,
