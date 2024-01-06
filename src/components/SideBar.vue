@@ -26,9 +26,14 @@
           <q-icon name="mdi-plus" />
         </q-item-section>
       </q-item>
-      <q-item class="flex column q-gap-md">
-        <span class="text-caption">Your Arts</span>
-        <ArtsList :arts="arts" />
+      <q-item>
+        <q-item-section class="flex column q-gap-md q-mt-md">
+          <span class="text-caption">
+            Your Arts
+            <span class="text-weight-bold">({{ arts?.length || 0 }})</span>
+          </span>
+          <ArtsList :arts="arts || []" />
+        </q-item-section>
       </q-item>
       <q-item clickable v-ripple class="q-mt-auto">
         <q-item-section>
@@ -79,7 +84,7 @@ export default defineComponent({
     const { getArts } = useDB();
 
     const isMini = ref(false);
-    const arts = ref<IArt[]>([]);
+    const arts = ref<IArt[] | null>(null);
 
     function toggleSidebar() {
       isMini.value = !isMini.value;

@@ -3,10 +3,14 @@ import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { IArt } from 'src/interfaces';
 
 const useDB = () => {
-  async function getArts() {
+  async function getArts(): Promise<IArt[]> {
     const artsCollection = collection(firebaseStore, 'arts');
     const artsSnapshot = await getDocs(artsCollection);
-    const artsList = artsSnapshot.docs.map((doc) => doc.data());
+    debugger;
+    const artsList = artsSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      name: doc.data()?.name || '',
+    }));
     return artsList;
   }
 
