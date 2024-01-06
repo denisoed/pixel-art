@@ -1,5 +1,5 @@
 /* eslint-env node */
-
+require('dotenv').config();
 /*
  * This file runs in a Node context (it's NOT transpiled by Babel), so use only
  * the ES6 features that are supported by your Node version. https://node.green/
@@ -28,7 +28,7 @@ module.exports = configure(function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['i18n', 'axios'],
+    boot: ['i18n', 'axios', 'firebase'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ['app.scss'],
@@ -63,7 +63,15 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {
+        API_KEY: process.env.API_KEY || '',
+        AUTH_DOMAIN: process.env.AUTH_DOMAIN || '',
+        PROJECT_ID: process.env.PROJECT_ID || '',
+        STORAGE_BUCKET: process.env.STORAGE_BUCKET || '',
+        MESSAGING_SENDER_ID: process.env.MESSAGING_SENDER_ID || '',
+        APP_ID: process.env.APP_ID || '',
+        MEASUREMENT_ID: process.env.MEASUREMENT_ID || '',
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
