@@ -11,5 +11,6 @@ export interface IUser {
 }
 
 export interface IArt {
+  id: string;
   name: string;
 }

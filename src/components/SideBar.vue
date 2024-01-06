@@ -26,7 +26,7 @@
           <q-icon name="mdi-plus" />
         </q-item-section>
       </q-item>
-      <q-item class="flex column q-gap-sm">
+      <q-item class="flex column q-gap-md">
         <span class="text-caption">Your Arts</span>
         <ArtsList :arts="arts" />
       </q-item>
@@ -63,7 +63,7 @@ import { useUserStore } from 'src/stores/user';
 import useDB from 'src/modules/useDB';
 import { IArt } from 'src/interfaces';
 
-import ArtsList from 'src/components/ArtsList.vue';
+import ArtsList from 'src/components/ArtsList/index.vue';
 
 const MINI_STORAGE_KEY = 'pixel-art-sidebar-mini';
 

@@ -1,5 +1,6 @@
 import { firebaseStore } from 'boot/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { IArt } from 'src/interfaces';
 
 const useDB = () => {
   async function getArts() {
@@ -9,8 +10,15 @@ const useDB = () => {
     return artsList;
   }
 
+  async function createArt(art: IArt) {
+    const artsCollection = collection(firebaseStore, 'arts');
+    const artDoc = await addDoc(artsCollection, art);
+    return artDoc;
+  }
+
   return {
     getArts,
+    createArt,
   };
 };
 
