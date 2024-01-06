@@ -22,3 +22,6 @@ export const VALID_FILE_TYPES = [
   'image/gif',
   'image/jpg',
 ];
+
+export const ACCESS_TOKEN_KEY = 'access-token';
+export const REFRESH_TOKEN_KEY = 'refresh-token';

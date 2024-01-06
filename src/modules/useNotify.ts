@@ -6,6 +6,7 @@ const useNotify = () => {
   function notifySuccess(message: string) {
     $q.notify({
       type: 'positive',
+      color: 'primary',
       position: 'top-right',
       message,
     });

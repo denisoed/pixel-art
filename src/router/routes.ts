@@ -9,6 +9,10 @@ const routes: RouteRecordRaw[] = [
       { path: 'art/:uuid', component: () => import('pages/ArtPage.vue') },
     ],
   },
+  {
+    path: '/auth',
+    component: () => import('pages/AuthPage.vue'),
+  },
 
   // Always leave this as last one,
   // but you can also remove it

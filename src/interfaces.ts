@@ -3,3 +3,9 @@ export interface IPixel {
   y: number;
   color: string;
 }
+
+export interface IUser {
+  photoURL: string | null;
+  displayName: string | null;
+  email: string | null;
+}
