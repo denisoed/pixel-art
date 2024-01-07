@@ -2,6 +2,7 @@ import { firebaseStore } from 'boot/firebase';
 import {
   collection,
   getDocs,
+  getDoc,
   addDoc,
   deleteDoc,
   doc,
@@ -9,7 +10,7 @@ import {
 import { IArt, IArtPayload } from 'src/interfaces';
 
 const useDB = () => {
-  async function getArts(): Promise<IArt[]> {
+  async function fetchArts(): Promise<IArt[]> {
     const artsCollection = collection(firebaseStore, 'arts');
     const artsSnapshot = await getDocs(artsCollection);
     const artsList = artsSnapshot.docs.map((doc) => ({
@@ -18,6 +19,12 @@ const useDB = () => {
       json: doc.data()?.json || '',
     }));
     return artsList;
+  }
+
+  async function fetchArt(id: string): Promise<IArt | undefined> {
+    const artsCollection = collection(firebaseStore, 'arts');
+    const artDoc = await getDoc(doc(artsCollection, id));
+    return artDoc.data() as IArt;
   }
 
   async function createArt(art: IArtPayload) {
@@ -33,9 +40,10 @@ const useDB = () => {
   }
 
   return {
-    getArts,
+    fetchArts,
     createArt,
     deleteArt,
+    fetchArt,
   };
 };
 

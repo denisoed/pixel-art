@@ -32,6 +32,7 @@
 import { defineComponent, ref } from 'vue';
 import { version } from '../../package.json';
 import useDB from 'src/modules/useDB';
+import usePixelArt from 'src/modules/usePixelArt';
 import useNotify from 'src/modules/useNotify';
 import { useArtsStore } from 'src/stores/arts';
 import { useRouter } from 'vue-router';
@@ -46,7 +47,8 @@ export default defineComponent({
     FileUploader,
   },
   setup() {
-    const { createArt, getArts } = useDB();
+    const { createArt, fetchArts } = useDB();
+    const { generatePixelsFromFile } = usePixelArt();
     const { notifySuccess, notifyError } = useNotify();
     const { push } = useRouter();
     const artsStore = useArtsStore();
@@ -57,11 +59,17 @@ export default defineComponent({
       if (file) {
         try {
           loading.value = true;
+          const result = await Promise.all([
+            generatePixelsFromFile(file, 1),
+            generatePixelsFromFile(file, 2),
+            generatePixelsFromFile(file, 3),
+            generatePixelsFromFile(file, 4),
+          ]);
           const response = await createArt({
             name: file.name,
-            json: '',
+            json: JSON.stringify(result),
           });
-          const arts = await getArts();
+          const arts = await fetchArts();
           artsStore.setArts(arts);
           push(`/art/${response.id}`);
           notifySuccess('Art created successfully');
@@ -80,7 +88,7 @@ export default defineComponent({
           name: 'Simple Art',
           json: '',
         });
-        const arts = await getArts();
+        const arts = await fetchArts();
         artsStore.setArts(arts);
         push(`/art/${response.id}`);
         notifySuccess('Art created successfully');

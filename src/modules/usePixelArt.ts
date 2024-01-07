@@ -24,14 +24,17 @@ const usePixelArt = () => {
     return result;
   }
 
-  async function generatePixelsFromFile(file: File): Promise<IPixel[] | []> {
+  async function generatePixelsFromFile(
+    file: File,
+    resolution: number
+  ): Promise<IPixel[] | []> {
     if (!file) return [];
     const bitmap = await createImageBitmap(file);
     const canvas = document.querySelector('canvas');
     if (!canvas) return [];
     const ctx = canvas.getContext('2d');
     if (!ctx) return [];
-    const rows = PIXELS_STEP * getPixelsResolution.value;
+    const rows = PIXELS_STEP * resolution || 1;
     ctx.clearRect(0, 0, 9999, 9999);
     canvas.width = rows;
     canvas.height = rows;

@@ -11,7 +11,7 @@
         <PixelArtColors />
         <PixelArtTools />
       </div>
-      <PixelArtArea />
+      <PixelArtArea :loading="loading" />
     </div>
     <q-slider
       :model-value="getPixelsResolution"
@@ -32,10 +32,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import usePixelArt from 'src/modules/usePixelArt';
+import useDB from 'src/modules/useDB';
 import { useMainStore } from 'src/stores/main';
+import { useArtsStore } from 'src/stores/arts';
 import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
 
 import PixelArtArea from 'src/components/PixelArtArea.vue';
 import PixelArtColors from 'src/components/PixelArtColors.vue';
@@ -53,25 +56,41 @@ export default defineComponent({
     PixelArtOptions,
   },
   setup() {
+    const route = useRoute();
     const store = useMainStore();
-    const { getPixelsResolution, getFile } = storeToRefs(store);
-    const { generateInitPixels, generatePixelsFromFile, styles } =
-      usePixelArt();
+    const artsStore = useArtsStore();
+    const { getPixelsResolution } = storeToRefs(store);
+    const { getArt } = storeToRefs(artsStore);
+    const { generateInitPixels, styles } = usePixelArt();
+    const { fetchArt } = useDB();
 
-    function init() {
-      const pixels = generateInitPixels();
-      store.setPixels(pixels);
+    const loading = ref(false);
+
+    async function init() {
+      try {
+        loading.value = true;
+        const pixels = generateInitPixels();
+        store.setPixels(pixels);
+        if (route.params.id) {
+          const result = await fetchArt(route.params.id as string);
+          if (!result) return;
+          artsStore.setArt(result);
+          store.setPixels(
+            JSON.parse(result?.json)[getPixelsResolution.value - 1]
+          );
+        }
+      } finally {
+        loading.value = false;
+      }
     }
 
     async function onChangeResolution(value: number) {
       if (getPixelsResolution.value === value) return;
       store.setPixelsResolution(value);
-      if (getFile.value) {
-        const pixels = await generatePixelsFromFile(getFile.value);
-        store.setPixels(pixels);
-      } else {
-        const pixels = generateInitPixels();
-        store.setPixels(pixels);
+      if (getArt.value) {
+        store.setPixels(
+          JSON.parse(getArt.value.json)[getPixelsResolution.value - 1]
+        );
       }
     }
 
@@ -83,6 +102,7 @@ export default defineComponent({
       styles,
       getPixelsResolution,
       onChangeResolution,
+      loading,
     };
   },
 });

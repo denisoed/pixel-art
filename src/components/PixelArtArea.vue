@@ -6,12 +6,6 @@
       height: styles.area.height,
     }"
   >
-    <canvas
-      id="canvas"
-      :style="{
-        width: styles.area.width,
-      }"
-    />
     <div
       id="pixel-art-area"
       class="pixel-art-area"
@@ -31,6 +25,9 @@
         class="pixel"
       />
     </div>
+
+    <!-- Loader -->
+    <q-inner-loading :showing="loading" size="sm" style="z-index: 10" />
   </div>
 </template>
 
@@ -42,6 +39,12 @@ import usePixelArt from 'src/modules/usePixelArt';
 
 export default defineComponent({
   name: 'PixelArtArea',
+  props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
   setup() {
     const store = useMainStore();
     const { getEraser, getPixels, getColor } = storeToRefs(store);
@@ -119,15 +122,6 @@ export default defineComponent({
 .pixel-art-area_wrap {
   position: relative;
   box-sizing: initial;
-
-  #canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0;
-  }
 }
 
 .pixel-art-area {
