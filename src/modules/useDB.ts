@@ -5,6 +5,7 @@ import {
   getDoc,
   addDoc,
   deleteDoc,
+  updateDoc,
   doc,
 } from 'firebase/firestore';
 import { IArt, IArtPayload } from 'src/interfaces';
@@ -33,6 +34,12 @@ const useDB = () => {
     return artDoc;
   }
 
+  async function updateArt(id: string, art: IArtPayload) {
+    const artsCollection = collection(firebaseStore, 'arts');
+    const artDoc = await updateDoc(doc(artsCollection, id), { ...art });
+    return artDoc;
+  }
+
   async function deleteArt(id: string) {
     const artsCollection = collection(firebaseStore, 'arts');
     const artDoc = await deleteDoc(doc(artsCollection, id));
@@ -44,6 +51,7 @@ const useDB = () => {
     createArt,
     deleteArt,
     fetchArt,
+    updateArt,
   };
 };
 

@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import usePixelArt from 'src/modules/usePixelArt';
 import useDB from 'src/modules/useDB';
 import { useMainStore } from 'src/stores/main';
@@ -66,7 +66,7 @@ export default defineComponent({
 
     const loading = ref(false);
 
-    async function init() {
+    async function fetchData() {
       try {
         loading.value = true;
         const pixels = generateInitPixels();
@@ -94,9 +94,15 @@ export default defineComponent({
       }
     }
 
-    onMounted(() => {
-      init();
-    });
+    watch(
+      route,
+      () => {
+        fetchData();
+      },
+      {
+        immediate: true,
+      }
+    );
 
     return {
       styles,

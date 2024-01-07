@@ -3,7 +3,7 @@
     <!-- LEFT -->
     <div class="auth_left q-pa-md">
       <div class="auth_left-brand flex items-center q-gap-sm text-h6 text-bold">
-        <q-img src="logo.svg" class="auth_left-logo" />
+        <q-img src="logo.svg" class="auth_left-logo" spinner-size="20px" />
         Pixel Art
       </div>
     </div>
