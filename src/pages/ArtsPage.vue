@@ -41,7 +41,7 @@ import HelpBtn from 'src/components/HelpBtn.vue';
 import FileUploader from 'src/components/FileUploader.vue';
 
 export default defineComponent({
-  name: 'IndexPage',
+  name: 'ArtsPage',
   components: {
     HelpBtn,
     FileUploader,
@@ -71,7 +71,7 @@ export default defineComponent({
           });
           const arts = await fetchArts();
           artsStore.setArts(arts);
-          push(`/art/${response.id}`);
+          push(`/arts/${response.id}`);
           notifySuccess('Art created successfully');
         } catch {
           notifyError('Something went wrong. Please try again.');
@@ -90,7 +90,7 @@ export default defineComponent({
         });
         const arts = await fetchArts();
         artsStore.setArts(arts);
-        push(`/art/${response.id}`);
+        push(`/arts/${response.id}`);
         notifySuccess('Art created successfully');
       } catch {
         notifyError('Something went wrong. Please try again.');

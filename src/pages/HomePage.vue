@@ -52,7 +52,7 @@ import { date } from 'quasar';
 import useAuth from 'src/modules/useAuth';
 
 export default defineComponent({
-  name: 'AuthPage',
+  name: 'HomePage',
   setup() {
     const { signWithGoogle, loadingSignIn } = useAuth();
 

@@ -16,7 +16,7 @@ const useAuth = () => {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(firebaseAuth, provider);
       notifySuccess('Successful authorization');
-      push('/');
+      push('/arts');
     } catch {
       notifyError('Something went wrong. Please try again.');
     } finally {
@@ -26,7 +26,7 @@ const useAuth = () => {
 
   function signOut() {
     firebaseAuth.signOut();
-    push('/auth');
+    push('/');
   }
 
   return { signWithGoogle, signOut, loadingSignIn };

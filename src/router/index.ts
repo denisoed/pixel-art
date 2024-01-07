@@ -38,14 +38,14 @@ export default route(function (/* { store, ssrContext } */) {
   Router.beforeEach((to, from, next) => {
     firebaseAuth.onAuthStateChanged((user) => {
       if (!user) {
-        if (to.path !== '/auth') {
-          next({ path: '/auth' });
+        if (to.path !== '/') {
+          next({ path: '/' });
         } else {
           next();
         }
       } else {
-        if (to.path === '/auth') {
-          next({ path: '/' });
+        if (to.path === '/') {
+          next({ path: '/arts' });
         } else {
           next();
         }

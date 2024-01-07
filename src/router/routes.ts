@@ -2,16 +2,16 @@ import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/',
+    path: '/arts',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'art/:id', component: () => import('pages/ArtPage.vue') },
+      { path: '', component: () => import('src/pages/ArtsPage.vue') },
+      { path: ':id', component: () => import('src/pages/ArtPage.vue') },
     ],
   },
   {
-    path: '/auth',
-    component: () => import('pages/AuthPage.vue'),
+    path: '/',
+    component: () => import('src/pages/HomePage.vue'),
   },
 
   // Always leave this as last one,

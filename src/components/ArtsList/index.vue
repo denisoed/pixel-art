@@ -57,7 +57,7 @@ export default defineComponent({
         await deleteArt(id);
         artsStore.deleteArt(id);
         notifySuccess('Art deleted successfully');
-        push('/');
+        push('/arts');
       } catch {
         notifyError('Something went wrong. Please try again.');
       }

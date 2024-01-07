@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center"
+    class="not-found fullscreen text-white text-center q-pa-md flex flex-center"
   >
     <div>
       <div style="font-size: 30vh">404</div>
@@ -9,8 +9,7 @@
 
       <q-btn
         class="q-mt-xl"
-        color="white"
-        text-color="blue"
+        color="primary"
         unelevated
         to="/"
         label="Go Home"
@@ -27,3 +26,9 @@ export default defineComponent({
   name: 'ErrorNotFound',
 });
 </script>
+
+<style lang="scss" scoped>
+.not-found {
+  background: $dark-page;
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
   <div class="item-list flex items-center justify-between">
     <router-link
-      :to="`/art/${id}`"
+      :to="`/arts/${id}`"
       class="item-list-link"
       :class="{
         'router-link-exact-active active': openedMenu,
