@@ -1,10 +1,21 @@
 <template>
   <div class="auth flex no-wrap">
     <!-- LEFT -->
-    <div class="auth_left q-pa-md">
+    <div class="auth_left flex column q-pa-md">
       <div class="auth_left-brand flex items-center q-gap-sm text-h6 text-bold">
         <q-img src="logo.svg" class="auth_left-logo" spinner-size="20px" />
         Pixel Art
+      </div>
+
+      <div class="flex column no-wrap q-my-auto">
+        <h1 class="text-h3 q-my-md">
+          Create <span>Pixel Art</span> from your images
+        </h1>
+        <p class="auth_left-descr text-grey q-ma-none">
+          Effortlessly transform your images into stunning pixelated
+          masterpieces, celebrating the beauty of minimalism and artistic
+          precision.
+        </p>
       </div>
     </div>
 
@@ -70,6 +81,20 @@ export default defineComponent({
         width: 30px;
         height: 30px;
       }
+    }
+
+    h1 {
+      font-weight: bold;
+      max-width: 450px;
+
+      span {
+        color: $primary;
+      }
+    }
+
+    &-descr {
+      max-width: 500px;
+      font-size: 18px;
     }
   }
 
