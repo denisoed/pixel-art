@@ -81,7 +81,7 @@ export default defineComponent({
     }
 
     function syncPixelsWithStores() {
-      const pixels = document.querySelectorAll('.pixel');
+      const pixels = document.querySelectorAll('.pixel') || [];
       const result = [];
       for (const pixel of pixels) {
         result.push({

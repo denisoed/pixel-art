@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-center q-gap-sm">
-    <PixelArtOptions />
+    <PixelArtOptions @on-save="onSave" :loading="loading" />
     <div
       class="flex flex-center column q-gap-xs"
       :style="{
@@ -35,6 +35,7 @@
 import { defineComponent, ref, watch } from 'vue';
 import usePixelArt from 'src/modules/usePixelArt';
 import useDB from 'src/modules/useDB';
+import useNotify from 'src/modules/useNotify';
 import { useMainStore } from 'src/stores/main';
 import { useArtsStore } from 'src/stores/arts';
 import { storeToRefs } from 'pinia';
@@ -59,10 +60,11 @@ export default defineComponent({
     const route = useRoute();
     const store = useMainStore();
     const artsStore = useArtsStore();
-    const { getPixelsResolution } = storeToRefs(store);
+    const { notifySuccess, notifyError } = useNotify();
+    const { getPixelsResolution, getPixels } = storeToRefs(store);
     const { getArt } = storeToRefs(artsStore);
     const { generateInitPixels, styles } = usePixelArt();
-    const { fetchArt } = useDB();
+    const { fetchArt, updateArt } = useDB();
 
     const loading = ref(false);
 
@@ -94,6 +96,25 @@ export default defineComponent({
       }
     }
 
+    async function onSave() {
+      try {
+        loading.value = true;
+        if (getArt.value) {
+          const list = [...JSON.parse(getArt.value.json)];
+          list[getPixelsResolution.value - 1] = getPixels.value;
+          await updateArt(route.params.id as string, {
+            name: getArt.value.name,
+            json: JSON.stringify(list),
+          });
+          notifySuccess('Art updated successfully');
+        }
+      } catch {
+        notifyError('Something went wrong. Please try again.');
+      } finally {
+        loading.value = false;
+      }
+    }
+
     watch(
       route,
       () => {
@@ -106,9 +127,10 @@ export default defineComponent({
 
     return {
       styles,
+      loading,
       getPixelsResolution,
       onChangeResolution,
-      loading,
+      onSave,
     };
   },
 });

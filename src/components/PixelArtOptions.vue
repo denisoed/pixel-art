@@ -4,10 +4,11 @@
       size="sm"
       color="primary"
       round
-      @click="onReset"
-      icon="mdi-trash-can-outline"
+      icon="mdi-content-save"
+      @click="onSave"
+      :disable="loading"
     >
-      <q-tooltip class="text-caption">Clear Board</q-tooltip>
+      <q-tooltip class="text-caption">Save changes</q-tooltip>
     </q-btn>
     <q-btn size="sm" disabled color="primary" round icon="mdi-undo-variant">
       <q-tooltip class="text-caption">Comming soon...</q-tooltip>
@@ -19,27 +20,24 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick } from 'vue';
-import { useMainStore } from 'src/stores/main';
-import usePixelArt from 'src/modules/usePixelArt';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'PixelArtOptions',
-  setup() {
-    const store = useMainStore();
-
-    const { generateInitPixels } = usePixelArt();
-
-    function onReset() {
-      store.setPixels([]);
-      const pixels = generateInitPixels();
-      nextTick(() => {
-        store.setPixels(pixels);
-      });
+  props: {
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ['on-save'],
+  setup(_, { emit }) {
+    function onSave() {
+      emit('on-save');
     }
 
     return {
-      onReset,
+      onSave,
     };
   },
 });
