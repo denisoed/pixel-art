@@ -21,20 +21,30 @@
     </div>
     <q-list class="flex column full-height">
       <q-item clickable v-ripple to="/" class="text-white">
-        <q-item-section> Create New Art </q-item-section>
+        <q-item-section>
+          <div class="flex no-wrap items-center">
+            <q-img
+              src="logo.svg"
+              width="30px"
+              class="q-mr-sm"
+              spinner-size="20px"
+            />
+            New Art
+          </div>
+        </q-item-section>
         <q-item-section avatar>
           <q-icon name="mdi-plus" />
         </q-item-section>
       </q-item>
       <q-item>
-        <q-item-section class="flex column q-gap-md q-mt-md">
+        <q-item-section class="flex column q-mt-md q-pb-none">
           <span class="text-caption">
             Your Arts
             <span class="text-weight-bold">({{ arts?.length || 0 }})</span>
           </span>
-          <ArtsList :arts="arts" />
         </q-item-section>
       </q-item>
+      <ArtsList :arts="arts" />
       <q-item clickable v-ripple class="q-mt-auto">
         <q-item-section>
           {{ name }}
