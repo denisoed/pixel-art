@@ -31,7 +31,11 @@
 <script>
 import useNotify from 'src/modules/useNotify';
 import { defineComponent } from 'vue';
-import { VALID_FILE_EXTS, FILE_MAX_SIZE_KB } from 'src/config/index';
+import {
+  VALID_FILE_EXTS,
+  VALID_FILE_TYPES,
+  FILE_MAX_SIZE_KB,
+} from 'src/config/index';
 
 const INFO = [
   `File size should not exceed ${FILE_MAX_SIZE_KB} KB`,
@@ -61,12 +65,12 @@ export default defineComponent({
     async function onChangeImage(image) {
       try {
         const fileSize = image.size / 1000;
-        const fileType = image.name.split('.').pop();
+        const fileType = image.type;
         if (fileSize >= FILE_MAX_SIZE_KB) {
           notifyError(`File size must be less than ${FILE_MAX_SIZE_KB} KB.`);
           return;
         }
-        if (!VALID_FILE_EXTS.includes(fileType)) {
+        if (!VALID_FILE_TYPES.includes(fileType)) {
           notifyError(
             `File type must be one of: ${VALID_FILE_EXTS.join(', ')}.`
           );
