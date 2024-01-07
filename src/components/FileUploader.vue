@@ -61,8 +61,15 @@ export default defineComponent({
     async function onChangeImage(image) {
       try {
         const fileSize = image.size / 1000;
+        const fileType = image.name.split('.').pop();
         if (fileSize >= FILE_MAX_SIZE_KB) {
           notifyError(`File size must be less than ${FILE_MAX_SIZE_KB} KB.`);
+          return;
+        }
+        if (!VALID_FILE_EXTS.includes(fileType)) {
+          notifyError(
+            `File type must be one of: ${VALID_FILE_EXTS.join(', ')}.`
+          );
           return;
         }
         emit('on-change', image);

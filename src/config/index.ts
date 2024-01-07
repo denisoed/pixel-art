@@ -16,14 +16,9 @@ export const COLORS = [
   '#7935c1',
 ];
 
-export const VALID_FILE_TYPES = [
-  'image/png',
-  'image/jpeg',
-  'image/gif',
-  'image/jpg',
-];
+export const VALID_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 
-export const VALID_FILE_EXTS = ['.png', '.jpeg', '.gif', '.jpg'];
+export const VALID_FILE_EXTS = ['.png', '.jpeg', '.jpg'];
 
 export const FILE_MAX_SIZE_KB = 4096;
 
