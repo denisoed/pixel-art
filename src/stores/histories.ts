@@ -32,11 +32,11 @@ export const useHistoriesStore = defineStore('histories', {
     },
     async setHistory(uuid: string, history: IPixel[]) {
       this.histories.push(history);
-      set(uuid, history);
+      set(uuid, JSON.stringify(history));
     },
     async getPreviousHistory() {
       const lastItem = await count();
-      // TODO
+      return this.histories[lastItem - 1];
     },
   },
 });

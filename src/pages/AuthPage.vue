@@ -2,7 +2,10 @@
   <div class="auth flex no-wrap">
     <!-- LEFT -->
     <div class="auth_left q-pa-md">
-      <div class="auth_left-brand text-h6 text-bold">Pixel Art</div>
+      <div class="auth_left-brand flex items-center q-gap-sm text-h6 text-bold">
+        <q-img src="src/assets/logo.svg" class="auth_left-logo" />
+        Pixel Art
+      </div>
     </div>
 
     <!-- RIGHT -->
@@ -61,6 +64,13 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     background: $dark;
+
+    &-brand {
+      .q-img {
+        width: 30px;
+        height: 30px;
+      }
+    }
   }
 
   &_right {

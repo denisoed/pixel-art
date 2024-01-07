@@ -36,7 +36,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
-import { useHistoriesStore } from 'src/stores/histories';
 import { useMainStore } from 'src/stores/main';
 import { storeToRefs } from 'pinia';
 import usePixelArt from 'src/modules/usePixelArt';
@@ -46,7 +45,6 @@ export default defineComponent({
   setup() {
     const store = useMainStore();
     const { getEraser, getPixels, getColor } = storeToRefs(store);
-    const historiesStore = useHistoriesStore();
     const { styles } = usePixelArt();
 
     const isMouseDown = ref(false);
@@ -91,7 +89,6 @@ export default defineComponent({
       }
       if (JSON.stringify(result) !== JSON.stringify(getPixels.value)) {
         store.setPixels(result);
-        // historiesStore.setHistory(result);
       }
     }
 

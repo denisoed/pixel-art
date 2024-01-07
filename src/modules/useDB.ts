@@ -15,6 +15,7 @@ const useDB = () => {
     const artsList = artsSnapshot.docs.map((doc) => ({
       id: doc.id,
       name: doc.data()?.name || '',
+      json: doc.data()?.json || '',
     }));
     return artsList;
   }

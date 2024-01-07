@@ -16,7 +16,7 @@
     <q-slider
       :model-value="getPixelsResolution"
       :min="1"
-      :max="3"
+      :max="4"
       color="primary"
       thumb-size="25px"
       markers

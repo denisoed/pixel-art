@@ -13,11 +13,15 @@
           Simple Board
           <span class="text-caption text-grey">Board without any art</span>
         </div>
-        <div v-ripple class="home_buttons-item full-width flex column">
+        <div
+          v-ripple
+          class="home_buttons-item full-width cursor-not-allowed flex column"
+        >
           Random Art
           <span class="text-caption text-grey"
             >Create random art from the our gallery</span
           >
+          <q-tooltip class="text-caption">Coming Soon...</q-tooltip>
         </div>
       </div>
     </div>
@@ -55,6 +59,7 @@ export default defineComponent({
           loading.value = true;
           const response = await createArt({
             name: file.name,
+            json: '',
           });
           const arts = await getArts();
           artsStore.setArts(arts);
@@ -73,6 +78,7 @@ export default defineComponent({
         loading.value = true;
         const response = await createArt({
           name: 'Simple Art',
+          json: '',
         });
         const arts = await getArts();
         artsStore.setArts(arts);

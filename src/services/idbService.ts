@@ -10,7 +10,7 @@ const useIDBService = (db: string, table: string, version: number) => {
   async function get(key: string) {
     return (await dbPromise).get(table, key);
   }
-  async function set(key: string, val: any) {
+  async function set(key: string, val: string) {
     return (await dbPromise).put(table, val, key);
   }
   async function del(key: string) {

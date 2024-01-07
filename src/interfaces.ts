@@ -13,8 +13,10 @@ export interface IUser {
 export interface IArt {
   id: string;
   name: string;
+  json: string;
 }
 
 export interface IArtPayload {
   name: string;
+  json: string;
 }

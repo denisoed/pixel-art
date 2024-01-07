@@ -30,7 +30,7 @@
 
 <script>
 import useNotify from 'src/modules/useNotify';
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { VALID_FILE_EXTS, FILE_MAX_SIZE_KB } from 'src/config/index';
 
 const INFO = [
