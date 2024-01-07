@@ -116,7 +116,7 @@ export default defineComponent({
       &::after {
         border-width: 2px;
         border-style: dashed;
-        border-radius: 16px;
+        border-radius: 4px;
       }
 
       .q-field__append {

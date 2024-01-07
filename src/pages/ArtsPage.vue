@@ -3,6 +3,13 @@
     <div class="text-caption absolute-top-left q-mt-sm">v{{ version }}</div>
     <HelpBtn />
     <div class="flex column q-gap-md">
+      <div
+        class="flex no-wrap items-center home-logo q-mx-auto q-gap-md q-mb-lg"
+      >
+        <q-img src="logo.svg" alt="Logo" />
+        <span class="text-h4 text-bold">Pixel Art</span>
+      </div>
+
       <FileUploader :loading="loading" @on-change="onFileChanged" />
       <div class="home_buttons flex items-start no-wrap q-gap-md q-px-md">
         <div
@@ -113,10 +120,16 @@ export default defineComponent({
 .home {
   min-height: calc(100vh - 32px);
 
+  &-logo {
+    .q-img {
+      width: 70px;
+    }
+  }
+
   &_buttons {
     &-item {
       position: relative;
-      border-radius: 16px;
+      border-radius: 4px;
       padding: 15px;
       border: 1px solid $dark;
       cursor: pointer;
