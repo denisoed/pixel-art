@@ -1,5 +1,5 @@
 <template>
-  <div class="arts-list flex column no-wrap q-gap-md">
+  <div class="arts-list flex column no-wrap q-gap-sm">
     <template v-if="list">
       <template v-if="list.length">
         <ItemList
@@ -80,7 +80,6 @@ export default defineComponent({
   width: 100%;
   max-height: 70vh;
   overflow-y: auto;
-  padding: 15px;
   padding-top: 5px;
 }
 </style>

@@ -90,6 +90,7 @@ export default defineComponent({
   position: relative;
   text-decoration: none;
   color: #fff;
+  position: relative;
 
   &::before {
     content: '';
@@ -97,8 +98,8 @@ export default defineComponent({
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: calc(100% + 30px);
-    height: calc(100% + 10px);
+    width: 100%;
+    height: 100%;
     border-radius: 4px;
     display: none;
     background: $dark-page;
@@ -108,9 +109,10 @@ export default defineComponent({
   &-controls {
     height: 100%;
     display: none;
+    align-items: center;
     position: absolute;
     top: 0;
-    right: 0;
+    right: 15px;
     z-index: 2;
     background: transparent;
 
@@ -125,32 +127,34 @@ export default defineComponent({
     }
 
     .item-list-controls {
-      display: block;
+      display: flex;
     }
   }
 
   &:active {
-    transform: scale(0.98);
+    transform: scale(0.99);
   }
 
   &-name {
     width: 100%;
-    height: 100%;
     color: #fff;
     z-index: 1;
     position: relative;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 150px;
+    max-width: 170px;
   }
 
   &-link {
     width: 100%;
     height: 100%;
-    display: block;
+    display: flex;
+    align-items: center;
     color: #fff;
     text-decoration: none;
+    line-height: normal;
+    padding: 8px 15px;
   }
 
   .router-link-exact-active {
@@ -160,15 +164,15 @@ export default defineComponent({
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: calc(100% + 30px);
-      height: calc(100% + 10px);
+      width: 100%;
+      height: 100%;
       border-radius: 4px;
       z-index: 0;
       background: rgba($dark-page, 0.5);
     }
 
     ~ .item-list-controls {
-      display: block;
+      display: flex;
     }
   }
 
