@@ -10,12 +10,15 @@
           @on-delete="onArtDelete"
         />
       </template>
-      <div v-else class="flex q-gap-sm items-center text-caption text-grey">
+      <div
+        v-else
+        class="flex q-gap-sm items-center text-caption text-grey q-px-md"
+      >
         <q-icon name="mdi-clipboard-text-multiple-outline" size="xs" />
         No arts
       </div>
     </template>
-    <div v-else class="arts-list_loading flex items-center q-gap-sm">
+    <div v-else class="arts-list_loading flex items-center q-gap-sm q-px-md">
       <q-spinner color="primary" size="1em" />
       <div class="text-caption text-grey">Loading...</div>
     </div>

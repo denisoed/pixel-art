@@ -1,6 +1,6 @@
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { IPixel } from 'src/interfaces';
-import { toPng } from 'html-to-image';
+import { toPng, toJpeg } from 'html-to-image';
 import { useMainStore } from 'src/stores/main';
 import { storeToRefs } from 'pinia';
 import { PIXELS_STEP } from 'src/config';
@@ -8,6 +8,8 @@ import { PIXELS_STEP } from 'src/config';
 const usePixelArt = () => {
   const store = useMainStore();
   const { getPixelsResolution } = storeToRefs(store);
+
+  const exportLoading = ref(false);
 
   function generateInitPixels(): IPixel[] {
     const result = [];
@@ -80,15 +82,37 @@ const usePixelArt = () => {
   }
 
   async function exportPng() {
-    const pixelArea: HTMLElement | null =
-      document.querySelector('#pixel-art-area');
-    if (!pixelArea) return;
-    const dataUrl = await toPng(pixelArea);
-    const link = document.createElement('a');
-    link.download = 'pixel-art.png';
-    link.href = dataUrl;
-    link.click();
-    link.remove();
+    try {
+      exportLoading.value = true;
+      const pixelArea: HTMLElement | null =
+        document.querySelector('#pixel-art-area');
+      if (!pixelArea) return;
+      const dataUrl = await toPng(pixelArea);
+      const link = document.createElement('a');
+      link.download = 'pixel-art.png';
+      link.href = dataUrl;
+      link.click();
+      link.remove();
+    } finally {
+      exportLoading.value = false;
+    }
+  }
+
+  async function exportJpeg() {
+    try {
+      exportLoading.value = true;
+      const pixelArea: HTMLElement | null =
+        document.querySelector('#pixel-art-area');
+      if (!pixelArea) return;
+      const dataUrl = await toJpeg(pixelArea);
+      const link = document.createElement('a');
+      link.download = 'pixel-art.jpeg';
+      link.href = dataUrl;
+      link.click();
+      link.remove();
+    } finally {
+      exportLoading.value = false;
+    }
   }
 
   const styles = computed(() => {
@@ -98,20 +122,12 @@ const usePixelArt = () => {
       [3]: 0.55,
       [4]: 0.445,
     };
-    const bRadius = {
-      [1]: 3,
-      [2]: 2,
-      [3]: 2,
-      [4]: 1,
-    };
     const gap = {
       [1]: 3,
       [2]: 2,
       [3]: 2,
       [4]: 1,
     };
-    const borderRadius =
-      bRadius[getPixelsResolution.value as keyof typeof bRadius];
     const size = rem[getPixelsResolution.value as keyof typeof rem];
     const indent = gap[getPixelsResolution.value as keyof typeof gap];
     const rows = PIXELS_STEP * getPixelsResolution.value;
@@ -125,7 +141,6 @@ const usePixelArt = () => {
         marginBottom: `${indent}px`,
         width: `${size}rem`,
         height: `${size}rem`,
-        borderRadius: `${borderRadius}px`,
       },
     };
   });
@@ -135,7 +150,9 @@ const usePixelArt = () => {
     generatePixelsFromFile,
     generateCss,
     exportPng,
+    exportJpeg,
     styles,
+    exportLoading,
   };
 };
 

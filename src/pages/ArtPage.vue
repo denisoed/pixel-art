@@ -1,6 +1,11 @@
 <template>
   <div class="art-page flex flex-center q-gap-sm">
-    <PixelArtOptions @on-save="onSave" :loading="loading" />
+    <PixelArtOptions
+      @on-save="onSave"
+      @on-export-png="exportPng"
+      @on-export-jpeg="exportJpeg"
+      :loading="loading"
+    />
     <div
       class="flex flex-center column q-gap-xs"
       :style="{
@@ -11,7 +16,7 @@
         <PixelArtColors />
         <PixelArtTools />
       </div>
-      <PixelArtArea :loading="loading" />
+      <PixelArtArea :loading="loading || exportLoading" />
     </div>
     <q-slider
       :model-value="getPixelsResolution"
@@ -63,7 +68,8 @@ export default defineComponent({
     const { notifySuccess, notifyError } = useNotify();
     const { getPixelsResolution, getPixels } = storeToRefs(store);
     const { getArt } = storeToRefs(artsStore);
-    const { generateInitPixels, styles } = usePixelArt();
+    const { generateInitPixels, styles, exportPng, exportJpeg, exportLoading } =
+      usePixelArt();
     const { fetchArt, updateArt } = useDB();
 
     const loading = ref(false);
@@ -131,6 +137,9 @@ export default defineComponent({
       getPixelsResolution,
       onChangeResolution,
       onSave,
+      exportPng,
+      exportJpeg,
+      exportLoading,
     };
   },
 });
