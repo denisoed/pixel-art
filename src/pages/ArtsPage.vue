@@ -11,7 +11,7 @@
       </div>
 
       <FileUploader :loading="loading" @on-change="onFileChanged" />
-      <div class="home_buttons flex items-start no-wrap q-gap-md q-px-md">
+      <div class="home_buttons flex items-start no-wrap q-gap-md">
         <div
           v-ripple
           class="home_buttons-item full-width flex column"

@@ -44,7 +44,11 @@
           </span>
         </q-item-section>
       </q-item>
-      <ArtsList :arts="arts" />
+      <q-item class="q-pa-none">
+        <q-item-section class="q-pa-none">
+          <ArtsList :arts="arts" />
+        </q-item-section>
+      </q-item>
       <q-item clickable v-ripple class="q-mt-auto">
         <q-item-section>
           {{ name }}
