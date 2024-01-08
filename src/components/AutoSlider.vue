@@ -90,9 +90,6 @@ export default defineComponent({
   position: relative;
   height: 100vh;
   overflow: hidden;
-  position: absolute;
-  top: 0;
-  right: 40px;
 
   &_list {
     width: 500px;

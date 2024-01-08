@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-center q-gap-sm">
+  <div class="art-page flex flex-center q-gap-sm">
     <PixelArtOptions @on-save="onSave" :loading="loading" />
     <div
       class="flex flex-center column q-gap-xs"
@@ -136,9 +136,9 @@ export default defineComponent({
 });
 </script>
 
-<style>
-.hidden {
-  display: none !important;
+<style lang="scss" scoped>
+.art-page {
+  min-height: calc(100vh - 32px);
 }
 
 .flex {

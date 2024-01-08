@@ -8,7 +8,7 @@
       </div>
 
       <div class="auth_left-info flex column align-start no-wrap q-my-auto">
-        <h1 class="text-h3 q-my-md">
+        <h1 class="q-my-md">
           Create <span>Pixel Art</span><br />
           from your images
         </h1>
@@ -109,6 +109,8 @@ export default defineComponent({
     h1 {
       font-weight: bold;
       width: max-content;
+      font-size: 3.5vmax;
+      line-height: normal;
       background-color: rgba($dark, 0.1);
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(5px);
@@ -121,9 +123,20 @@ export default defineComponent({
     &-descr {
       font-size: 18px;
       width: max-content;
+      font-size: 1.2vmax;
       background-color: rgba($dark, 0.1);
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(5px);
+    }
+
+    :deep(.auto-slider) {
+      position: absolute;
+      top: 0;
+      right: 10%;
+
+      .auto-slider_list {
+        width: 35vw !important;
+      }
     }
   }
 
