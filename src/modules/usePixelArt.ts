@@ -4,6 +4,7 @@ import { useMainStore } from 'src/stores/main';
 import { storeToRefs } from 'pinia';
 import { PIXELS_STEP } from 'src/config';
 import html2canvas from 'html2canvas';
+import { elementToSVG } from 'dom-to-svg';
 
 const usePixelArt = () => {
   const store = useMainStore();
@@ -81,9 +82,17 @@ const usePixelArt = () => {
     return css;
   }
 
+  function download(href: string, name: string) {
+    const link = document.createElement('a');
+    link.download = name;
+    link.href = href;
+    link.click();
+    link.remove();
+  }
+
   function exportImage(
-    type: 'image/png' | 'image/jpeg' = 'image/png',
-    ext: 'png' | 'jpeg' = 'png',
+    type: 'image/png' | 'image/jpeg' | 'image/webp' = 'image/png',
+    ext: 'png' | 'jpeg' | 'webp' = 'png',
     params: { backgroundColor?: string } = {}
   ) {
     try {
@@ -93,11 +102,7 @@ const usePixelArt = () => {
       if (!pixelArea) return;
       html2canvas(pixelArea, params).then((canvas) => {
         const image = canvas.toDataURL(type);
-        const link = document.createElement('a');
-        link.download = `pixel-art.${ext}`;
-        link.href = image;
-        link.click();
-        link.remove();
+        download(image, `pixel-art.${ext}`);
       });
     } finally {
       exportLoading.value = false;
@@ -106,6 +111,22 @@ const usePixelArt = () => {
 
   async function exportPng() {
     exportImage('image/png', 'png');
+  }
+
+  async function exportSvg() {
+    const pixelArea: HTMLElement | null =
+      document.querySelector('#pixel-art-area');
+    if (!pixelArea) return;
+    const svg = await elementToSVG(pixelArea);
+    const svgBlob = new Blob([svg.documentElement.outerHTML], {
+      type: 'image/svg+xml;charset=utf-8',
+    });
+    const svgUrl = URL.createObjectURL(svgBlob);
+    download(svgUrl, 'pixel-art.svg');
+  }
+
+  async function exportWebp() {
+    exportImage('image/webp', 'webp');
   }
 
   async function exportJpeg() {
@@ -143,12 +164,14 @@ const usePixelArt = () => {
   });
 
   return {
+    styles,
     generateInitPixels,
     generatePixelsFromFile,
     generateCss,
     exportPng,
     exportJpeg,
-    styles,
+    exportWebp,
+    exportSvg,
     exportLoading,
   };
 };

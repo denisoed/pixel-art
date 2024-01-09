@@ -4,6 +4,8 @@
       @on-save="onSave"
       @on-export-png="exportPng"
       @on-export-jpeg="exportJpeg"
+      @on-export-webp="exportWebp"
+      @on-export-svg="exportSvg"
       :loading="loading"
     />
     <div
@@ -68,8 +70,15 @@ export default defineComponent({
     const { notifySuccess, notifyError } = useNotify();
     const { getPixelsResolution, getPixels } = storeToRefs(store);
     const { getArt } = storeToRefs(artsStore);
-    const { generateInitPixels, styles, exportPng, exportJpeg, exportLoading } =
-      usePixelArt();
+    const {
+      generateInitPixels,
+      styles,
+      exportPng,
+      exportJpeg,
+      exportLoading,
+      exportWebp,
+      exportSvg,
+    } = usePixelArt();
     const { fetchArt, updateArt } = useDB();
 
     const loading = ref(false);
@@ -140,6 +149,8 @@ export default defineComponent({
       exportPng,
       exportJpeg,
       exportLoading,
+      exportWebp,
+      exportSvg,
     };
   },
 });

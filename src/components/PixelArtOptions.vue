@@ -52,7 +52,13 @@ interface ExportListItem {
   event: string;
 }
 
-type Events = 'on-save' | 'on-export-png' | 'on-export-jpeg' | 'on-export-svg';
+type Events =
+  | 'on-save'
+  | 'on-export-png'
+  | 'on-export-jpeg'
+  | 'on-export-svg'
+  | 'on-export-webp'
+  | 'on-export-svg';
 
 const EXPORT_LIST: ExportListItem[] = [
   {
@@ -62,6 +68,14 @@ const EXPORT_LIST: ExportListItem[] = [
   {
     label: 'Export JPEG',
     event: 'on-export-jpeg',
+  },
+  {
+    label: 'Export WebP',
+    event: 'on-export-webp',
+  },
+  {
+    label: 'Export SVG',
+    event: 'on-export-svg',
   },
 ];
 
