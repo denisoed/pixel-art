@@ -10,7 +10,13 @@
     >
       <q-tooltip class="text-caption">Save changes</q-tooltip>
     </q-btn>
-    <q-btn size="sm" color="primary" round icon="mdi-download">
+    <q-btn
+      size="sm"
+      color="primary"
+      round
+      icon="mdi-download"
+      :disable="loading"
+    >
       <q-menu anchor="bottom right" self="top right" :offset="[0, 10]">
         <q-list>
           <q-item
@@ -19,7 +25,7 @@
             clickable
             class="bg-dark text-white"
             v-close-popup
-            @click="$emit(item.event)"
+            @click="onClick(item.event)"
             :disable="loading"
           >
             <q-item-section>
@@ -41,7 +47,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-const EXPORT_LIST = [
+interface ExportListItem {
+  label: string;
+  event: string;
+}
+
+type Events = 'on-save' | 'on-export-png' | 'on-export-jpeg' | 'on-export-svg';
+
+const EXPORT_LIST: ExportListItem[] = [
   {
     label: 'Export PNG',
     event: 'on-export-png',
@@ -60,14 +73,19 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: ['on-save', 'on-export-png', 'on-export-jpeg', 'on-export-svg'],
+  emits: [] as Events[],
   setup(_, { emit }) {
     function onSave() {
       emit('on-save');
     }
 
+    function onClick(event: string) {
+      emit(event as Events);
+    }
+
     return {
       onSave,
+      onClick,
       EXPORT_LIST,
     };
   },

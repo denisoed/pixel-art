@@ -1,9 +1,9 @@
 import { computed, ref } from 'vue';
 import { IPixel } from 'src/interfaces';
-import { toPng, toJpeg } from 'html-to-image';
 import { useMainStore } from 'src/stores/main';
 import { storeToRefs } from 'pinia';
 import { PIXELS_STEP } from 'src/config';
+import html2canvas from 'html2canvas';
 
 const usePixelArt = () => {
   const store = useMainStore();
@@ -81,38 +81,35 @@ const usePixelArt = () => {
     return css;
   }
 
-  async function exportPng() {
+  function exportImage(
+    type: 'image/png' | 'image/jpeg' = 'image/png',
+    ext: 'png' | 'jpeg' = 'png',
+    params: { backgroundColor?: string } = {}
+  ) {
     try {
       exportLoading.value = true;
       const pixelArea: HTMLElement | null =
         document.querySelector('#pixel-art-area');
       if (!pixelArea) return;
-      const dataUrl = await toPng(pixelArea);
-      const link = document.createElement('a');
-      link.download = 'pixel-art.png';
-      link.href = dataUrl;
-      link.click();
-      link.remove();
+      html2canvas(pixelArea, params).then((canvas) => {
+        const image = canvas.toDataURL(type);
+        const link = document.createElement('a');
+        link.download = `pixel-art.${ext}`;
+        link.href = image;
+        link.click();
+        link.remove();
+      });
     } finally {
       exportLoading.value = false;
     }
   }
 
+  async function exportPng() {
+    exportImage('image/png', 'png');
+  }
+
   async function exportJpeg() {
-    try {
-      exportLoading.value = true;
-      const pixelArea: HTMLElement | null =
-        document.querySelector('#pixel-art-area');
-      if (!pixelArea) return;
-      const dataUrl = await toJpeg(pixelArea);
-      const link = document.createElement('a');
-      link.download = 'pixel-art.jpeg';
-      link.href = dataUrl;
-      link.click();
-      link.remove();
-    } finally {
-      exportLoading.value = false;
-    }
+    exportImage('image/jpeg', 'jpeg', { backgroundColor: 'black' });
   }
 
   const styles = computed(() => {
