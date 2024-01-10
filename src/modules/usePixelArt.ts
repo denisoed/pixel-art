@@ -8,7 +8,7 @@ import { elementToSVG } from 'dom-to-svg';
 
 const usePixelArt = () => {
   const store = useMainStore();
-  const { getPixelsResolution } = storeToRefs(store);
+  const { getPixelsResolution, getWithGrid } = storeToRefs(store);
 
   const exportLoading = ref(false);
 
@@ -155,10 +155,10 @@ const usePixelArt = () => {
         height: `calc(${size * rows}rem + ${rows * indent}px)`,
       },
       pixel: {
-        marginRight: `${indent}px`,
-        marginBottom: `${indent}px`,
-        width: `${size}rem`,
-        height: `${size}rem`,
+        marginRight: `${getWithGrid.value ? indent : 0}px`,
+        marginBottom: `${getWithGrid.value ? indent : 0}px`,
+        width: `calc(${size}rem + ${getWithGrid.value ? 0 : indent}px)`,
+        height: `calc(${size}rem + ${getWithGrid.value ? 0 : indent}px)`,
       },
     };
   });

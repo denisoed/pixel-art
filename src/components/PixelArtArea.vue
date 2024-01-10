@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="pixel-art-area_wrap"
-    :style="{
-      width: styles.area.width,
-      height: styles.area.height,
-    }"
-  >
+  <div class="pixel-art-area_wrap">
     <div
       id="pixel-art-area"
       class="pixel-art-area"
@@ -17,7 +11,6 @@
         :key="`pixel_${i}`"
         :style="{
           background: pixel?.color || '',
-          ...styles.pixel,
         }"
         :data-y-coordinate="pixel.y"
         :data-x-coordinate="pixel.x"
@@ -32,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted, watch } from 'vue';
 import { useMainStore } from 'src/stores/main';
 import { storeToRefs } from 'pinia';
 import usePixelArt from 'src/modules/usePixelArt';
@@ -51,6 +44,40 @@ export default defineComponent({
     const { styles } = usePixelArt();
 
     const isMouseDown = ref(false);
+
+    watch(
+      styles,
+      () => {
+        document.documentElement.style.setProperty(
+          '--pixel-area-width',
+          styles.value.area.width
+        );
+        document.documentElement.style.setProperty(
+          '--pixel-area-height',
+          styles.value.area.height
+        );
+        document.documentElement.style.setProperty(
+          '--pixel-width',
+          styles.value.pixel.width
+        );
+        document.documentElement.style.setProperty(
+          '--pixel-height',
+          styles.value.pixel.height
+        );
+        document.documentElement.style.setProperty(
+          '--pixel-margin-right',
+          styles.value.pixel.marginRight
+        );
+        document.documentElement.style.setProperty(
+          '--pixel-margin-bottom',
+          styles.value.pixel.marginBottom
+        );
+      },
+      {
+        deep: true,
+        immediate: true,
+      }
+    );
 
     function onPointerMove(e: Event) {
       if (isMouseDown.value === true) {
@@ -119,9 +146,22 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+:root {
+  --pixel-area-width: auto;
+  --pixel-area-height: auto;
+
+  --pixel-width: auto;
+  --pixel-height: auto;
+  --pixel-margin-right: 0;
+  --pixel-margin-bottom: 0;
+}
+
 .pixel-art-area_wrap {
   position: relative;
   box-sizing: initial;
+
+  width: var(--pixel-area-width);
+  height: var(--pixel-area-height);
 }
 
 .pixel-art-area {
@@ -139,6 +179,11 @@ export default defineComponent({
     user-select: none;
     -webkit-user-select: none;
     background: #191f2b;
+
+    width: var(--pixel-width);
+    height: var(--pixel-height);
+    margin-right: var(--pixel-margin-right);
+    margin-bottom: var(--pixel-margin-bottom);
   }
 }
 </style>

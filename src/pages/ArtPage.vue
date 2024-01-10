@@ -6,6 +6,7 @@
       @on-export-jpeg="exportJpeg"
       @on-export-webp="exportWebp"
       @on-export-svg="exportSvg"
+      @on-show-config="openedConfigDialog = true"
       :loading="loading"
     />
     <div
@@ -22,7 +23,7 @@
     </div>
     <q-slider
       :model-value="getPixelsResolution"
-      :min="1"
+      :min="2"
       :max="4"
       color="primary"
       thumb-size="25px"
@@ -35,6 +36,11 @@
     />
 
     <HelpBtn />
+
+    <ArtConfigDialog
+      :dialog="openedConfigDialog"
+      @hide="openedConfigDialog = false"
+    />
   </div>
 </template>
 
@@ -52,6 +58,7 @@ import PixelArtArea from 'src/components/PixelArtArea.vue';
 import PixelArtColors from 'src/components/PixelArtColors.vue';
 import PixelArtTools from 'src/components/PixelArtTools.vue';
 import PixelArtOptions from 'src/components/PixelArtOptions.vue';
+import ArtConfigDialog from 'src/components/Dialogs/ArtConfigDialog.vue';
 import HelpBtn from 'src/components/HelpBtn.vue';
 
 export default defineComponent({
@@ -62,6 +69,7 @@ export default defineComponent({
     PixelArtTools,
     HelpBtn,
     PixelArtOptions,
+    ArtConfigDialog,
   },
   setup() {
     const route = useRoute();
@@ -82,6 +90,7 @@ export default defineComponent({
     const { fetchArt, updateArt } = useDB();
 
     const loading = ref(false);
+    const openedConfigDialog = ref(false);
 
     async function fetchData() {
       try {
@@ -143,6 +152,7 @@ export default defineComponent({
     return {
       styles,
       loading,
+      openedConfigDialog,
       getPixelsResolution,
       onChangeResolution,
       onSave,

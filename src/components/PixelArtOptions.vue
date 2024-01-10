@@ -41,6 +41,13 @@
     <q-btn size="sm" disabled color="primary" round icon="mdi-redo-variant">
       <q-tooltip class="text-caption">Comming soon...</q-tooltip>
     </q-btn>
+    <q-btn
+      size="sm"
+      color="primary"
+      round
+      icon="mdi-cog"
+      @click="onShowConfig"
+    />
   </div>
 </template>
 
@@ -58,7 +65,8 @@ type Events =
   | 'on-export-jpeg'
   | 'on-export-svg'
   | 'on-export-webp'
-  | 'on-export-svg';
+  | 'on-export-svg'
+  | 'on-show-config';
 
 const EXPORT_LIST: ExportListItem[] = [
   {
@@ -93,6 +101,10 @@ export default defineComponent({
       emit('on-save');
     }
 
+    function onShowConfig() {
+      emit('on-show-config');
+    }
+
     function onClick(event: string) {
       emit(event as Events);
     }
@@ -100,6 +112,7 @@ export default defineComponent({
     return {
       onSave,
       onClick,
+      onShowConfig,
       EXPORT_LIST,
     };
   },

@@ -9,7 +9,7 @@
     />
     <q-page-container>
       <div class="q-pa-md full-height relative-position">
-        <ProjectVersion class="absolute-top-left q-ml-md q-mt-md" />
+        <ProjectVersion class="absolute-top-left q-ml-md q-mt-lg" />
         <router-view />
       </div>
     </q-page-container>
