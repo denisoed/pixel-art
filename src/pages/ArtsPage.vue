@@ -1,6 +1,5 @@
 <template>
   <div class="home flex flex-center q-gap-sm relative-position">
-    <div class="text-caption absolute-top-left q-mt-sm">v{{ version }}</div>
     <HelpBtn />
     <div class="flex column q-gap-md">
       <div
@@ -37,7 +36,6 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { version } from '../../package.json';
 import useDB from 'src/modules/useDB';
 import usePixelArt from 'src/modules/usePixelArt';
 import useNotify from 'src/modules/useNotify';
@@ -107,7 +105,6 @@ export default defineComponent({
     }
 
     return {
-      version,
       onFileChanged,
       loading,
       createSimple,
