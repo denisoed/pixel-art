@@ -10,7 +10,7 @@ interface IState {
   cssCode: string;
   pixelsResolution: number;
   file: File | null;
-  withGrid: boolean;
+  withGrid: boolean | null;
 }
 
 const PIXELS_RESOLUTION_KEY = 'pixels-resolution';
@@ -25,7 +25,7 @@ export const useMainStore = defineStore('main', {
       cssCode: '',
       pixelsResolution: 0,
       file: null,
-      withGrid: true,
+      withGrid: null,
     };
   },
   getters: {
@@ -38,7 +38,8 @@ export const useMainStore = defineStore('main', {
       Number(LocalStorage.getItem(PIXELS_RESOLUTION_KEY) || 0) ||
       DEFAULT_PIXELS_RESOLUTION,
     getFile: (state) => state.file,
-    getWithGrid: (state) => state.withGrid,
+    getWithGrid: (state) =>
+      state.withGrid || LocalStorage.getItem(PIXELS_AREA_WITH_GRID),
   },
   actions: {
     toggleEraser() {
