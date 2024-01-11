@@ -3,8 +3,8 @@ import { IPixel } from 'src/interfaces';
 import { useMainStore } from 'src/stores/main';
 import { storeToRefs } from 'pinia';
 import { PIXELS_STEP } from 'src/config';
-import html2canvas from 'html2canvas';
 import { elementToSVG } from 'dom-to-svg';
+import { toCanvas } from 'html-to-image';
 
 const usePixelArt = () => {
   const store = useMainStore();
@@ -100,7 +100,7 @@ const usePixelArt = () => {
       const pixelArea: HTMLElement | null =
         document.querySelector('#pixel-art-area');
       if (!pixelArea) return;
-      html2canvas(pixelArea, params).then((canvas) => {
+      toCanvas(pixelArea, params).then((canvas) => {
         const image = canvas.toDataURL(type);
         download(image, `pixel-art.${ext}`);
       });
@@ -130,20 +130,20 @@ const usePixelArt = () => {
   }
 
   async function exportJpeg() {
-    exportImage('image/jpeg', 'jpeg', { backgroundColor: 'black' });
+    exportImage('image/jpeg', 'jpeg');
   }
 
   const styles = computed(() => {
     const rem = {
-      [1]: 1.835,
-      [2]: 0.885,
-      [3]: 0.55,
-      [4]: 0.445,
+      [1]: 1,
+      [2]: 1,
+      [3]: 0.5,
+      [4]: 0.5,
     };
     const gap = {
-      [1]: 3,
-      [2]: 2,
-      [3]: 2,
+      [1]: 1,
+      [2]: 1,
+      [3]: 1,
       [4]: 1,
     };
     const size = rem[getPixelsResolution.value as keyof typeof rem];
