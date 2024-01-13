@@ -39,6 +39,7 @@ import { defineComponent, ref } from 'vue';
 import usePixelArt from 'src/modules/usePixelArt';
 import useNotify from 'src/modules/useNotify';
 import { useArtsStore } from 'src/stores/arts';
+import { useUserStore } from 'src/stores/user';
 import useArtsApi from 'src/api/useArtsApi';
 import { useRouter } from 'vue-router';
 
@@ -55,6 +56,7 @@ export default defineComponent({
     const { fetchArts, createArt } = useArtsApi();
     const { generatePixelsFromFile, generateRandomName } = usePixelArt();
     const { notifySuccess, notifyError } = useNotify();
+    const userStore = useUserStore();
     const { push } = useRouter();
     const artsStore = useArtsStore();
 
@@ -64,21 +66,24 @@ export default defineComponent({
       if (file) {
         try {
           loading.value = true;
-          const result = await Promise.all([
-            generatePixelsFromFile(file, 1),
-            generatePixelsFromFile(file, 2),
-            generatePixelsFromFile(file, 3),
-            generatePixelsFromFile(file, 4),
-          ]);
-          const response = await createArt({
-            name: generateRandomName(),
-            json: JSON.stringify(result),
-          });
-          const arts = await fetchArts();
-          artsStore.setArts(arts);
-          push(`/arts/${response.id}`);
-          notifySuccess('Art created successfully');
-        } catch {
+          if (userStore.getUser?.id) {
+            const result = await Promise.all([
+              generatePixelsFromFile(file, 1),
+              generatePixelsFromFile(file, 2),
+              generatePixelsFromFile(file, 3),
+              generatePixelsFromFile(file, 4),
+            ]);
+            const response = await createArt({
+              name: generateRandomName(),
+              json: JSON.stringify(result),
+            });
+            const arts = await fetchArts();
+            artsStore.setArts(arts);
+            push(`/arts/${response.id}`);
+            notifySuccess('Art created successfully');
+          }
+        } catch (error) {
+          console.log(error);
           notifyError('Something went wrong. Please try again.');
         } finally {
           loading.value = false;
@@ -89,15 +94,17 @@ export default defineComponent({
     async function createSimple() {
       try {
         loading.value = true;
-        const response = await createArt({
-          name: generateRandomName(),
-          json: '',
-        });
-        const arts = await fetchArts();
-        artsStore.setArts(arts);
-        push(`/arts/${response.id}`);
-        notifySuccess('Art created successfully');
-      } catch {
+        if (userStore.getUser?.id) {
+          const response = await createArt({
+            name: generateRandomName(),
+            json: '',
+          });
+          const arts = await fetchArts();
+          artsStore.setArts(arts);
+          push(`/arts/${response.id}`);
+          notifySuccess('Art created successfully');
+        }
+      } catch (error) {
         notifyError('Something went wrong. Please try again.');
       } finally {
         loading.value = false;
