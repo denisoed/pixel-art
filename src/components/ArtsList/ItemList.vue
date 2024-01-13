@@ -1,5 +1,21 @@
 <template>
   <div class="item-list flex items-center justify-between">
+    <q-input
+      v-if="renaming"
+      ref="inputRef"
+      v-model="modelName"
+      outlined
+      flat
+      dense
+      class="item-list_inp"
+      autofocus
+      @keyup.enter="onRenameSave"
+    >
+      <template v-slot:append>
+        <q-btn round dense flat icon="check" size="sm" @click="onRenameSave" />
+        <q-btn round dense flat icon="close" size="sm" @click="onRenameClose" />
+      </template>
+    </q-input>
     <router-link
       :to="`/arts/${id}`"
       class="item-list-link"
@@ -7,10 +23,10 @@
         'router-link-exact-active active': openedMenu,
       }"
     >
-      <div class="item-list-name">{{ name }}</div>
+      <div class="item-list-name">{{ modelName }}</div>
     </router-link>
     <div class="item-list-controls">
-      <q-spinner v-if="deleting" />
+      <q-spinner v-if="loading" />
       <q-btn
         v-else
         icon="mdi-dots-horizontal"
@@ -22,6 +38,16 @@
       >
         <q-menu @hide="toggleMenu" anchor="bottom left" self="top right">
           <q-list>
+            <q-item clickable v-close-popup @click="onRename">
+              <q-item-section>
+                <q-item-label>
+                  <span class="text-caption">Rename</span>
+                </q-item-label>
+              </q-item-section>
+              <q-item-section avatar>
+                <q-icon name="mdi-pencil" size="xs" />
+              </q-item-section>
+            </q-item>
             <q-item clickable v-close-popup @click="onDelete">
               <q-item-section>
                 <q-item-label>
@@ -54,29 +80,59 @@ export default defineComponent({
       default: '',
     },
   },
-  emits: ['on-delete'],
+  emits: ['on-delete', 'on-edit'],
   setup(props, { emit }) {
+    const modelName = ref(props.name);
     const openedMenu = ref(false);
-    const deleting = ref(false);
+    const renaming = ref(false);
+    const loading = ref(false);
+    const inputRef = ref();
 
     function toggleMenu() {
       openedMenu.value = !openedMenu.value;
     }
 
     function onDelete() {
-      deleting.value = true;
+      loading.value = true;
       openedMenu.value = false;
       emit('on-delete', props.id);
       setTimeout(() => {
-        deleting.value = false;
+        loading.value = false;
       }, 2000);
     }
 
+    function onRename() {
+      openedMenu.value = false;
+      renaming.value = true;
+      setTimeout(() => {
+        inputRef.value?.focus();
+      }, 100);
+    }
+
+    function onRenameSave() {
+      loading.value = true;
+      renaming.value = false;
+      emit('on-edit', props.id, modelName.value);
+      setTimeout(() => {
+        loading.value = false;
+      }, 2000);
+    }
+
+    function onRenameClose() {
+      renaming.value = false;
+    }
+
     return {
+      modelName,
+      loading,
+      renaming,
+      inputRef,
       openedMenu,
       toggleMenu,
       onDelete,
-      deleting,
+      onRename,
+      onRenameSave,
+      onRenameClose,
     };
   },
 });
@@ -106,6 +162,23 @@ export default defineComponent({
     z-index: 0;
     pointer-events: none;
     user-select: none;
+  }
+
+  &_inp {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    background: $dark-page;
+
+    :deep(.q-field__control) {
+      height: 32px;
+    }
+
+    :deep(.q-field__append) {
+      height: 32px;
+    }
   }
 
   &-controls {

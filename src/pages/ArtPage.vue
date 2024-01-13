@@ -134,7 +134,7 @@ export default defineComponent({
           });
           notifySuccess('Art updated successfully');
         }
-      } catch {
+      } catch (error) {
         notifyError('Something went wrong. Please try again.');
       } finally {
         loading.value = false;
