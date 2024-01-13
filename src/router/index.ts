@@ -1,3 +1,4 @@
+import { LocalStorage } from 'quasar';
 import { route } from 'quasar/wrappers';
 import {
   createMemoryHistory,
@@ -5,9 +6,8 @@ import {
   createWebHashHistory,
   createWebHistory,
 } from 'vue-router';
-import { firebaseAuth } from 'boot/firebase';
-
-import routes from './routes';
+import routes from 'src/router/routes';
+import { ACCESS_TOKEN_KEY } from 'src/config';
 
 /*
  * If not building with SSR mode, you can
@@ -18,7 +18,7 @@ import routes from './routes';
  * with the Router instance.
  */
 
-export default route(function (/* { store, ssrContext } */) {
+export default route(function ({ store }) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : process.env.VUE_ROUTER_MODE === 'history'
@@ -36,21 +36,19 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   Router.beforeEach((to, from, next) => {
-    firebaseAuth.onAuthStateChanged((user) => {
-      if (!user) {
-        if (to.path !== '/') {
-          next({ path: '/' });
-        } else {
-          next();
-        }
+    if (LocalStorage.getItem(ACCESS_TOKEN_KEY)) {
+      if (to.path === '/') {
+        next({ path: '/arts' });
       } else {
-        if (to.path === '/') {
-          next({ path: '/arts' });
-        } else {
-          next();
-        }
+        next();
       }
-    });
+    } else {
+      if (to.path !== '/') {
+        next({ path: '/' });
+      } else {
+        next();
+      }
+    }
   });
 
   return Router;

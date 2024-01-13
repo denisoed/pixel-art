@@ -1,6 +1,8 @@
 export const PIXELS_STEP = 20;
 export const DEFAULT_PIXELS_RESOLUTION = 2;
 
+export const HOME_ROUTE = '/';
+
 export const HISTORIES_DB_NAME = 'histories-db';
 export const HISTORIES_DB_VERSION = 1;
 export const HISTORIES_DB_TABLE = 'histories-table';

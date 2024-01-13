@@ -4,7 +4,7 @@ import { LocalStorage } from 'quasar';
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from 'src/config';
 
 interface IState {
-  user: IUser;
+  user: IUser | null;
   accessToken: string | null;
   refreshToken: string | null;
 }
@@ -12,11 +12,7 @@ interface IState {
 export const useUserStore = defineStore('user', {
   state: (): IState => {
     return {
-      user: {
-        photoURL: null,
-        displayName: null,
-        email: null,
-      },
+      user: null,
       accessToken: null,
       refreshToken: null,
     };
@@ -27,6 +23,7 @@ export const useUserStore = defineStore('user', {
       LocalStorage.getItem(ACCESS_TOKEN_KEY) || state.accessToken,
     getRefreshToken: (state) =>
       LocalStorage.getItem(REFRESH_TOKEN_KEY) || state.refreshToken,
+    isAuth: (state) => state.user !== null,
   },
   actions: {
     setUser(user: IUser) {

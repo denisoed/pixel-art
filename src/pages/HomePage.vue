@@ -27,7 +27,7 @@
         <div class="auth_right-title text-h5 text-bold q-mb-md">
           Get Started
         </div>
-        <div class="auth_right-btns">
+        <div class="auth_right-btns flex column items-center q-gap-md">
           <q-btn
             color="primary"
             @click="signWithGoogle"
@@ -35,6 +35,13 @@
           >
             <q-icon name="mdi-google" color="white" size="xs" class="q-mr-sm" />
             Sign In with Google
+          </q-btn>
+          <q-btn
+            color="primary"
+            href="http://localhost:1337/api/connect/google"
+          >
+            <q-icon name="mdi-google" color="white" size="xs" class="q-mr-sm" />
+            Continue with Google
           </q-btn>
         </div>
       </div>
@@ -49,10 +56,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onBeforeMount } from 'vue';
 import { date } from 'quasar';
 import useAuth from 'src/modules/useAuth';
+import useNotify from 'src/modules/useNotify';
+import { useRoute, useRouter } from 'vue-router';
+import useAuthApi from 'src/api/useAuthApi';
+
 import AutoSlider from 'src/components/AutoSlider.vue';
+import { useUserStore } from 'src/stores/user';
 
 export default defineComponent({
   name: 'HomePage',
@@ -61,8 +73,29 @@ export default defineComponent({
   },
   setup() {
     const { signWithGoogle, loadingSignIn } = useAuth();
+    const { query } = useRoute();
+    const { push } = useRouter();
+    const { connect } = useAuthApi();
+    const { notifyError } = useNotify();
+    const userStore = useUserStore();
 
     const year = date.formatDate(Date.now(), 'YYYY');
+
+    onBeforeMount(async () => {
+      if (query?.access_token) {
+        try {
+          const url = `/api/auth/google/callback?access_token=${query?.access_token}`;
+          const { data, status } = await connect(url);
+          if (status === 200) {
+            userStore.setAccessToken(data?.jwt);
+            userStore.setUser(data?.user);
+            push('/arts');
+          }
+        } catch {
+          notifyError('Authentication failed. Please try again.');
+        }
+      }
+    });
 
     return {
       year,

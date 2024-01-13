@@ -1,8 +1,10 @@
+import { LocalStorage } from 'quasar';
 import { firebaseAuth } from 'boot/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { ref } from 'vue';
 import useNotify from 'src/modules/useNotify';
 import { useRouter } from 'vue-router';
+import { ACCESS_TOKEN_KEY } from 'src/config';
 
 const useAuth = () => {
   const { notifyError, notifySuccess } = useNotify();
@@ -25,7 +27,7 @@ const useAuth = () => {
   }
 
   function signOut() {
-    firebaseAuth.signOut();
+    LocalStorage.remove(ACCESS_TOKEN_KEY);
     push('/');
   }
 

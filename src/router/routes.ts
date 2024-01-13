@@ -13,6 +13,11 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('src/pages/HomePage.vue'),
   },
+  {
+    path: '/connect/google',
+    name: 'google',
+    component: () => import('src/pages/connect/Google.vue'),
+  },
 
   // Always leave this as last one,
   // but you can also remove it

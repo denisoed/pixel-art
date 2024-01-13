@@ -1,12 +1,51 @@
+import { LocalStorage } from 'quasar';
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance } from 'axios';
+import { HOME_ROUTE, ACCESS_TOKEN_KEY } from 'src/config';
 
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     $axios: AxiosInstance;
-    $api: AxiosInstance;
   }
 }
+
+const axiosParams = {
+  baseURL: process.env.API_URL,
+  headers: { 'Content-Type': 'application/json' },
+};
+
+const api = axios.create(axiosParams);
+
+const accessToken = LocalStorage.getItem(ACCESS_TOKEN_KEY);
+
+if (accessToken) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+}
+
+// Add auth token to request headers
+api.interceptors.request.use((config) => {
+  const accessToken = LocalStorage.getItem(ACCESS_TOKEN_KEY);
+  if (accessToken) {
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+  }
+  return config;
+});
+
+// handle response
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error?.response?.status === 401) {
+      LocalStorage.remove(ACCESS_TOKEN_KEY);
+      if (window.location.pathname !== HOME_ROUTE) {
+        window.location.pathname = HOME_ROUTE;
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -14,7 +53,6 @@ declare module '@vue/runtime-core' {
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'https://api.example.com' });
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

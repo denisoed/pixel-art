@@ -1,16 +1,16 @@
 import { boot } from 'quasar/wrappers';
-import { firebaseAuth } from 'boot/firebase';
+import useAuthApi from 'src/api/useAuthApi';
 import { useUserStore } from 'src/stores/user';
 
-export default boot(() => {
+export default boot(async () => {
   const userStore = useUserStore();
-  firebaseAuth.onAuthStateChanged((user) => {
-    if (user) {
-      userStore.setUser({
-        photoURL: user.photoURL,
-        displayName: user.displayName,
-        email: user.email,
-      });
+  const { me } = useAuthApi();
+  try {
+    const { data, status } = await me();
+    if (status === 200) {
+      userStore.setUser(data);
     }
-  });
+  } catch (error) {
+    console.error(error);
+  }
 });

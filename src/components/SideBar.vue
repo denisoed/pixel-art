@@ -112,9 +112,9 @@ export default defineComponent({
     return {
       isMini,
       toggleSidebar,
-      name: userStore.user.displayName,
-      email: userStore.user.email,
-      photoURL: userStore.user.photoURL,
+      name: userStore.user?.username,
+      email: userStore.user?.email,
+      photoURL: userStore.user?.picture,
       signOut,
       arts,
     };

@@ -5,9 +5,15 @@ export interface IPixel {
 }
 
 export interface IUser {
-  photoURL: string | null;
-  displayName: string | null;
-  email: string | null;
+  blocked: boolean;
+  confirmed: boolean;
+  createdAt: string;
+  email: string;
+  id: number;
+  picture: string;
+  provider: string;
+  updatedAt: string;
+  username: string;
 }
 
 export interface IArt {
