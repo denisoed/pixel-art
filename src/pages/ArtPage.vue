@@ -46,8 +46,8 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
+import useArtsApi from 'src/api/useArtsApi';
 import usePixelArt from 'src/modules/usePixelArt';
-import useDB from 'src/modules/useDB';
 import useNotify from 'src/modules/useNotify';
 import { useMainStore } from 'src/stores/main';
 import { useArtsStore } from 'src/stores/arts';
@@ -75,6 +75,7 @@ export default defineComponent({
     const route = useRoute();
     const store = useMainStore();
     const artsStore = useArtsStore();
+    const { fetchArt, updateArt } = useArtsApi();
     const { notifySuccess, notifyError } = useNotify();
     const { getPixelsResolution, getPixels } = storeToRefs(store);
     const { getArt } = storeToRefs(artsStore);
@@ -87,7 +88,6 @@ export default defineComponent({
       exportWebp,
       exportSvg,
     } = usePixelArt();
-    const { fetchArt, updateArt } = useDB();
 
     const loading = ref(false);
     const openedConfigDialog = ref(false);
