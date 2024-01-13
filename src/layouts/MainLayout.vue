@@ -17,8 +17,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onBeforeMount } from 'vue';
 import usePixelArt from 'src/modules/usePixelArt';
+import useArtsApi from 'src/api/useArtsApi';
+import { useArtsStore } from 'src/stores/arts';
 
 import SideBar from 'src/components/SideBar.vue';
 import ProjectVersion from 'src/components/ProjectVersion.vue';
@@ -31,6 +33,17 @@ export default defineComponent({
   },
   setup() {
     const { styles } = usePixelArt();
+    const { fetchArts } = useArtsApi();
+    const artsStore = useArtsStore();
+
+    async function getData() {
+      const response = await fetchArts();
+      artsStore.setArts(response);
+    }
+
+    onBeforeMount(() => {
+      getData();
+    });
 
     return {
       styles,
