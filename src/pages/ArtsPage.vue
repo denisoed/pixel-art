@@ -54,7 +54,8 @@ export default defineComponent({
   },
   setup() {
     const { fetchArts, createArt } = useArtsApi();
-    const { generatePixelsFromFile, generateRandomName } = usePixelArt();
+    const { generatePixelsFromFile, generateRandomName, generateInitPixels } =
+      usePixelArt();
     const { notifySuccess, notifyError } = useNotify();
     const userStore = useUserStore();
     const { push } = useRouter();
@@ -94,10 +95,16 @@ export default defineComponent({
     async function createSimple() {
       try {
         loading.value = true;
+        const result = await Promise.all([
+          generateInitPixels(1),
+          generateInitPixels(2),
+          generateInitPixels(3),
+          generateInitPixels(4),
+        ]);
         if (userStore.getUser?.id) {
           const response = await createArt({
             name: generateRandomName(),
-            json: '',
+            json: JSON.stringify(result),
           });
           const arts = await fetchArts();
           artsStore.setArts(arts);

@@ -24,9 +24,9 @@ const usePixelArt = () => {
     return result;
   }
 
-  function generateInitPixels(): IPixel[] {
+  function generateInitPixels(resolution?: number): IPixel[] {
     const result = [];
-    const rows = PIXELS_STEP * getPixelsResolution.value;
+    const rows = PIXELS_STEP * (resolution || getPixelsResolution.value);
     for (let i = 0; i < rows; ++i) {
       for (let j = 0; j < rows; ++j) {
         result.push({

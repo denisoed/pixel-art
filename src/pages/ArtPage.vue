@@ -126,12 +126,13 @@ export default defineComponent({
       try {
         loading.value = true;
         if (getArt.value) {
-          const list = [...JSON.parse(getArt.value.json)];
+          const list = [...JSON.parse(getArt.value.json || '[]')];
           list[getPixelsResolution.value - 1] = getPixels.value;
           await updateArt(route.params.id as string, {
             name: getArt.value.name,
             json: JSON.stringify(list),
           });
+          fetchData();
           notifySuccess('Art updated successfully');
         }
       } catch (error) {
