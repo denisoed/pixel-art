@@ -35,11 +35,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onBeforeMount, ref } from 'vue';
 import useDB from 'src/modules/useDB';
 import usePixelArt from 'src/modules/usePixelArt';
 import useNotify from 'src/modules/useNotify';
 import { useArtsStore } from 'src/stores/arts';
+import useArtsApi from 'src/api/useArtsApi';
 import { useRouter } from 'vue-router';
 
 import HelpBtn from 'src/components/HelpBtn.vue';
@@ -52,7 +53,8 @@ export default defineComponent({
     FileUploader,
   },
   setup() {
-    const { createArt, fetchArts } = useDB();
+    const { createArt } = useDB();
+    const { fetchArts } = useArtsApi();
     const { generatePixelsFromFile } = usePixelArt();
     const { notifySuccess, notifyError } = useNotify();
     const { push } = useRouter();
@@ -103,6 +105,15 @@ export default defineComponent({
         loading.value = false;
       }
     }
+
+    async function getData() {
+      const response = await fetchArts();
+      artsStore.setArts(response);
+    }
+
+    onBeforeMount(() => {
+      getData();
+    });
 
     return {
       onFileChanged,

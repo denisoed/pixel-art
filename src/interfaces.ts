@@ -1,3 +1,15 @@
+export interface IApiResponse<T> {
+  data: T;
+  meta: {
+    pagination: {
+      page: number;
+      pageCount: number;
+      pageSize: number;
+      total: number;
+    };
+  };
+}
+
 export interface IPixel {
   x: number;
   y: number;
