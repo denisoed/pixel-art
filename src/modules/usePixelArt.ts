@@ -5,8 +5,11 @@ import { storeToRefs } from 'pinia';
 import { PIXELS_STEP } from 'src/config';
 import { elementToSVG } from 'dom-to-svg';
 import { toCanvas } from 'html-to-image';
+import { useQuasar } from 'quasar';
 
 const usePixelArt = () => {
+  const $q = useQuasar();
+
   const store = useMainStore();
   const { getPixelsResolution, getWithGrid } = storeToRefs(store);
 
@@ -107,18 +110,20 @@ const usePixelArt = () => {
     ext: 'png' | 'jpeg' | 'webp' = 'png',
     params: { backgroundColor?: string } = {}
   ) {
-    try {
-      exportLoading.value = true;
-      const pixelArea: HTMLElement | null =
-        document.querySelector('#pixel-art-area');
-      if (!pixelArea) return;
+    $q.loading.show({
+      message: 'Exporting...',
+      spinnerSize: 40,
+    });
+    const pixelArea: HTMLElement | null =
+      document.querySelector('#pixel-art-area');
+    if (!pixelArea) return;
+    setTimeout(() => {
       toCanvas(pixelArea, params).then((canvas) => {
         const image = canvas.toDataURL(type);
         download(image, `pixel-art.${ext}`);
+        $q.loading.hide();
       });
-    } finally {
-      exportLoading.value = false;
-    }
+    }, 1000);
   }
 
   async function exportPng() {
