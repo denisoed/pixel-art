@@ -36,5 +36,5 @@ export interface IArt {
 
 export interface IArtPayload {
   name: string;
-  json: string;
+  json?: string;
 }

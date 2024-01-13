@@ -80,7 +80,7 @@ export default defineComponent({
       default: '',
     },
   },
-  emits: ['on-delete', 'on-edit'],
+  emits: ['on-delete', 'on-rename'],
   setup(props, { emit }) {
     const modelName = ref(props.name);
     const openedMenu = ref(false);
@@ -112,7 +112,7 @@ export default defineComponent({
     function onRenameSave() {
       loading.value = true;
       renaming.value = false;
-      emit('on-edit', props.id, modelName.value);
+      emit('on-rename', props.id, modelName.value);
       setTimeout(() => {
         loading.value = false;
       }, 2000);
@@ -141,6 +141,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .item-list {
   width: 100%;
+  min-height: 32px;
   cursor: pointer;
   transition: all 0.2s ease-out;
   position: relative;

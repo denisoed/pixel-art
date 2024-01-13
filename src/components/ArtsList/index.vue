@@ -8,6 +8,7 @@
           :id="art.id"
           :name="art.name"
           @on-delete="onArtDelete"
+          @on-rename="onArtRename"
         />
       </template>
       <div
@@ -48,7 +49,7 @@ export default defineComponent({
   },
   setup(props) {
     const { arts } = toRefs(props);
-    const { deleteArt } = useArtsApi();
+    const { deleteArt, updateArt } = useArtsApi();
     const { notifyError, notifySuccess } = useNotify();
     const { push } = useRouter();
     const artsStore = useArtsStore();
@@ -66,13 +67,23 @@ export default defineComponent({
       }
     }
 
+    async function onArtRename(id: string, name: string) {
+      try {
+        await updateArt(id, { name });
+        notifySuccess('Art renamed successfully');
+      } catch {
+        notifyError('Something went wrong. Please try again.');
+      }
+    }
+
     watch(arts, (arts) => {
       list.value = arts;
     });
 
     return {
-      onArtDelete,
       list,
+      onArtDelete,
+      onArtRename,
     };
   },
 });
