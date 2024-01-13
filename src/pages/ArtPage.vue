@@ -101,9 +101,11 @@ export default defineComponent({
           const result = await fetchArt(route.params.id as string);
           if (!result) return;
           artsStore.setArt(result);
-          store.setPixels(
-            JSON.parse(result?.json)[getPixelsResolution.value - 1]
-          );
+          if (JSON.parse(result?.json || '[]').length) {
+            store.setPixels(
+              JSON.parse(result.json)[getPixelsResolution.value - 1]
+            );
+          }
         }
       } finally {
         loading.value = false;

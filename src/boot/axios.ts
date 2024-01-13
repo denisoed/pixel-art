@@ -22,31 +22,6 @@ if (accessToken) {
   api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 }
 
-// Add auth token to request headers
-api.interceptors.request.use((config) => {
-  const accessToken = LocalStorage.getItem(ACCESS_TOKEN_KEY);
-  if (accessToken) {
-    config.headers['Authorization'] = `Bearer ${accessToken}`;
-  }
-  return config;
-});
-
-// handle response
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error?.response?.status === 401) {
-      LocalStorage.remove(ACCESS_TOKEN_KEY);
-      if (window.location.pathname !== HOME_ROUTE) {
-        window.location.pathname = HOME_ROUTE;
-      }
-    }
-    return Promise.reject(error);
-  }
-);
-
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a
@@ -54,7 +29,7 @@ api.interceptors.response.use(
 // "export default () => {}" function below (which runs individually
 // for each client)
 
-export default boot(({ app }) => {
+export default boot(({ app, redirect, router }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
   app.config.globalProperties.$axios = axios;
@@ -64,6 +39,34 @@ export default boot(({ app }) => {
   app.config.globalProperties.$api = api;
   // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
   //       so you can easily perform requests against your app's API
+
+  // Add auth token to request headers
+  api.interceptors.request.use((config) => {
+    const accessToken = LocalStorage.getItem(ACCESS_TOKEN_KEY);
+    if (accessToken) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+    return config;
+  });
+
+  // handle response
+  api.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      if (error?.response?.status === 401) {
+        LocalStorage.remove(ACCESS_TOKEN_KEY);
+        if (window.location.pathname !== HOME_ROUTE) {
+          redirect(HOME_ROUTE);
+        }
+      }
+      if (error?.response?.status === 404) {
+        router.push({ path: '/404' });
+      }
+      return Promise.reject(error);
+    }
+  );
 });
 
 export { api };
