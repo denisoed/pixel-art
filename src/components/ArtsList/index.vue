@@ -28,7 +28,7 @@
 <script lang="ts">
 import { defineComponent, PropType, watch, toRefs, ref } from 'vue';
 import { IArt } from 'src/interfaces';
-import useDB from 'src/modules/useDB';
+import useArtsApi from 'src/api/useArtsApi';
 import { useRouter } from 'vue-router';
 import useNotify from 'src/modules/useNotify';
 import { useArtsStore } from 'src/stores/arts';
@@ -48,7 +48,7 @@ export default defineComponent({
   },
   setup(props) {
     const { arts } = toRefs(props);
-    const { deleteArt } = useDB();
+    const { deleteArt } = useArtsApi();
     const { notifyError, notifySuccess } = useNotify();
     const { push } = useRouter();
     const artsStore = useArtsStore();

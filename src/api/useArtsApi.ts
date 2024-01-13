@@ -22,11 +22,17 @@ const useArtsApi = () => {
     return response.data.data;
   }
 
+  async function deleteArt(id: string): Promise<IArt> {
+    const response = await api.delete(`/api/arts/${id}`);
+    return response.data.data;
+  }
+
   return {
     fetchArts,
     fetchArt,
     createArt,
     updateArt,
+    deleteArt,
   };
 };
 
