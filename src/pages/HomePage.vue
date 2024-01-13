@@ -28,10 +28,7 @@
           Get Started
         </div>
         <div class="auth_right-btns flex column items-center q-gap-md">
-          <q-btn
-            color="primary"
-            href="http://localhost:1337/api/connect/google"
-          >
+          <q-btn color="primary" :href="GOOGLE_CONNECT_LINK">
             <q-icon name="mdi-google" color="white" size="xs" class="q-mr-sm" />
             Sign In with Google
           </q-btn>
@@ -53,9 +50,10 @@ import { date } from 'quasar';
 import useNotify from 'src/modules/useNotify';
 import { useRoute, useRouter } from 'vue-router';
 import useAuthApi from 'src/api/useAuthApi';
+import { useUserStore } from 'src/stores/user';
+import { GOOGLE_CONNECT_LINK } from 'src/config';
 
 import AutoSlider from 'src/components/AutoSlider.vue';
-import { useUserStore } from 'src/stores/user';
 
 export default defineComponent({
   name: 'HomePage',
@@ -89,6 +87,7 @@ export default defineComponent({
 
     return {
       year,
+      GOOGLE_CONNECT_LINK,
     };
   },
 });

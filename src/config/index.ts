@@ -1,5 +1,6 @@
 export const PIXELS_STEP = 20;
 export const DEFAULT_PIXELS_RESOLUTION = 2;
+export const API_URL = process.env.API_URL;
 
 export const HOME_ROUTE = '/';
 
@@ -23,6 +24,8 @@ export const VALID_FILE_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
 export const VALID_FILE_EXTS = ['.png', '.jpeg', '.jpg'];
 
 export const FILE_MAX_SIZE_KB = 4096;
+
+export const GOOGLE_CONNECT_LINK = `${API_URL}/api/connect/google`;
 
 export const ACCESS_TOKEN_KEY = 'access-token';
 export const REFRESH_TOKEN_KEY = 'refresh-token';
