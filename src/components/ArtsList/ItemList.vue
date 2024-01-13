@@ -7,7 +7,7 @@
         'router-link-exact-active active': openedMenu,
       }"
     >
-      <div class="item-list-name">{{ id }}</div>
+      <div class="item-list-name">{{ name }}</div>
     </router-link>
     <div class="item-list-controls">
       <q-spinner v-if="deleting" />
@@ -104,6 +104,8 @@ export default defineComponent({
     display: none;
     background: $dark-page;
     z-index: 0;
+    pointer-events: none;
+    user-select: none;
   }
 
   &-controls {
@@ -169,6 +171,8 @@ export default defineComponent({
       border-radius: 4px;
       z-index: 0;
       background: rgba($dark-page, 0.5);
+      pointer-events: none;
+      user-select: none;
     }
 
     ~ .item-list-controls {

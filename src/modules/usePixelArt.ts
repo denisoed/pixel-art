@@ -12,6 +12,18 @@ const usePixelArt = () => {
 
   const exportLoading = ref(false);
 
+  function generateRandomName(): string {
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < 10; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return result;
+  }
+
   function generateInitPixels(): IPixel[] {
     const result = [];
     const rows = PIXELS_STEP * getPixelsResolution.value;
@@ -173,6 +185,7 @@ const usePixelArt = () => {
     exportWebp,
     exportSvg,
     exportLoading,
+    generateRandomName,
   };
 };
 

@@ -53,7 +53,7 @@ export default defineComponent({
   },
   setup() {
     const { fetchArts, createArt } = useArtsApi();
-    const { generatePixelsFromFile } = usePixelArt();
+    const { generatePixelsFromFile, generateRandomName } = usePixelArt();
     const { notifySuccess, notifyError } = useNotify();
     const { push } = useRouter();
     const artsStore = useArtsStore();
@@ -71,7 +71,7 @@ export default defineComponent({
             generatePixelsFromFile(file, 4),
           ]);
           const response = await createArt({
-            name: file.name,
+            name: generateRandomName(),
             json: JSON.stringify(result),
           });
           const arts = await fetchArts();
@@ -90,7 +90,7 @@ export default defineComponent({
       try {
         loading.value = true;
         const response = await createArt({
-          name: 'Simple Art',
+          name: generateRandomName(),
           json: '',
         });
         const arts = await fetchArts();
