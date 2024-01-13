@@ -30,18 +30,10 @@
         <div class="auth_right-btns flex column items-center q-gap-md">
           <q-btn
             color="primary"
-            @click="signWithGoogle"
-            :loading="loadingSignIn"
-          >
-            <q-icon name="mdi-google" color="white" size="xs" class="q-mr-sm" />
-            Sign In with Google
-          </q-btn>
-          <q-btn
-            color="primary"
             href="http://localhost:1337/api/connect/google"
           >
             <q-icon name="mdi-google" color="white" size="xs" class="q-mr-sm" />
-            Continue with Google
+            Sign In with Google
           </q-btn>
         </div>
       </div>
@@ -58,7 +50,6 @@
 <script lang="ts">
 import { defineComponent, onBeforeMount } from 'vue';
 import { date } from 'quasar';
-import useAuth from 'src/modules/useAuth';
 import useNotify from 'src/modules/useNotify';
 import { useRoute, useRouter } from 'vue-router';
 import useAuthApi from 'src/api/useAuthApi';
@@ -72,7 +63,6 @@ export default defineComponent({
     AutoSlider,
   },
   setup() {
-    const { signWithGoogle, loadingSignIn } = useAuth();
     const { query } = useRoute();
     const { push } = useRouter();
     const { connect } = useAuthApi();
@@ -99,8 +89,6 @@ export default defineComponent({
 
     return {
       year,
-      signWithGoogle,
-      loadingSignIn,
     };
   },
 });

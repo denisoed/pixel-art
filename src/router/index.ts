@@ -18,7 +18,7 @@ import { ACCESS_TOKEN_KEY } from 'src/config';
  * with the Router instance.
  */
 
-export default route(function ({ store }) {
+export default route(function () {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : process.env.VUE_ROUTER_MODE === 'history'

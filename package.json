@@ -10,15 +10,13 @@
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
-    "build": "quasar build",
-    "deploy": "quasar build && firebase deploy"
+    "build": "quasar build"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
     "axios": "^1.2.1",
     "dom-to-svg": "^0.12.2",
     "dotenv": "^16.3.1",
-    "firebase": "^10.7.1",
     "html-to-image": "^1.11.11",
     "idb": "^8.0.0",
     "lodash.debounce": "^4.0.8",
